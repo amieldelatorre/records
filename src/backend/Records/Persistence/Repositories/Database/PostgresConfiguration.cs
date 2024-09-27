@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Persistence.Extensions;
 
-namespace Persistence.Repositories.PostgreSQL;
+namespace Persistence.Repositories.Database;
 
-public static class Configuration
+public static class PostgresConfiguration
 {
     private static EnvironmentVariable<string> _host = new("POSTGRES_HOST", true);
     private static EnvironmentVariable<string> _port = new("POSTGRES_PORT", true);

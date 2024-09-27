@@ -3,9 +3,9 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 
-namespace Persistence.Repositories.PostgreSQL;
+namespace Persistence.Repositories.Database;
 
-public class UserRepository(DataContext dbcontext) : IBaseRepository<User>, IUserRepository
+public class PostgresUserRepository(DataContext dbcontext) : IBaseRepository<User>, IUserRepository
 {
     public async Task<User> Create(User entity)
     {

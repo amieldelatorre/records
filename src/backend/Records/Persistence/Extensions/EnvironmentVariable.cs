@@ -1,5 +1,3 @@
-using Persistence.Repositories.PostgreSQL;
-
 namespace Persistence.Extensions;
 
 public struct EnvironmentVariable<T>
