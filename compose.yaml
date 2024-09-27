@@ -2,6 +2,7 @@ services:
   postgres-db:
     image: postgres:17.0
     container_name: postgres-db
+    hostname: postgres-db
     restart: unless-stopped
     volumes:
       - ./docker_data/postgres-db:/var/lib/postgresql/data
@@ -12,3 +13,33 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-root}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
       TZ: Pacific/Auckland
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "--username=${POSTGRES_USER:-root}",
+          "--host=127.0.0.1",
+          "--port=5432",
+          "-d${POSTGRES_DB:-records}"
+        ]
+      interval: 20s
+      timeout: 3m
+      retries: 5
+      start_period: 10s
+
+  valkey:
+    image: valkey/valkey:8.0
+    container_name: valkey
+    hostname: valkey
+    restart: unless-stopped
+    ports:
+      - 6479:6379
+    environment:
+      TZ: Pacific/Auckland
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 20s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
