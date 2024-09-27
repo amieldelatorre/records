@@ -1,8 +1,10 @@
+using Application.Repositories.Database;
+using Application.Repositories.DatabaseCache;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
 using Persistence.Repositories.Database;
+using Persistence.Repositories.DatabaseCache;
 
 namespace Persistence;
 
@@ -13,5 +15,9 @@ public static class ServiceExtensions
         var connectionString = PostgresConfiguration.GetConnectionString();
         PostgresConfiguration.Configure(connectionString);
         services.AddDbContext<DataContext>(options => options.UseNpgsql(connectionString));
+
+        services.AddScoped<IDatabaseCacheRepository, ValkeyDatabaseCacheRepository>();
+        services.AddScoped<IUserRepository, PostgresUserRepository>();
+        services.AddScoped<IUserDatabaseCacheRepository, UserDatabaseCacheRepository>();
     }
 }
