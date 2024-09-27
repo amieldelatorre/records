@@ -1,4 +1,5 @@
 using Application.Repositories;
+using Application.Repositories.Database;
 using Domain.Entities;
 
 namespace Application.Features.UserFeatures.CreateUser;

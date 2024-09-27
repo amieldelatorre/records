@@ -1,6 +1,6 @@
 using Application.Common;
 
-namespace Application.Repositories;
+namespace Application.Repositories.DatabaseCache;
 
 public interface IDatabaseCacheRepository
 {

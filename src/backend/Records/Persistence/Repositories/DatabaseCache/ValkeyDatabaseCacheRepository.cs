@@ -1,5 +1,6 @@
 using Application.Common;
 using Application.Repositories;
+using Application.Repositories.DatabaseCache;
 
 namespace Persistence.Repositories.DatabaseCache;
 
