@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.Features.UserFeatures.CreateUser;
 
-public class CreateUserHandler(IUserDatabaseCacheRepository userRepository)
+public class CreateUserHandler(ICachedUserRepository cachedUserRepository)
 {
     public async Task<CreateUserResponse> Handle(CreateUserRequest request)
     {
@@ -14,7 +14,7 @@ public class CreateUserHandler(IUserDatabaseCacheRepository userRepository)
         // TODO: Return validation result
         var user = CreateUserMapper.Map(request);
         // TODO: Check if email is unique before proceeding
-        await userRepository.Create(user);
+        await cachedUserRepository.Create(user);
         return CreateUserMapper.Map(user);
     }
 }

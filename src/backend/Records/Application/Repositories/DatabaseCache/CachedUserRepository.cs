@@ -1,9 +1,8 @@
-using Application.Repositories.DatabaseCache;
 using Domain.Entities;
 
-namespace Persistence.Repositories.DatabaseCache;
+namespace Application.Repositories.DatabaseCache;
 
-public class UserDatabaseCacheRepository : IUserDatabaseCacheRepository
+public class CachedUserRepository : ICachedUserRepository
 {
     public Task<User> Create(User entity)
     {

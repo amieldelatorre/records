@@ -18,6 +18,5 @@ public static class ServiceExtensions
 
         services.AddScoped<IDatabaseCacheRepository, ValkeyDatabaseCacheRepository>();
         services.AddScoped<IUserRepository, PostgresUserRepository>();
-        services.AddScoped<IUserDatabaseCacheRepository, UserDatabaseCacheRepository>();
     }
 }
