@@ -34,7 +34,7 @@ services:
     hostname: valkey
     restart: unless-stopped
     ports:
-      - 6479:6379
+      - 6379:6379
     environment:
       TZ: Pacific/Auckland
     healthcheck:

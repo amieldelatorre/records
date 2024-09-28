@@ -2,7 +2,7 @@ using Application.Common;
 
 namespace Application.Repositories.DatabaseCache;
 
-public interface IDatabaseCacheRepository
+public interface ICacheRepository
 {
     Task SetKey<T>(string key, T value, int expireSeconds);
     Task<CacheRetrievalResult<T>> GetKey<T>(string key);

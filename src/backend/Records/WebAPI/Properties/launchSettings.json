@@ -22,7 +22,9 @@
         "POSTGRES_DB": "records",
         "POSTGRES_USER": "root",
         "POSTGRES_PASSWORD": "password",
-        "MIGRATE_DATABASE": "true"
+        "MIGRATE_DATABASE": "true",
+        "VALKEY_HOST": "localhost",
+        "VALKEY_PORT": "6379"
       }
     },
     "IIS Express": {

@@ -1,23 +1,24 @@
 using Application.Common;
-using Application.Repositories;
 using Application.Repositories.DatabaseCache;
 
 namespace Persistence.Repositories.DatabaseCache;
 
-public class ValkeyDatabaseCacheRepository : IDatabaseCacheRepository
+public class NullCacheRepository : ICacheRepository
 {
+    private static Task _emptyTask = Task.FromResult(0);
+
     public Task SetKey<T>(string key, T value, int expireSeconds)
     {
-        throw new NotImplementedException();
+        return _emptyTask;
     }
 
     public Task<CacheRetrievalResult<T>> GetKey<T>(string key)
     {
-        throw new NotImplementedException();
+        return Task.FromResult(new CacheRetrievalResult<T>(false ));
     }
 
     public Task RemoveKey(string key)
     {
-        throw new NotImplementedException();
+        return _emptyTask;
     }
 }

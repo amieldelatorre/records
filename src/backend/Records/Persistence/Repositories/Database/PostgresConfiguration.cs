@@ -34,10 +34,7 @@ public static class PostgresConfiguration
             errors.Add(_password.Name);
 
         if (errors.Count > 0)
-        {
-            EnvironmentVariable<string>.PrintMissingEnvironmentVariables(errors);
-            Environment.Exit(1);
-        }
+            EnvironmentVariable<string>.PrintMissingEnvironmentVariablesAndExit(errors);
 
         Debug.Assert(host != null && port != null && database != null && username != null && password != null);
         var connectionString = $"Host={host}; Port={port}; Database={database}; Username={username}; Password={password}";
@@ -128,9 +125,9 @@ public static class PostgresConfiguration
             Console.WriteLine("database migrations successfully completed");
             return true;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine($"error performing database migrations. Exception: {e.Message}");
+            Console.WriteLine($"error performing database migrations. Exception: {ex.Message}");
             return false;
         }
     }

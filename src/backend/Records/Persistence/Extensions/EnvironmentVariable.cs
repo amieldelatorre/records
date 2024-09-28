@@ -28,21 +28,30 @@ public struct EnvironmentVariable<T>
     public static bool GetEnvironmentVariable(EnvironmentVariable<bool> environmentVariable)
     {
         var value = Environment.GetEnvironmentVariable(environmentVariable.Name);
-        if (string.IsNullOrWhiteSpace(value))
-            return false;
-
         bool result;
-        if (bool.TryParse(value, out result))
-            return result;
 
-        Console.WriteLine($"Unable to parse environment variable for {environmentVariable.Name}: {value}. Defaulting to 'false'");
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            if (bool.TryParse(value, out result))
+                return result;
+
+            Console.WriteLine($"Unable to parse environment variable for {environmentVariable.Name}: {value}. Defaulting to 'false'");
+            return false;
+        }
+
+        if (!environmentVariable.IsRequired)
+            return environmentVariable.Default;
+
+        PrintMissingEnvironmentVariablesAndExit([environmentVariable.Name]);
         return false;
     }
 
-    public static void PrintMissingEnvironmentVariables(List<string> missingEnvironmentVariableNames)
+    public static void PrintMissingEnvironmentVariablesAndExit(List<string> missingEnvironmentVariableNames)
     {
         Console.WriteLine("The following required environment variables are missing:");
         foreach (var missingEnvironmentVariableName in missingEnvironmentVariableNames)
             Console.WriteLine($"\t- {missingEnvironmentVariableName}");
+
+        Environment.Exit(1);
     }
 }

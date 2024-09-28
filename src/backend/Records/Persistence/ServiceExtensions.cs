@@ -3,6 +3,7 @@ using Application.Repositories.DatabaseCache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
+using Persistence.Extensions;
 using Persistence.Repositories.Database;
 using Persistence.Repositories.DatabaseCache;
 
@@ -16,7 +17,20 @@ public static class ServiceExtensions
         PostgresConfiguration.Configure(connectionString);
         services.AddDbContext<DataContext>(options => options.UseNpgsql(connectionString));
 
-        services.AddScoped<IDatabaseCacheRepository, ValkeyDatabaseCacheRepository>();
+        var enableCaching = EnvironmentVariable<bool>.GetEnvironmentVariable(CacheConfiguration.EnableCaching);
+        if (enableCaching)
+        {
+            var valkeyConnectionString = ValkeyConfiguration.GetConnectionString();
+            var valkeyDatabase = ValkeyConfiguration.GetDatabase(valkeyConnectionString);
+
+            services.AddSingleton(valkeyDatabase);
+            services.AddScoped<ICacheRepository, ValkeyCacheRepository>();
+        }
+        else
+        {
+            services.AddScoped<ICacheRepository, NullCacheRepository>();
+        }
+
         services.AddScoped<IUserRepository, PostgresUserRepository>();
     }
 }
