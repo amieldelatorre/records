@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Persistence.Extensions;
+using Serilog;
 using StackExchange.Redis;
 
 namespace Persistence.Repositories.DatabaseCache;
@@ -11,7 +12,7 @@ public class ValkeyConfiguration
 
     public static string GetConnectionString()
     {
-        Console.WriteLine($"The environment variable '{CacheConfiguration.EnableCaching.Name}' is set to 'true'. Retrieving Valkey connection details");
+        Log.Logger.Information($"The environment variable '{CacheConfiguration.EnableCaching.Name}' is set to 'true'. Retrieving Valkey connection details");
         var errors = new List<string>();
 
         var host = EnvironmentVariable<string>.GetEnvironmentVariable(_host);
@@ -43,7 +44,7 @@ public class ValkeyConfiguration
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"an error occurred while connecting to the valkey database: {ex.Message}");
+            Log.Logger.Error("an error occurred while connecting to the valkey database: {error}", ex.Message);
             Environment.Exit(1);
             database = null;
         }
@@ -55,12 +56,12 @@ public class ValkeyConfiguration
         try
         {
             var latency = database.Ping();
-            Console.WriteLine($"valkey ping latency: {latency}");
+            Log.Logger.Information("valkey ping latency: {valkeyPingLatency}", latency);
             return true;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"error pinging valkey database: {ex.Message}");
+            Log.Logger.Error("error pinging valkey database: {error}", ex.Message);
             return false;
         }
     }

@@ -6,6 +6,7 @@ using Persistence.Context;
 using Persistence.Extensions;
 using Persistence.Repositories.Database;
 using Persistence.Repositories.DatabaseCache;
+using Serilog;
 
 namespace Persistence;
 
@@ -13,6 +14,7 @@ public static class ServiceExtensions
 {
     public static void AddPersistenceServices(this IServiceCollection services)
     {
+        Log.Logger.Information("registering services for data storage");
         var connectionString = PostgresConfiguration.GetConnectionString();
         PostgresConfiguration.Configure(connectionString);
         services.AddDbContext<DataContext>(options => options.UseNpgsql(connectionString));

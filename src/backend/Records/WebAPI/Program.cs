@@ -1,7 +1,12 @@
 using Persistence;
+using Serilog;
 using WebAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add logging
+builder.ConfigureLogging();
+Log.Logger.Information("performing Web API startup configuration");
 
 // Add services to the container.
 
@@ -26,5 +31,7 @@ app.ConfigureBuilder();
 app.UseAuthorization();
 
 app.MapControllers();
+
+Log.Logger.Information("startup configuration successful, starting application");
 
 app.Run();

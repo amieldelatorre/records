@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Persistence.Extensions;
+using Serilog;
 
 namespace Persistence.Repositories.Database;
 
@@ -65,19 +66,19 @@ public static class PostgresConfiguration
         bool isAvailable;
         try
         {
-            Console.WriteLine("checking if the database is available");
+            Log.Logger.Information("checking if the database is available");
             isAvailable = dbContext.Database.CanConnect();
             if (isAvailable)
-                Console.WriteLine("database is available");
+                Log.Logger.Information("database is available");
         }
-        catch
+        catch(Exception ex)
         {
-            Console.WriteLine("error connecting to database");
+            Log.Logger.Error("error connecting to database. {error}", ex.Message);
             isAvailable = false;
         }
 
         if (!isAvailable)
-            Console.WriteLine("database is not available");
+            Log.Logger.Error("database is not available");
 
         return isAvailable;
     }
@@ -92,12 +93,12 @@ public static class PostgresConfiguration
         {
             var databaseCreated = dbContext.Database.EnsureCreated();
             if (databaseCreated)
-                Console.WriteLine("initial database tables were created successfully");
+                Log.Logger.Information("initial database tables were created successfully");
             return true;
         }
-        catch
+        catch (Exception ex)
         {
-            Console.WriteLine("initial database table create failed");
+            Log.Logger.Error("initial database table create failed. {error}", ex.Message);
             return false;
         }
     }
@@ -107,27 +108,27 @@ public static class PostgresConfiguration
         var anyPendingMigrations = dbContext.Database.GetPendingMigrations().Any();
         if (!anyPendingMigrations)
         {
-            Console.WriteLine("no migrations necessary");
+            Log.Logger.Information("no migrations necessary");
             return true;
         }
 
         var willMigrateDatabase = EnvironmentVariable<bool>.GetEnvironmentVariable(_migrateDatabase);
         if (!willMigrateDatabase)
         {
-            Console.WriteLine($"there are pending database migrations needed, please set the environment variable {_migrateDatabase.Name} to true if you want to run the migrations");
+            Log.Logger.Error("there are pending database migrations needed, please set the environment variable {envVarName} to true if you want to run the migrations", _migrateDatabase.Name);
             return false;
         }
 
         try
         {
-            Console.WriteLine($"{_migrateDatabase.Name} is 'true', performing database migrations");
+            Log.Logger.Warning("{envVarName} is 'true', performing database migrations", _migrateDatabase.Name);
             dbContext.Database.Migrate();
-            Console.WriteLine("database migrations successfully completed");
+            Log.Logger.Warning("database migrations successfully completed");
             return true;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"error performing database migrations. Exception: {ex.Message}");
+            Log.Logger.Error("error performing database migrations. {error}", ex.Message);
             return false;
         }
     }

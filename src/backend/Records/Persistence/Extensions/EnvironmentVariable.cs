@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace Persistence.Extensions;
 
 public struct EnvironmentVariable<T>
@@ -35,7 +37,7 @@ public struct EnvironmentVariable<T>
             if (bool.TryParse(value, out result))
                 return result;
 
-            Console.WriteLine($"Unable to parse environment variable for {environmentVariable.Name}: {value}. Defaulting to 'false'");
+            Log.Logger.Error("unable to parse environment variable for {envVarName}: {envVarValue}. Defaulting to '{envVarDefault}'", environmentVariable.Name, value, environmentVariable.Default);
             return false;
         }
 
