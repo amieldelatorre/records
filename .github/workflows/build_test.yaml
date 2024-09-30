@@ -16,7 +16,7 @@ jobs:
       matrix:
         dotnet-version: ['8.0.x']
     env:
-      working-directory: ./src/backend
+      backend-directory: ./src/backend/Records
     
     steps:
       - name: Checkout
@@ -29,11 +29,11 @@ jobs:
      
       - name: Install dependencies
         run: dotnet restore
-        working-directory: ${{ env.working-directory }}
+        working-directory: ${{ env.backend-directory }}
      
       - name: Build backend
         run: dotnet build --configuration Release --no-restore
-        working-directory: ${{ env.working-directory }}
+        working-directory: ${{ env.backend-directory }}
 
       # TODO: run unit tests
 
