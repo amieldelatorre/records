@@ -1,23 +1,37 @@
+using System.Diagnostics;
 using Application.Common;
 using Application.Repositories;
 using Application.Repositories.DatabaseCache;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace Persistence.Repositories.DatabaseCache;
 
-public class ValkeyCacheRepository : ICacheRepository
+public class ValkeyCacheRepository(IDatabase valkeyDatabase) : ICacheRepository
 {
-    public Task SetKey<T>(string key, T value, int expireSeconds)
+    public async Task SetKey<T>(string key, T value, int expireSeconds)
     {
-        throw new NotImplementedException();
+        var json = JsonConvert.SerializeObject(value);
+        await valkeyDatabase.StringSetAsync(key, json, TimeSpan.FromSeconds(expireSeconds));
     }
 
-    public Task<CacheRetrievalResult<T>> GetKey<T>(string key)
+    public async Task<CacheRetrievalResult<T>> GetKey<T>(string key)
     {
-        throw new NotImplementedException();
+        string? json = await valkeyDatabase.StringGetAsync(key);
+
+        if (string.IsNullOrEmpty(json))
+            return new CacheRetrievalResult<T>(false);
+
+        var result = JsonConvert.DeserializeObject<T>(json);
+        Debug.Assert(result != null);
+        var cacheRetrievalResult = new CacheRetrievalResult<T>(true, result);
+        return cacheRetrievalResult;
     }
 
-    public Task RemoveKey(string key)
+    public async Task RemoveKey(string key)
     {
-        throw new NotImplementedException();
+        var keyExists = await valkeyDatabase.KeyExistsAsync(key);
+        if (keyExists)
+            await valkeyDatabase.KeyDeleteAsync(key);
     }
 }
