@@ -9,13 +9,13 @@ namespace Persistence.Repositories.DatabaseCache;
 
 public class ValkeyCacheRepository(IDatabase valkeyDatabase) : ICacheRepository
 {
-    public async Task SetKey<T>(string key, T value, int expireSeconds)
+    public async Task Set<T>(string key, T value, int expireSeconds)
     {
         var json = JsonConvert.SerializeObject(value);
         await valkeyDatabase.StringSetAsync(key, json, TimeSpan.FromSeconds(expireSeconds));
     }
 
-    public async Task<CacheRetrievalResult<T>> GetKey<T>(string key)
+    public async Task<CacheRetrievalResult<T>> Get<T>(string key)
     {
         string? json = await valkeyDatabase.StringGetAsync(key);
 
@@ -28,7 +28,7 @@ public class ValkeyCacheRepository(IDatabase valkeyDatabase) : ICacheRepository
         return cacheRetrievalResult;
     }
 
-    public async Task RemoveKey(string key)
+    public async Task Delete(string key)
     {
         var keyExists = await valkeyDatabase.KeyExistsAsync(key);
         if (keyExists)
