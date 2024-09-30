@@ -35,6 +35,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
         working-directory: ${{ env.backend-directory }}
 
-      # TODO: run unit tests
+      - name: Run unit tests
+        run: dotnet test UnitTests --no-restore --verbosity normal
 
       # TODO: run integration tests
