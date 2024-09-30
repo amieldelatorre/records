@@ -17,11 +17,13 @@ public static class BuilderExtensions
             .WriteTo.Console(new JsonFormatter())
             .MinimumLevel.ControlledBy(new Serilog.Core.LoggingLevelSwitch(logLevel))
             .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+            .MinimumLevel.Override("Unleash", Serilog.Events.LogEventLevel.Warning)
             .Enrich.WithThreadId()
             .Enrich.FromLogContext()
             .Enrich.WithMachineName();
 
         Serilog.Log.Logger = logConfiguration.CreateLogger();
+        builder.Services.AddSingleton(Serilog.Log.Logger);
         builder.Host.UseSerilog();
     }
 

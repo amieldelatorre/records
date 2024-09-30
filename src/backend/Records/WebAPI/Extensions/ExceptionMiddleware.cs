@@ -1,6 +1,6 @@
 namespace WebAPI.Extensions;
 
-public class ExceptionMiddleware(RequestDelegate next)
+public class ExceptionMiddleware(RequestDelegate next, Serilog.ILogger logger)
 {
     // TODO: Handle exceptions
     public async Task InvokeAsync(HttpContext httpContext)
@@ -11,6 +11,7 @@ public class ExceptionMiddleware(RequestDelegate next)
         }
         catch (Exception ex)
         {
+            logger.Error("unhandled exception occured. {error}", ex.Message);
             await HandleExceptionAsync(httpContext, ex);
         }
     }

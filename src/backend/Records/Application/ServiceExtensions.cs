@@ -1,3 +1,4 @@
+using Application.Features;
 using Application.Features.UserFeatures.CreateUser;
 using Application.Repositories.DatabaseCache;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,8 @@ public static class ServiceExtensions
 {
     public static void AddUserFeatures(this IServiceCollection services)
     {
+        services.AddScoped<FeatureStatus>();
+
         services.AddScoped<ICachedUserRepository, CachedUserRepository>();
         services.AddScoped<CreateUserHandler>();
     }

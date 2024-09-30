@@ -4,9 +4,10 @@ public enum ResponseResultStatusTypes
 {
     Ok,
     ValidationError,
+    FeatureDisabled,
 }
 
-public class BaseResponse<T>
+public class Result<T>
 {
     public bool ShouldSerializeItem() => Errors.Count == 0;
     public T? Item { get; set; }

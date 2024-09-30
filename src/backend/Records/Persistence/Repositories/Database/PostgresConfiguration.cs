@@ -8,12 +8,12 @@ namespace Persistence.Repositories.Database;
 
 public static class PostgresConfiguration
 {
-    private static EnvironmentVariable<string> _host = new("POSTGRES_HOST", true);
-    private static EnvironmentVariable<string> _port = new("POSTGRES_PORT", true);
-    private static EnvironmentVariable<string> _database = new("POSTGRES_DB", true);
-    private static EnvironmentVariable<string> _username = new("POSTGRES_USER", true);
-    private static EnvironmentVariable<string> _password = new("POSTGRES_PASSWORD", true);
-    private static EnvironmentVariable<bool> _migrateDatabase = new("MIGRATE_DATABASE", false, false);
+    private static EnvironmentVariable<string> _host = new("RECORDS__POSTGRES_HOST", true);
+    private static EnvironmentVariable<string> _port = new("RECORDS__POSTGRES_PORT", true);
+    private static EnvironmentVariable<string> _database = new("RECORDS__POSTGRES_DB", true);
+    private static EnvironmentVariable<string> _username = new("RECORDS__POSTGRES_USER", true);
+    private static EnvironmentVariable<string> _password = new("RECORDS__POSTGRES_PASSWORD", true);
+    private static EnvironmentVariable<bool> _migrateDatabase = new("RECORDS__MIGRATE_DATABASE", false, false);
 
     public static string GetConnectionString()
     {

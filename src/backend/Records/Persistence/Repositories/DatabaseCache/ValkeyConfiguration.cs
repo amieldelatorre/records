@@ -7,12 +7,12 @@ namespace Persistence.Repositories.DatabaseCache;
 
 public class ValkeyConfiguration
 {
-    private static EnvironmentVariable<string> _host = new("VALKEY_HOST", true);
-    private static EnvironmentVariable<string> _port = new("VALKEY_PORT", true);
+    private static EnvironmentVariable<string> _host = new("RECORDS__VALKEY_HOST", true);
+    private static EnvironmentVariable<string> _port = new("RECORDS__VALKEY_PORT", true);
 
     public static string GetConnectionString()
     {
-        Log.Logger.Information($"The environment variable '{CacheConfiguration.EnableCaching.Name}' is set to 'true'. Retrieving Valkey connection details");
+        Log.Logger.Information("environment variable '{envVarName}' is set to 'true'. Retrieving Valkey connection details", CacheConfiguration.EnableCaching.Name);
         var errors = new List<string>();
 
         var host = EnvironmentVariable<string>.GetEnvironmentVariable(_host);

@@ -1,3 +1,4 @@
+using Application;
 using Persistence;
 using Serilog;
 using WebAPI.Extensions;
@@ -16,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistenceServices();
+builder.Services.AddUserFeatures();
 
 var app = builder.Build();
 

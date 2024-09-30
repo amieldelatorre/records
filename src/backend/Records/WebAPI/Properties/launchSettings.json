@@ -17,14 +17,17 @@
       "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "POSTGRES_HOST": "localhost",
-        "POSTGRES_PORT": "5432",
-        "POSTGRES_DB": "records",
-        "POSTGRES_USER": "root",
-        "POSTGRES_PASSWORD": "password",
-        "MIGRATE_DATABASE": "true",
-        "VALKEY_HOST": "localhost",
-        "VALKEY_PORT": "6379"
+        "RECORDS__POSTGRES_HOST": "localhost",
+        "RECORDS__POSTGRES_PORT": "5432",
+        "RECORDS__POSTGRES_DB": "records",
+        "RECORDS__POSTGRES_USER": "root",
+        "RECORDS__POSTGRES_PASSWORD": "password",
+        "RECORDS__MIGRATE_DATABASE": "true",
+        "RECORDS__VALKEY_HOST": "localhost",
+        "RECORDS__VALKEY_PORT": "6379",
+        "UNLEASH__API_URL": "http://localhost:4242/api",
+        "UNLEASH__API_KEY": "default:production.0cecbbcffc816e47f2867128957eac436bbb6105dd3232f2e6526111",
+        "UNLEASH__APP_NAME": "records"
       }
     },
     "IIS Express": {

@@ -1,11 +1,13 @@
 using Application.Repositories.Database;
 using Application.Repositories.DatabaseCache;
+using Application.Repositories.FeatureToggle;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
 using Persistence.Extensions;
 using Persistence.Repositories.Database;
 using Persistence.Repositories.DatabaseCache;
+using Persistence.Repositories.FeatureToggle;
 using Serilog;
 
 namespace Persistence;
@@ -34,5 +36,17 @@ public static class ServiceExtensions
         }
 
         services.AddScoped<IUserRepository, PostgresUserRepository>();
+
+        var enableFeatureToggles = EnvironmentVariable<bool>.GetEnvironmentVariable(FeatureToggleConfiguration.EnableFeatureToggles);
+        if (enableFeatureToggles)
+        {
+            var unleashClient = UnleashConfiguration.GetClient();
+            services.AddSingleton(unleashClient);
+            services.AddScoped<IFeatureToggleRepository, UnleashFeatureToggleRepository>();
+        }
+        else
+        {
+            services.AddScoped<IFeatureToggleRepository, NullFeatureToggleRepository>();
+        }
     }
 }

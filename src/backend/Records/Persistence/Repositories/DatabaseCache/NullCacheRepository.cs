@@ -14,7 +14,7 @@ public class NullCacheRepository : ICacheRepository
 
     public Task<CacheRetrievalResult<T>> GetKey<T>(string key)
     {
-        return Task.FromResult(new CacheRetrievalResult<T>(false ));
+        return Task.FromResult(new CacheRetrievalResult<T>(false));
     }
 
     public Task RemoveKey(string key)
