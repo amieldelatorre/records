@@ -6,7 +6,7 @@ namespace WebAPI.Controllers;
 
 public static class ControllerExtensions<T> where T : BaseResult
 {
-    public static ActionResult HttpResponseFromResult(T result)
+    public static ActionResult<T> HttpResponseFromResult(T result)
     {
         var objectResult = new ObjectResult(result)
         {
