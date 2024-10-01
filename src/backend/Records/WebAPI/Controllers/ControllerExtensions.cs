@@ -1,13 +1,25 @@
+using Application.Common;
+using Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
-public static class ControllerExtensions
+public static class ControllerExtensions<T> where T : BaseResult
 {
-    public static IActionResult HttpResponseFromResult(this ControllerBase controller)
+    public static ActionResult HttpResponseFromResult(T result)
     {
-        // TODO: Get the correct result type and return that as HTTP result
-        throw new NotImplementedException();
-        // return controller.Ok();
+        var objectResult = new ObjectResult(result)
+        {
+            StatusCode = result.ResultStatus switch
+            {
+                ResultStatusTypes.Created => StatusCodes.Status201Created,
+                ResultStatusTypes.Ok => StatusCodes.Status200OK,
+                ResultStatusTypes.ValidationError => StatusCodes.Status400BadRequest,
+                ResultStatusTypes.FeatureDisabled => StatusCodes.Status403Forbidden,
+                ResultStatusTypes.ServerError => StatusCodes.Status500InternalServerError,
+                _ => StatusCodes.Status500InternalServerError,
+            }
+        };
+        return objectResult;
     }
 }

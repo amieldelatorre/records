@@ -1,3 +1,4 @@
+using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,16 @@ public class UserController(
    ) : ControllerBase
 {
    [HttpPost]
-   public async Task<ActionResult<CreateUserResponse>> Post([FromBody] CreateUserRequest createUserRequest)
+   public async Task<ActionResult<UserResult>> Post([FromBody] CreateUserRequest createUserRequest)
    {
-      // TODO: Actual processing
-      await Task.Delay(0);
       var result = await createUserHandler.Handle(createUserRequest);
-      return Ok();
+      return ControllerExtensions<UserResult>.HttpResponseFromResult(result);
+   }
+
+   [HttpGet]
+   public async Task<ActionResult<UserResult>> Get()
+   {
+      await Task.Delay(0);
+      throw new NotImplementedException();
    }
 }

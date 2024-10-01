@@ -102,7 +102,6 @@ public class CreateUserValidatorTests
         },
     ];
 
-    // TODO: Add more test cases
     [Test, TestCaseSource(nameof(ValidationTestsProvider))]
     public void ValidationTests(CreateUserRequest request, ExpectedValidationResult expected)
     {

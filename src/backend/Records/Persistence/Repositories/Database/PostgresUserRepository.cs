@@ -6,12 +6,12 @@ using Persistence.Context;
 
 namespace Persistence.Repositories.Database;
 
-public class PostgresUserRepository(DataContext dbcontext) : IBaseRepository<User>, IUserRepository
+public class PostgresUserRepository(DataContext dbContext) : IUserRepository
 {
     public async Task<User> Create(User entity)
     {
-        await dbcontext.Users.AddAsync(entity);
-        await dbcontext.SaveChangesAsync();
+        await dbContext.Users.AddAsync(entity);
+        await dbContext.SaveChangesAsync();
         return entity;
     }
 
@@ -32,7 +32,13 @@ public class PostgresUserRepository(DataContext dbcontext) : IBaseRepository<Use
 
     public async Task<User?> GetByEmail(string email, CancellationToken cancellationToken)
     {
-        var user = await dbcontext.Users.SingleOrDefaultAsync(u => u.Email == email);
+        var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
         return user;
+    }
+
+    public async Task<bool> EmailExists(string email, CancellationToken cancellationToken)
+    {
+        var user = await GetByEmail(email, cancellationToken);
+        return user != null;
     }
 }

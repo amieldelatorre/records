@@ -1,12 +1,28 @@
+using Application.Repositories.Database;
 using Domain.Entities;
 
 namespace Application.Repositories.DatabaseCache;
 
-public class CachedUserRepository : ICachedUserRepository
+public class CachedUserRepository(
+    ICacheRepository cacheRepository,
+    IUserRepository userRepository,
+    Serilog.ILogger logger
+    ) : ICachedUserRepository
 {
-    public Task<User> Create(User entity)
+    private static string _cachePrefix = "user";
+    private static int _defaultCacheExpirationSeconds = 60;
+
+    public static string UserIdCacheKey(Guid id) => $"{_cachePrefix}::id:{id}";
+    public static string UserEmailCacheKey(string email) => $"{_cachePrefix}::email:{email}";
+
+    public async Task<User> Create(User entity)
     {
-        throw new NotImplementedException();
+        var newUser = await userRepository.Create(entity);
+        logger.Debug("created new user with {id}", newUser.Id);
+
+        var cacheKey = UserIdCacheKey(newUser.Id);
+        await cacheRepository.Set(cacheKey, newUser, _defaultCacheExpirationSeconds);
+        return newUser;
     }
 
     public Task<User> Get(User entity)
@@ -26,6 +42,13 @@ public class CachedUserRepository : ICachedUserRepository
 
     public Task<User?> GetByEmail(string email, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = userRepository.GetByEmail(email, cancellationToken);
+        return user;
+    }
+
+    public async Task<bool> EmailExists(string email, CancellationToken cancellationToken)
+    {
+        var user = await GetByEmail(email, cancellationToken);
+        return user != null;
     }
 }

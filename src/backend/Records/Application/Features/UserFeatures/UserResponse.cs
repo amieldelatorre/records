@@ -1,9 +1,8 @@
 using Application.Common;
-using Domain.Common;
 
-namespace Application.Features.UserFeatures.CreateUser;
+namespace Application.Features.UserFeatures;
 
-public class CreateUserResponse : BaseEntityResponse
+public class UserResponse : BaseEntityResponse
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }

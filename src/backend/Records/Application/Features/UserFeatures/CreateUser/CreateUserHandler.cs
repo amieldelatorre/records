@@ -15,27 +15,35 @@ public class CreateUserHandler(
 {
     private const string FeatureName = "CreateUser";
 
-    public async Task<Result<CreateUserResponse>> Handle(CreateUserRequest request)
+    public async Task<UserResult> Handle(CreateUserRequest request)
     {
         if (!(await featureStatus.IsFeatureEnabled(FeatureName)))
-           return new Result<CreateUserResponse>()
-           {
-               Errors = FeatureStatus.GetFeatureDisabledMessage(),
-               ResponseResultStatus = ResponseResultStatusTypes.FeatureDisabled,
-               Item = null
-           };
+        {
+            logger.Debug("feature '{featureName}' is not enabled. Skipping feature and returning early", FeatureName);
+            return new UserResult(ResultStatusTypes.FeatureDisabled, FeatureStatus.GetFeatureDisabledMessage());
+        }
 
         var validator = new CreateUserValidator();
         var validationResult = await validator.ValidateAsync(request);
-        // TODO: Return validation result
+        if (!validationResult.IsValid)
+            return new UserResult(ResultStatusTypes.ValidationError, validationResult.ToDictionary());
+
         var user = CreateUserMapper.Map(request);
-        // TODO: Check if email is unique before proceeding
-        await cachedUserRepository.Create(user);
-        var result = new Result<CreateUserResponse>()
+
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(2));
+        if (await cachedUserRepository.EmailExists(user.Email, cancellationTokenSource.Token))
         {
-            ResponseResultStatus = ResponseResultStatusTypes.Ok,
-            Item = CreateUserMapper.Map(user)
-        };
+            var errorResult = new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>> {
+            {
+              "Email", ["Provided 'Email' is already in use."]
+            } });
+
+            return errorResult;
+        }
+
+        await cachedUserRepository.Create(user);
+        var result = new UserResult(ResultStatusTypes.Created, CreateUserMapper.Map(user));
         return result;
     }
 }

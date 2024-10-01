@@ -7,8 +7,9 @@ public static class CreateUserMapper
     public static User Map(CreateUserRequest createUserRequest)
     {
         var now = DateTime.UtcNow;
-        return new User()
+        return new User
         {
+            Id = Guid.NewGuid(),
             FirstName = createUserRequest.FirstName,
             LastName = createUserRequest.LastName,
             Email = createUserRequest.Email,
@@ -18,15 +19,16 @@ public static class CreateUserMapper
         };
     }
 
-    public static CreateUserResponse Map(User user)
+    public static UserResponse Map(User user)
     {
-        return new CreateUserResponse()
+        return new UserResponse
         {
+            Id = user.Id,
+            DateCreated = user.DateCreated,
+            DateUpdated = user.DateUpdated,
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email,
-            DateCreated = user.DateCreated,
-            DateUpdated = user.DateUpdated,
         };
     }
 }
