@@ -16,6 +16,7 @@ public class UserController(
    [HttpPost]
    public async Task<ActionResult<UserResult>> Post([FromBody] CreateUserRequest createUserRequest)
    {
+      logger.Debug("new request to create user");
       var result = await createUserHandler.Handle(createUserRequest);
       return ControllerExtensions<UserResult>.HttpResponseFromResult(result);
    }

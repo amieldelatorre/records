@@ -22,7 +22,7 @@ public class ValkeyCacheRepository(
         }
         catch (Exception ex)
         {
-            logger.Error("failed to add item to cache: {key}", key);
+            logger.Error("failed to add item with {key} to cache: {error}", key, ex.Message);
         }
     }
 
@@ -43,7 +43,7 @@ public class ValkeyCacheRepository(
         }
         catch (Exception ex)
         {
-            logger.Error("failed to get item from cache: {key}", key);
+            logger.Error("failed to get item with {key} from cache: {error}", key, ex.Message);
             return new CacheRetrievalResult<T>(false);
         }
 
@@ -62,7 +62,7 @@ public class ValkeyCacheRepository(
         }
         catch (Exception ex)
         {
-           logger.Error("failed to delete item from cache: {key}", key);
+           logger.Error("failed to delete item with {key} from cache: {error}", key, ex.Message);
         }
     }
 }
