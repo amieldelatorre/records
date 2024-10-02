@@ -2,8 +2,6 @@ using System.Diagnostics;
 using Application.Common;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
-using Common;
-using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebAPI.Controllers;
