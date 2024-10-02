@@ -10,9 +10,9 @@ public static class CreateUserMapper
         return new User
         {
             Id = Guid.NewGuid(),
-            FirstName = createUserRequest.FirstName,
-            LastName = createUserRequest.LastName,
-            Email = createUserRequest.Email,
+            FirstName = createUserRequest.FirstName.Trim(),
+            LastName = createUserRequest.LastName.Trim(),
+            Email = createUserRequest.Email.Trim(),
             Password = createUserRequest.Password,
             DateCreated = now,
             DateUpdated = now,

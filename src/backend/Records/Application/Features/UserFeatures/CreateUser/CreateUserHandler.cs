@@ -36,7 +36,7 @@ public class CreateUserHandler(
         {
             var errorResult = new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>> {
             {
-              "Email", ["Provided 'Email' is already in use."]
+              "Email", ["'Email' is already in use."]
             } });
 
             return errorResult;

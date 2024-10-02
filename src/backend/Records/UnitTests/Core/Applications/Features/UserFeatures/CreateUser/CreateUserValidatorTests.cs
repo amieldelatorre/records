@@ -100,6 +100,21 @@ public class CreateUserValidatorTests
                 Errors = new Dictionary<string, string[]>()
             }
         },
+        new object[]
+        {
+            new CreateUserRequest()
+            {
+                FirstName = " Albert    ",
+                LastName = "  Einstein ",
+                Email = " albert.einstein@example.invalid         ",
+                Password = "hispassword"
+            },
+            new ExpectedValidationResult()
+            {
+                Result = true,
+                Errors = new Dictionary<string, string[]>()
+            }
+        },
     ];
 
     [Test, TestCaseSource(nameof(ValidationTestsProvider))]

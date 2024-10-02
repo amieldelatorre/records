@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Application.Features;
 using Application.Repositories.Database;
 using Application.Repositories.DatabaseCache;
 using Application.Repositories.FeatureToggle;
@@ -34,6 +35,7 @@ public class PersistenceInfra
     // Feature Toggle
     public PostgreSqlContainer? UnleashPostgresContainer { get; set; }
     public IContainer? UnleashWebContainer { get; set; }
+    public FeatureStatus? RecordsFeatureStatus { get; set; }
 
     // Repositories
     public ICacheRepository? CacheRepository { get; set; }
@@ -71,10 +73,15 @@ public class PersistenceInfraBuilder
             .WithName(Guid.NewGuid().ToString("D"))
             .Build();
 
+        var nullCacheRepository = new NullCacheRepository();
+        var nullFeatureToggleRepository = new NullFeatureToggleRepository();
+
         _persistenceInfra = new PersistenceInfra
         {
             Network = network,
             Logger = logger,
+            CacheRepository = nullCacheRepository,
+            FeatureToggleRepository = nullFeatureToggleRepository,
         };
     }
 
@@ -192,6 +199,14 @@ public class PersistenceInfraBuilder
             await ConfigureUnleashFeatureToggles(Path.Combine(Directory.GetCurrentDirectory(), "Data", "unleash_postgres_dump.sql"));
         if (_persistenceInfra.ValkeyContainer != null)
             await ConfigureValkeyCaching();
+
+        Debug.Assert(_persistenceInfra.FeatureToggleRepository != null && _persistenceInfra.CacheRepository != null &&
+                     _persistenceInfra.UserRepository != null);
+        var featureStatus = new FeatureStatus(_persistenceInfra.FeatureToggleRepository, _persistenceInfra.CacheRepository, _persistenceInfra.Logger);
+        var cachedUserRepository = new CachedUserRepository(_persistenceInfra.CacheRepository, _persistenceInfra.UserRepository, _persistenceInfra.Logger);
+
+        _persistenceInfra.RecordsFeatureStatus = featureStatus;
+        _persistenceInfra.CachedUserRepository = cachedUserRepository;
         return _persistenceInfra;
     }
 
