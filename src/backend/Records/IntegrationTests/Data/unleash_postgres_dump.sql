@@ -2188,14 +2188,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: api_token_project; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.api_token_project VALUES ('default:production.98d90dccb96f15c73194e8248df6d839ffbc26c0ed5a8459943f1a97', 'default');
+INSERT INTO public.api_token_project VALUES ('default:production.310cc032e0cdc61174286e698447d10ffa1e48977fdff8a4ea9030ba', 'default');
 
 
 --
 -- Data for Name: api_tokens; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.api_tokens VALUES ('default:production.98d90dccb96f15c73194e8248df6d839ffbc26c0ed5a8459943f1a97', 'production', 'client', '2024-10-02 15:13:04.129739+13', NULL, '2024-10-02 15:14:39.954+13', 'production', NULL, 'production', NULL);
+INSERT INTO public.api_tokens VALUES ('default:production.310cc032e0cdc61174286e698447d10ffa1e48977fdff8a4ea9030ba', 'production', 'client', '2024-10-02 22:45:04.044592+13', NULL, NULL, 'production', NULL, 'production', NULL);
 
 
 --
@@ -2250,21 +2250,18 @@ INSERT INTO public.api_tokens VALUES ('default:production.98d90dccb96f15c73194e8
 -- Data for Name: client_applications; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.client_applications VALUES ('records', '2024-10-02 15:13:44.962298+13', '2024-10-02 15:13:44.961+13', '2024-10-02 15:13:44.961+13', '["default","userWithId","gradualRolloutUserId","gradualRolloutRandom","applicationHostname","gradualRolloutSessionId","remoteAddress","flexibleRollout"]', NULL, NULL, NULL, NULL, false, 'unleash_system_user');
 
 
 --
 -- Data for Name: client_applications_usage; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.client_applications_usage VALUES ('records', 'default', 'production');
 
 
 --
 -- Data for Name: client_instances; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.client_instances VALUES ('records', 'DESKTOP-K2RQV8G-generated-22dea08a-ff11-44c7-b531-d908cd30be2f', '::ffff:172.19.0.1', '2024-10-02 15:13:44.971273+13', '2024-10-02 15:13:44.971273+13', 'unleash-client-dotnet:v4.1.13', 'production');
 
 
 --
@@ -2295,11 +2292,11 @@ INSERT INTO public.client_instances VALUES ('records', 'DESKTOP-K2RQV8G-generate
 -- Data for Name: context_fields; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.context_fields VALUES ('environment', 'Allows you to constrain on application environment', 0, NULL, '2024-10-02 13:06:33.476055', '2024-10-02 13:06:33.476055', false);
-INSERT INTO public.context_fields VALUES ('userId', 'Allows you to constrain on userId', 1, NULL, '2024-10-02 13:06:33.476055', '2024-10-02 13:06:33.476055', false);
-INSERT INTO public.context_fields VALUES ('appName', 'Allows you to constrain on application name', 2, NULL, '2024-10-02 13:06:33.476055', '2024-10-02 13:06:33.476055', false);
-INSERT INTO public.context_fields VALUES ('currentTime', 'Allows you to constrain on date values', 3, NULL, '2024-10-02 13:06:34.298091', '2024-10-02 13:06:34.298091', false);
-INSERT INTO public.context_fields VALUES ('sessionId', 'Allows you to constrain on sessionId', 4, NULL, '2024-10-02 13:06:34.822006', '2024-10-02 13:06:34.822006', true);
+INSERT INTO public.context_fields VALUES ('environment', 'Allows you to constrain on application environment', 0, NULL, '2024-10-02 22:42:03.635972', '2024-10-02 22:42:03.635972', false);
+INSERT INTO public.context_fields VALUES ('userId', 'Allows you to constrain on userId', 1, NULL, '2024-10-02 22:42:03.635972', '2024-10-02 22:42:03.635972', false);
+INSERT INTO public.context_fields VALUES ('appName', 'Allows you to constrain on application name', 2, NULL, '2024-10-02 22:42:03.635972', '2024-10-02 22:42:03.635972', false);
+INSERT INTO public.context_fields VALUES ('currentTime', 'Allows you to constrain on date values', 3, NULL, '2024-10-02 22:42:04.489438', '2024-10-02 22:42:04.489438', false);
+INSERT INTO public.context_fields VALUES ('sessionId', 'Allows you to constrain on sessionId', 4, NULL, '2024-10-02 22:42:05.059947', '2024-10-02 22:42:05.059947', true);
 
 
 --
@@ -2318,32 +2315,32 @@ INSERT INTO public.context_fields VALUES ('sessionId', 'Allows you to constrain 
 -- Data for Name: environments; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.environments VALUES ('default', '2024-10-02 13:06:33.987312+13', 1, 'production', false, true);
-INSERT INTO public.environments VALUES ('development', '2024-10-02 13:06:34.020528+13', 2, 'development', true, false);
-INSERT INTO public.environments VALUES ('production', '2024-10-02 13:06:34.020528+13', 3, 'production', true, false);
+INSERT INTO public.environments VALUES ('default', '2024-10-02 22:42:04.18165+13', 1, 'production', false, true);
+INSERT INTO public.environments VALUES ('development', '2024-10-02 22:42:04.20778+13', 2, 'development', true, false);
+INSERT INTO public.environments VALUES ('production', '2024-10-02 22:42:04.20778+13', 3, 'production', true, false);
 
 
 --
 -- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.events VALUES (1, '2024-10-02 13:06:33.204859+13', 'strategy-created', 'migration', '{"name":"default","description":"Default on or off Strategy."}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
-INSERT INTO public.events VALUES (2, '2024-10-02 13:06:33.286226+13', 'strategy-created', 'migration', '{"name":"userWithId","description":"Active for users with a userId defined in the userIds-list","parameters":[{"name":"userIds","type":"list","description":"","required":false}]}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
-INSERT INTO public.events VALUES (3, '2024-10-02 13:06:33.286226+13', 'strategy-created', 'migration', '{"name":"applicationHostname","description":"Active for client instances with a hostName in the hostNames-list.","parameters":[{"name":"hostNames","type":"list","description":"List of hostnames to enable the feature toggle for.","required":false}]}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
-INSERT INTO public.events VALUES (4, '2024-10-02 13:06:33.286226+13', 'strategy-created', 'migration', '{"name":"remoteAddress","description":"Active for remote addresses defined in the IPs list.","parameters":[{"name":"IPs","type":"list","description":"List of IPs to enable the feature toggle for.","required":true}]}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
-INSERT INTO public.events VALUES (5, '2024-10-02 13:06:33.469786+13', 'strategy-created', 'migration', '{"name":"flexibleRollout","description":"Gradually activate feature toggle based on sane stickiness","parameters":[{"name":"rollout","type":"percentage","description":"","required":false},{"name":"stickiness","type":"string","description":"Used define stickiness. Possible values: default, userId, sessionId, random","required":true},{"name":"groupId","type":"string","description":"Used to define a activation groups, which allows you to correlate across feature toggles.","required":true}]}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
-INSERT INTO public.events VALUES (6, '2024-10-02 13:07:03.929736+13', 'feature-created', 'admin', '{"name":"records_CreateUser","description":null,"type":"kill-switch","project":"default","stale":false,"createdAt":"2024-10-02T00:07:03.917Z","lastSeenAt":null,"impressionData":false,"archivedAt":null,"archived":false}', '[]', 'default', NULL, 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (7, '2024-10-02 13:07:24.759902+13', 'feature-created', 'admin', '{"name":"tests_FeatureEnabled","description":null,"type":"kill-switch","project":"default","stale":false,"createdAt":"2024-10-02T00:07:24.754Z","lastSeenAt":null,"impressionData":false,"archivedAt":null,"archived":false}', '[]', 'default', NULL, 'tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (8, '2024-10-02 13:07:31.240935+13', 'feature-strategy-add', 'admin', '{"id":"7c434685-500b-4246-8dbd-438b7951b8ac","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"records_CreateUser","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'development', 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (9, '2024-10-02 13:07:31.247133+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'development', 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (10, '2024-10-02 13:07:31.649049+13', 'feature-strategy-add', 'admin', '{"id":"3803e672-37c8-4ad9-9268-dadb0aff5b50","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"records_CreateUser","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'production', 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (11, '2024-10-02 13:07:31.653738+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'production', 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (12, '2024-10-02 13:07:33.032173+13', 'feature-strategy-add', 'admin', '{"id":"132d3045-6eca-4c49-9281-6b3ffadb542e","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"tests_FeatureEnabled","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'production', 'tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (13, '2024-10-02 13:07:33.036858+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'production', 'tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (14, '2024-10-02 13:07:34.229597+13', 'feature-strategy-add', 'admin', '{"id":"041505a7-6a29-406a-b370-b34bcebbcce2","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"tests_FeatureEnabled","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'development', 'tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (15, '2024-10-02 13:07:34.233507+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'development', 'tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (16, '2024-10-02 13:07:50.107103+13', 'feature-created', 'admin', '{"name":"tests_FeatureDisabled","description":null,"type":"kill-switch","project":"default","stale":false,"createdAt":"2024-10-02T00:07:50.101Z","lastSeenAt":null,"impressionData":false,"archivedAt":null,"archived":false}', '[]', 'default', NULL, 'tests_FeatureDisabled', NULL, true, 1, '::ffff:172.19.0.1');
-INSERT INTO public.events VALUES (17, '2024-10-02 15:13:04.136418+13', 'api-token-created', 'admin', '{"tokenName":"production","environment":"production","projects":["default"],"type":"client","username":"production","alias":null,"project":"default","createdAt":"2024-10-02T02:13:04.129Z"}', '[]', 'default', 'production', NULL, NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (1, '2024-10-02 22:42:03.364765+13', 'strategy-created', 'migration', '{"name":"default","description":"Default on or off Strategy."}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
+INSERT INTO public.events VALUES (2, '2024-10-02 22:42:03.451251+13', 'strategy-created', 'migration', '{"name":"userWithId","description":"Active for users with a userId defined in the userIds-list","parameters":[{"name":"userIds","type":"list","description":"","required":false}]}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
+INSERT INTO public.events VALUES (3, '2024-10-02 22:42:03.451251+13', 'strategy-created', 'migration', '{"name":"applicationHostname","description":"Active for client instances with a hostName in the hostNames-list.","parameters":[{"name":"hostNames","type":"list","description":"List of hostnames to enable the feature toggle for.","required":false}]}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
+INSERT INTO public.events VALUES (4, '2024-10-02 22:42:03.451251+13', 'strategy-created', 'migration', '{"name":"remoteAddress","description":"Active for remote addresses defined in the IPs list.","parameters":[{"name":"IPs","type":"list","description":"List of IPs to enable the feature toggle for.","required":true}]}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
+INSERT INTO public.events VALUES (5, '2024-10-02 22:42:03.628063+13', 'strategy-created', 'migration', '{"name":"flexibleRollout","description":"Gradually activate feature toggle based on sane stickiness","parameters":[{"name":"rollout","type":"percentage","description":"","required":false},{"name":"stickiness","type":"string","description":"Used define stickiness. Possible values: default, userId, sessionId, random","required":true},{"name":"groupId","type":"string","description":"Used to define a activation groups, which allows you to correlate across feature toggles.","required":true}]}', '[]', NULL, NULL, NULL, NULL, true, NULL, NULL);
+INSERT INTO public.events VALUES (6, '2024-10-02 22:43:43.002446+13', 'feature-created', 'admin', '{"name":"records_CreateUser","description":null,"type":"kill-switch","project":"default","stale":false,"createdAt":"2024-10-02T09:43:42.992Z","lastSeenAt":null,"impressionData":false,"archivedAt":null,"archived":false}', '[]', 'default', NULL, 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (7, '2024-10-02 22:43:46.223921+13', 'feature-strategy-add', 'admin', '{"id":"7aea2aff-8717-4fff-8679-ead0d6d87ff0","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"records_CreateUser","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'development', 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (8, '2024-10-02 22:43:46.230009+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'development', 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (9, '2024-10-02 22:43:47.130489+13', 'feature-strategy-add', 'admin', '{"id":"0049c74f-bc0a-4af3-8a59-93a14f4ad320","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"records_CreateUser","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'production', 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (10, '2024-10-02 22:43:47.141591+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'production', 'records_CreateUser', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (11, '2024-10-02 22:44:09.358677+13', 'feature-created', 'admin', '{"name":"records_tests_FeatureDisabled","description":null,"type":"kill-switch","project":"default","stale":false,"createdAt":"2024-10-02T09:44:09.352Z","lastSeenAt":null,"impressionData":false,"archivedAt":null,"archived":false}', '[]', 'default', NULL, 'records_tests_FeatureDisabled', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (12, '2024-10-02 22:44:24.736807+13', 'feature-created', 'admin', '{"name":"records_tests_FeatureEnabled","description":null,"type":"kill-switch","project":"default","stale":false,"createdAt":"2024-10-02T09:44:24.730Z","lastSeenAt":null,"impressionData":false,"archivedAt":null,"archived":false}', '[]', 'default', NULL, 'records_tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (13, '2024-10-02 22:44:26.406809+13', 'feature-strategy-add', 'admin', '{"id":"c15ff5db-87d0-4e27-ba58-3cf5ccf3d0f5","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"records_tests_FeatureEnabled","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'development', 'records_tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (14, '2024-10-02 22:44:26.411851+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'development', 'records_tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (15, '2024-10-02 22:44:28.072008+13', 'feature-strategy-add', 'admin', '{"id":"8e879e79-0836-4a2d-a7fc-2f7649bb4d32","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"records_tests_FeatureEnabled","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'production', 'records_tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (16, '2024-10-02 22:44:28.076446+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'production', 'records_tests_FeatureEnabled', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (17, '2024-10-02 22:45:04.050681+13', 'api-token-created', 'admin', '{"tokenName":"production","environment":"production","projects":["default"],"type":"client","username":"production","alias":null,"project":"default","createdAt":"2024-10-02T09:45:04.044Z"}', '[]', 'default', 'production', NULL, NULL, true, 1, '::ffff:172.19.0.1');
 
 
 --
@@ -2364,29 +2361,29 @@ INSERT INTO public.events VALUES (17, '2024-10-02 15:13:04.136418+13', 'api-toke
 
 INSERT INTO public.feature_environments VALUES ('development', 'records_CreateUser', true, '[]', NULL);
 INSERT INTO public.feature_environments VALUES ('production', 'records_CreateUser', true, '[]', NULL);
-INSERT INTO public.feature_environments VALUES ('production', 'tests_FeatureEnabled', true, '[]', NULL);
-INSERT INTO public.feature_environments VALUES ('development', 'tests_FeatureEnabled', true, '[]', NULL);
-INSERT INTO public.feature_environments VALUES ('development', 'tests_FeatureDisabled', false, '[]', NULL);
-INSERT INTO public.feature_environments VALUES ('production', 'tests_FeatureDisabled', false, '[]', NULL);
+INSERT INTO public.feature_environments VALUES ('development', 'records_tests_FeatureDisabled', false, '[]', NULL);
+INSERT INTO public.feature_environments VALUES ('production', 'records_tests_FeatureDisabled', false, '[]', NULL);
+INSERT INTO public.feature_environments VALUES ('development', 'records_tests_FeatureEnabled', true, '[]', NULL);
+INSERT INTO public.feature_environments VALUES ('production', 'records_tests_FeatureEnabled', true, '[]', NULL);
 
 
 --
 -- Data for Name: feature_lifecycles; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.feature_lifecycles VALUES ('records_CreateUser', 'initial', '2024-10-02 13:07:04.16+13', NULL, NULL);
-INSERT INTO public.feature_lifecycles VALUES ('tests_FeatureEnabled', 'initial', '2024-10-02 13:07:25.107+13', NULL, NULL);
-INSERT INTO public.feature_lifecycles VALUES ('tests_FeatureDisabled', 'initial', '2024-10-02 13:07:51.11+13', NULL, NULL);
+INSERT INTO public.feature_lifecycles VALUES ('records_CreateUser', 'initial', '2024-10-02 22:43:43.732+13', NULL, NULL);
+INSERT INTO public.feature_lifecycles VALUES ('records_tests_FeatureDisabled', 'initial', '2024-10-02 22:44:09.734+13', NULL, NULL);
+INSERT INTO public.feature_lifecycles VALUES ('records_tests_FeatureEnabled', 'initial', '2024-10-02 22:44:25.736+13', NULL, NULL);
 
 
 --
 -- Data for Name: feature_strategies; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.feature_strategies VALUES ('7c434685-500b-4246-8dbd-438b7951b8ac', 'records_CreateUser', 'default', 'development', 'flexibleRollout', '{"groupId": "records_CreateUser", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-02 13:07:31.236415+13', NULL, false, '[]', NULL);
-INSERT INTO public.feature_strategies VALUES ('3803e672-37c8-4ad9-9268-dadb0aff5b50', 'records_CreateUser', 'default', 'production', 'flexibleRollout', '{"groupId": "records_CreateUser", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-02 13:07:31.645672+13', NULL, false, '[]', NULL);
-INSERT INTO public.feature_strategies VALUES ('132d3045-6eca-4c49-9281-6b3ffadb542e', 'tests_FeatureEnabled', 'default', 'production', 'flexibleRollout', '{"groupId": "tests_FeatureEnabled", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-02 13:07:33.029001+13', NULL, false, '[]', NULL);
-INSERT INTO public.feature_strategies VALUES ('041505a7-6a29-406a-b370-b34bcebbcce2', 'tests_FeatureEnabled', 'default', 'development', 'flexibleRollout', '{"groupId": "tests_FeatureEnabled", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-02 13:07:34.226309+13', NULL, false, '[]', NULL);
+INSERT INTO public.feature_strategies VALUES ('7aea2aff-8717-4fff-8679-ead0d6d87ff0', 'records_CreateUser', 'default', 'development', 'flexibleRollout', '{"groupId": "records_CreateUser", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-02 22:43:46.218851+13', NULL, false, '[]', NULL);
+INSERT INTO public.feature_strategies VALUES ('0049c74f-bc0a-4af3-8a59-93a14f4ad320', 'records_CreateUser', 'default', 'production', 'flexibleRollout', '{"groupId": "records_CreateUser", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-02 22:43:47.124516+13', NULL, false, '[]', NULL);
+INSERT INTO public.feature_strategies VALUES ('c15ff5db-87d0-4e27-ba58-3cf5ccf3d0f5', 'records_tests_FeatureEnabled', 'default', 'development', 'flexibleRollout', '{"groupId": "records_tests_FeatureEnabled", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-02 22:44:26.403497+13', NULL, false, '[]', NULL);
+INSERT INTO public.feature_strategies VALUES ('8e879e79-0836-4a2d-a7fc-2f7649bb4d32', 'records_tests_FeatureEnabled', 'default', 'production', 'flexibleRollout', '{"groupId": "records_tests_FeatureEnabled", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-02 22:44:28.069168+13', NULL, false, '[]', NULL);
 
 
 --
@@ -2405,20 +2402,20 @@ INSERT INTO public.feature_strategies VALUES ('041505a7-6a29-406a-b370-b34bcebbc
 -- Data for Name: feature_types; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.feature_types VALUES ('release', 'Release', 'Release feature toggles are used to release new features.', 40, '2024-10-02 13:06:33.567589+13', NULL);
-INSERT INTO public.feature_types VALUES ('experiment', 'Experiment', 'Experiment feature toggles are used to test and verify multiple different versions of a feature.', 40, '2024-10-02 13:06:33.567589+13', NULL);
-INSERT INTO public.feature_types VALUES ('operational', 'Operational', 'Operational feature toggles are used to control aspects of a rollout.', 7, '2024-10-02 13:06:33.567589+13', NULL);
-INSERT INTO public.feature_types VALUES ('kill-switch', 'Kill switch', 'Kill switch feature toggles are used to quickly turn on or off critical functionality in your system.', NULL, '2024-10-02 13:06:33.567589+13', NULL);
-INSERT INTO public.feature_types VALUES ('permission', 'Permission', 'Permission feature toggles are used to control permissions in your system.', NULL, '2024-10-02 13:06:33.567589+13', NULL);
+INSERT INTO public.feature_types VALUES ('release', 'Release', 'Release feature toggles are used to release new features.', 40, '2024-10-02 22:42:03.729766+13', NULL);
+INSERT INTO public.feature_types VALUES ('experiment', 'Experiment', 'Experiment feature toggles are used to test and verify multiple different versions of a feature.', 40, '2024-10-02 22:42:03.729766+13', NULL);
+INSERT INTO public.feature_types VALUES ('operational', 'Operational', 'Operational feature toggles are used to control aspects of a rollout.', 7, '2024-10-02 22:42:03.729766+13', NULL);
+INSERT INTO public.feature_types VALUES ('kill-switch', 'Kill switch', 'Kill switch feature toggles are used to quickly turn on or off critical functionality in your system.', NULL, '2024-10-02 22:42:03.729766+13', NULL);
+INSERT INTO public.feature_types VALUES ('permission', 'Permission', 'Permission feature toggles are used to control permissions in your system.', NULL, '2024-10-02 22:42:03.729766+13', NULL);
 
 
 --
 -- Data for Name: features; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.features VALUES ('2024-10-02 13:07:03.917155+13', 'records_CreateUser', NULL, '[]', 'kill-switch', false, 'default', NULL, false, NULL, NULL, 1, false);
-INSERT INTO public.features VALUES ('2024-10-02 13:07:24.754266+13', 'tests_FeatureEnabled', NULL, '[]', 'kill-switch', false, 'default', NULL, false, NULL, NULL, 1, false);
-INSERT INTO public.features VALUES ('2024-10-02 13:07:50.101251+13', 'tests_FeatureDisabled', NULL, '[]', 'kill-switch', false, 'default', NULL, false, NULL, NULL, 1, false);
+INSERT INTO public.features VALUES ('2024-10-02 22:43:42.99216+13', 'records_CreateUser', NULL, '[]', 'kill-switch', false, 'default', NULL, false, NULL, NULL, 1, false);
+INSERT INTO public.features VALUES ('2024-10-02 22:44:09.352891+13', 'records_tests_FeatureDisabled', NULL, '[]', 'kill-switch', false, 'default', NULL, false, NULL, NULL, 1, false);
+INSERT INTO public.features VALUES ('2024-10-02 22:44:24.730714+13', 'records_tests_FeatureEnabled', NULL, '[]', 'kill-switch', false, 'default', NULL, false, NULL, NULL, 1, false);
 
 
 --
@@ -2479,300 +2476,300 @@ INSERT INTO public.features VALUES ('2024-10-02 13:07:50.101251+13', 'tests_Feat
 -- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.migrations VALUES (1, '/20141020151056-initial-schema', '2024-10-02 13:06:33.188');
-INSERT INTO public.migrations VALUES (2, '/20141110144153-add-description-to-features', '2024-10-02 13:06:33.194');
-INSERT INTO public.migrations VALUES (3, '/20141117200435-add-parameters-template-to-strategies', '2024-10-02 13:06:33.197');
-INSERT INTO public.migrations VALUES (4, '/20141117202209-insert-default-strategy', '2024-10-02 13:06:33.202');
-INSERT INTO public.migrations VALUES (5, '/20141118071458-default-strategy-event', '2024-10-02 13:06:33.207');
-INSERT INTO public.migrations VALUES (6, '/20141215210141-005-archived-flag-to-features', '2024-10-02 13:06:33.21');
-INSERT INTO public.migrations VALUES (7, '/20150210152531-006-rename-eventtype', '2024-10-02 13:06:33.219');
-INSERT INTO public.migrations VALUES (8, '/20160618193924-add-strategies-to-features', '2024-10-02 13:06:33.228');
-INSERT INTO public.migrations VALUES (9, '/20161027134128-create-metrics', '2024-10-02 13:06:33.242');
-INSERT INTO public.migrations VALUES (10, '/20161104074441-create-client-instances', '2024-10-02 13:06:33.253');
-INSERT INTO public.migrations VALUES (11, '/20161205203516-create-client-applications', '2024-10-02 13:06:33.267');
-INSERT INTO public.migrations VALUES (12, '/20161212101749-better-strategy-parameter-definitions', '2024-10-02 13:06:33.28');
-INSERT INTO public.migrations VALUES (13, '/20170211085502-built-in-strategies', '2024-10-02 13:06:33.284');
-INSERT INTO public.migrations VALUES (14, '/20170211090541-add-default-strategies', '2024-10-02 13:06:33.29');
-INSERT INTO public.migrations VALUES (15, '/20170306233934-timestamp-with-tz', '2024-10-02 13:06:33.409');
-INSERT INTO public.migrations VALUES (16, '/20170628205541-add-sdk-version-to-client-instances', '2024-10-02 13:06:33.465');
-INSERT INTO public.migrations VALUES (17, '/20190123204125-add-variants-to-features', '2024-10-02 13:06:33.468');
-INSERT INTO public.migrations VALUES (18, '/20191023184858-flexible-rollout-strategy', '2024-10-02 13:06:33.474');
-INSERT INTO public.migrations VALUES (19, '/20200102184820-create-context-fields', '2024-10-02 13:06:33.492');
-INSERT INTO public.migrations VALUES (20, '/20200227202711-settings', '2024-10-02 13:06:33.507');
-INSERT INTO public.migrations VALUES (21, '/20200329191251-settings-secret', '2024-10-02 13:06:33.513');
-INSERT INTO public.migrations VALUES (22, '/20200416201319-create-users', '2024-10-02 13:06:33.535');
-INSERT INTO public.migrations VALUES (23, '/20200429175747-users-settings', '2024-10-02 13:06:33.539');
-INSERT INTO public.migrations VALUES (24, '/20200805091409-add-feature-toggle-type', '2024-10-02 13:06:33.558');
-INSERT INTO public.migrations VALUES (25, '/20200805094311-add-feature-type-to-features', '2024-10-02 13:06:33.562');
-INSERT INTO public.migrations VALUES (26, '/20200806091734-add-stale-flag-to-features', '2024-10-02 13:06:33.565');
-INSERT INTO public.migrations VALUES (27, '/20200810200901-add-created-at-to-feature-types', '2024-10-02 13:06:33.568');
-INSERT INTO public.migrations VALUES (28, '/20200928194947-add-projects', '2024-10-02 13:06:33.587');
-INSERT INTO public.migrations VALUES (29, '/20200928195238-add-project-id-to-features', '2024-10-02 13:06:33.59');
-INSERT INTO public.migrations VALUES (30, '/20201216140726-add-last-seen-to-features', '2024-10-02 13:06:33.593');
-INSERT INTO public.migrations VALUES (31, '/20210105083014-add-tag-and-tag-types', '2024-10-02 13:06:33.634');
-INSERT INTO public.migrations VALUES (32, '/20210119084617-add-addon-table', '2024-10-02 13:06:33.652');
-INSERT INTO public.migrations VALUES (33, '/20210121115438-add-deprecated-column-to-strategies', '2024-10-02 13:06:33.656');
-INSERT INTO public.migrations VALUES (34, '/20210127094440-add-tags-column-to-events', '2024-10-02 13:06:33.659');
-INSERT INTO public.migrations VALUES (35, '/20210208203708-add-stickiness-to-context', '2024-10-02 13:06:33.661');
-INSERT INTO public.migrations VALUES (36, '/20210212114759-add-session-table', '2024-10-02 13:06:33.677');
-INSERT INTO public.migrations VALUES (37, '/20210217195834-rbac-tables', '2024-10-02 13:06:33.708');
-INSERT INTO public.migrations VALUES (38, '/20210218090213-generate-server-identifier', '2024-10-02 13:06:33.714');
-INSERT INTO public.migrations VALUES (39, '/20210302080040-add-pk-to-client-instances', '2024-10-02 13:06:33.722');
-INSERT INTO public.migrations VALUES (40, '/20210304115810-change-default-timestamp-to-now', '2024-10-02 13:06:33.725');
-INSERT INTO public.migrations VALUES (41, '/20210304141005-add-announce-field-to-application', '2024-10-02 13:06:33.729');
-INSERT INTO public.migrations VALUES (42, '/20210304150739-add-created-by-to-application', '2024-10-02 13:06:33.731');
-INSERT INTO public.migrations VALUES (43, '/20210322104356-api-tokens-table', '2024-10-02 13:06:33.743');
-INSERT INTO public.migrations VALUES (44, '/20210322104357-api-tokens-convert-enterprise', '2024-10-02 13:06:33.746');
-INSERT INTO public.migrations VALUES (45, '/20210323073508-reset-application-announcements', '2024-10-02 13:06:33.749');
-INSERT INTO public.migrations VALUES (46, '/20210409120136-create-reset-token-table', '2024-10-02 13:06:33.761');
-INSERT INTO public.migrations VALUES (47, '/20210414141220-fix-misspellings-in-role-descriptions', '2024-10-02 13:06:33.765');
-INSERT INTO public.migrations VALUES (48, '/20210415173116-rbac-rename-roles', '2024-10-02 13:06:33.767');
-INSERT INTO public.migrations VALUES (49, '/20210421133845-add-sort-order-to-strategies', '2024-10-02 13:06:33.77');
-INSERT INTO public.migrations VALUES (50, '/20210421135405-add-display-name-and-update-description-for-strategies', '2024-10-02 13:06:33.773');
-INSERT INTO public.migrations VALUES (51, '/20210423103647-lowercase-all-emails', '2024-10-02 13:06:33.779');
-INSERT INTO public.migrations VALUES (52, '/20210428062103-user-permission-to-rbac', '2024-10-02 13:06:33.783');
-INSERT INTO public.migrations VALUES (53, '/20210428103922-patch-role-table', '2024-10-02 13:06:33.785');
-INSERT INTO public.migrations VALUES (54, '/20210428103923-onboard-projects-to-rbac', '2024-10-02 13:06:33.791');
-INSERT INTO public.migrations VALUES (55, '/20210428103924-patch-admin-role-name', '2024-10-02 13:06:33.793');
-INSERT INTO public.migrations VALUES (56, '/20210428103924-patch-admin_role', '2024-10-02 13:06:33.798');
-INSERT INTO public.migrations VALUES (57, '/20210428103924-patch-role_permissions', '2024-10-02 13:06:33.802');
-INSERT INTO public.migrations VALUES (58, '/20210504101429-deprecate-strategies', '2024-10-02 13:06:33.805');
-INSERT INTO public.migrations VALUES (59, '/20210520171325-update-role-descriptions', '2024-10-02 13:06:33.807');
-INSERT INTO public.migrations VALUES (60, '/20210602115555-create-feedback-table', '2024-10-02 13:06:33.823');
-INSERT INTO public.migrations VALUES (61, '/20210610085817-features-strategies-table', '2024-10-02 13:06:33.854');
-INSERT INTO public.migrations VALUES (62, '/20210615115226-migrate-strategies-to-feature-strategies', '2024-10-02 13:06:33.859');
-INSERT INTO public.migrations VALUES (63, '/20210618091331-project-environments-table', '2024-10-02 13:06:33.87');
-INSERT INTO public.migrations VALUES (64, '/20210618100913-add-cascade-for-user-feedback', '2024-10-02 13:06:33.876');
-INSERT INTO public.migrations VALUES (65, '/20210624114602-change-type-of-feature-archived', '2024-10-02 13:06:33.892');
-INSERT INTO public.migrations VALUES (66, '/20210624114855-drop-strategies-column-from-features', '2024-10-02 13:06:33.901');
-INSERT INTO public.migrations VALUES (67, '/20210624115109-drop-enabled-column-from-features', '2024-10-02 13:06:33.904');
-INSERT INTO public.migrations VALUES (68, '/20210625102126-connect-default-project-to-global-environment', '2024-10-02 13:06:33.91');
-INSERT INTO public.migrations VALUES (69, '/20210629130734-add-health-rating-to-project', '2024-10-02 13:06:33.913');
-INSERT INTO public.migrations VALUES (70, '/20210830113948-connect-projects-to-global-envrionments', '2024-10-02 13:06:33.916');
-INSERT INTO public.migrations VALUES (71, '/20210831072631-add-sort-order-and-type-to-env', '2024-10-02 13:06:33.923');
-INSERT INTO public.migrations VALUES (72, '/20210907124058-add-dbcritic-indices', '2024-10-02 13:06:33.957');
-INSERT INTO public.migrations VALUES (73, '/20210907124850-add-dbcritic-primary-keys', '2024-10-02 13:06:33.964');
-INSERT INTO public.migrations VALUES (74, '/20210908100701-add-enabled-to-environments', '2024-10-02 13:06:33.969');
-INSERT INTO public.migrations VALUES (75, '/20210909085651-add-protected-field-to-environments', '2024-10-02 13:06:33.973');
-INSERT INTO public.migrations VALUES (76, '/20210913103159-api-keys-scoping', '2024-10-02 13:06:33.976');
-INSERT INTO public.migrations VALUES (77, '/20210915122001-add-project-and-environment-columns-to-events', '2024-10-02 13:06:33.985');
-INSERT INTO public.migrations VALUES (78, '/20210920104218-rename-global-env-to-default-env', '2024-10-02 13:06:33.998');
-INSERT INTO public.migrations VALUES (79, '/20210921105032-client-api-tokens-default', '2024-10-02 13:06:34.002');
-INSERT INTO public.migrations VALUES (80, '/20210922084509-add-non-null-constraint-to-environment-type', '2024-10-02 13:06:34.008');
-INSERT INTO public.migrations VALUES (81, '/20210922120521-add-tag-type-permission', '2024-10-02 13:06:34.014');
-INSERT INTO public.migrations VALUES (82, '/20210928065411-remove-displayname-from-environments', '2024-10-02 13:06:34.018');
-INSERT INTO public.migrations VALUES (83, '/20210928080601-add-development-and-production-environments', '2024-10-02 13:06:34.023');
-INSERT INTO public.migrations VALUES (84, '/20210928082228-connect-default-environment-to-all-existing-projects', '2024-10-02 13:06:34.027');
-INSERT INTO public.migrations VALUES (85, '/20211004104917-client-metrics-env', '2024-10-02 13:06:34.045');
-INSERT INTO public.migrations VALUES (86, '/20211011094226-add-environment-to-client-instances', '2024-10-02 13:06:34.057');
-INSERT INTO public.migrations VALUES (87, '/20211013093114-feature-strategies-parameters-not-null', '2024-10-02 13:06:34.065');
-INSERT INTO public.migrations VALUES (88, '/20211029094324-set-sort-order-env', '2024-10-02 13:06:34.069');
-INSERT INTO public.migrations VALUES (89, '/20211105104316-add-feature-name-column-to-events', '2024-10-02 13:06:34.076');
-INSERT INTO public.migrations VALUES (90, '/20211105105509-add-predata-column-to-events', '2024-10-02 13:06:34.079');
-INSERT INTO public.migrations VALUES (91, '/20211108130333-create-user-splash-table', '2024-10-02 13:06:34.094');
-INSERT INTO public.migrations VALUES (92, '/20211109103930-add-splash-entry-for-users', '2024-10-02 13:06:34.099');
-INSERT INTO public.migrations VALUES (93, '/20211126112551-disable-default-environment', '2024-10-02 13:06:34.104');
-INSERT INTO public.migrations VALUES (94, '/20211130142314-add-updated-at-to-projects', '2024-10-02 13:06:34.107');
-INSERT INTO public.migrations VALUES (95, '/20211202120808-add-custom-roles', '2024-10-02 13:06:34.175');
-INSERT INTO public.migrations VALUES (96, '/20211209205201-drop-client-metrics', '2024-10-02 13:06:34.198');
-INSERT INTO public.migrations VALUES (97, '/20220103134659-add-permissions-to-project-roles', '2024-10-02 13:06:34.216');
-INSERT INTO public.migrations VALUES (98, '/20220103143843-add-permissions-to-editor-role', '2024-10-02 13:06:34.219');
-INSERT INTO public.migrations VALUES (99, '/20220111112804-update-permission-descriptions', '2024-10-02 13:06:34.222');
-INSERT INTO public.migrations VALUES (100, '/20220111115613-move-feature-toggle-permission', '2024-10-02 13:06:34.225');
-INSERT INTO public.migrations VALUES (101, '/20220111120346-roles-unique-name', '2024-10-02 13:06:34.236');
-INSERT INTO public.migrations VALUES (102, '/20220111121010-update-project-for-editor-role', '2024-10-02 13:06:34.246');
-INSERT INTO public.migrations VALUES (103, '/20220111125620-role-permission-empty-string-for-non-environment-type', '2024-10-02 13:06:34.251');
-INSERT INTO public.migrations VALUES (104, '/20220119182603-update-toggle-types-description', '2024-10-02 13:06:34.255');
-INSERT INTO public.migrations VALUES (105, '/20220125200908-convert-old-feature-events', '2024-10-02 13:06:34.261');
-INSERT INTO public.migrations VALUES (106, '/20220128081242-add-impressiondata-to-features', '2024-10-02 13:06:34.264');
-INSERT INTO public.migrations VALUES (107, '/20220129113106-metrics-counters-as-bigint', '2024-10-02 13:06:34.281');
-INSERT INTO public.migrations VALUES (108, '/20220131082150-reset-feedback-form', '2024-10-02 13:06:34.293');
-INSERT INTO public.migrations VALUES (109, '/20220224081422-remove-project-column-from-roles', '2024-10-02 13:06:34.296');
-INSERT INTO public.migrations VALUES (110, '/20220224111626-add-current-time-context-field', '2024-10-02 13:06:34.299');
-INSERT INTO public.migrations VALUES (111, '/20220307130902-add-segments', '2024-10-02 13:06:34.326');
-INSERT INTO public.migrations VALUES (112, '/20220331085057-add-api-link-table', '2024-10-02 13:06:34.338');
-INSERT INTO public.migrations VALUES (113, '/20220405103233-add-segments-name-index', '2024-10-02 13:06:34.345');
-INSERT INTO public.migrations VALUES (114, '/20220408081222-clean-up-duplicate-foreign-key-role-permission', '2024-10-02 13:06:34.349');
-INSERT INTO public.migrations VALUES (115, '/20220411103724-add-legal-value-description', '2024-10-02 13:06:34.374');
-INSERT INTO public.migrations VALUES (116, '/20220425090847-add-token-permission', '2024-10-02 13:06:34.387');
-INSERT INTO public.migrations VALUES (117, '/20220511111823-patch-broken-feature-strategies', '2024-10-02 13:06:34.391');
-INSERT INTO public.migrations VALUES (118, '/20220511124923-fix-patch-broken-feature-strategies', '2024-10-02 13:06:34.393');
-INSERT INTO public.migrations VALUES (119, '/20220528143630-dont-cascade-environment-deletion-to-apitokens', '2024-10-02 13:06:34.396');
-INSERT INTO public.migrations VALUES (120, '/20220603081324-add-archive-at-to-feature-toggle', '2024-10-02 13:06:34.401');
-INSERT INTO public.migrations VALUES (121, '/20220704115624-add-user-groups', '2024-10-02 13:06:34.438');
-INSERT INTO public.migrations VALUES (122, '/20220711084613-add-projects-and-environments-for-addons', '2024-10-02 13:06:34.444');
-INSERT INTO public.migrations VALUES (123, '/20220808084524-add-group-permissions', '2024-10-02 13:06:34.447');
-INSERT INTO public.migrations VALUES (124, '/20220808110415-add-projects-foreign-key', '2024-10-02 13:06:34.454');
-INSERT INTO public.migrations VALUES (125, '/20220816121136-add-metadata-to-api-keys', '2024-10-02 13:06:34.457');
-INSERT INTO public.migrations VALUES (126, '/20220817130250-alter-api-tokens', '2024-10-02 13:06:34.46');
-INSERT INTO public.migrations VALUES (127, '/20220908093515-add-public-signup-tokens', '2024-10-02 13:06:34.483');
-INSERT INTO public.migrations VALUES (128, '/20220912165344-pat-tokens', '2024-10-02 13:06:34.498');
-INSERT INTO public.migrations VALUES (129, '/20220916093515-add-url-to-public-signup-tokens', '2024-10-02 13:06:34.501');
-INSERT INTO public.migrations VALUES (130, '/20220927110212-add-enabled-to-public-signup-tokens', '2024-10-02 13:06:34.504');
-INSERT INTO public.migrations VALUES (131, '/20221010114644-pat-auto-increment', '2024-10-02 13:06:34.522');
-INSERT INTO public.migrations VALUES (132, '/20221011155007-add-user-groups-mappings', '2024-10-02 13:06:34.535');
-INSERT INTO public.migrations VALUES (133, '/20221103111940-fix-migrations', '2024-10-02 13:06:34.54');
-INSERT INTO public.migrations VALUES (134, '/20221103112200-change-request', '2024-10-02 13:06:34.572');
-INSERT INTO public.migrations VALUES (135, '/20221103125732-change-request-remove-unique', '2024-10-02 13:06:34.577');
-INSERT INTO public.migrations VALUES (136, '/20221104123349-change-request-approval', '2024-10-02 13:06:34.594');
-INSERT INTO public.migrations VALUES (137, '/20221107121635-move-variants-to-per-environment', '2024-10-02 13:06:34.617');
-INSERT INTO public.migrations VALUES (138, '/20221107132528-change-request-project-options', '2024-10-02 13:06:34.621');
-INSERT INTO public.migrations VALUES (139, '/20221108114358-add-change-request-permissions', '2024-10-02 13:06:34.623');
-INSERT INTO public.migrations VALUES (140, '/20221110104933-add-change-request-settings', '2024-10-02 13:06:34.634');
-INSERT INTO public.migrations VALUES (141, '/20221110144113-revert-change-request-project-options', '2024-10-02 13:06:34.637');
-INSERT INTO public.migrations VALUES (142, '/20221114150559-change-request-comments', '2024-10-02 13:06:34.654');
-INSERT INTO public.migrations VALUES (143, '/20221115072335-add-required-approvals', '2024-10-02 13:06:34.662');
-INSERT INTO public.migrations VALUES (144, '/20221121114357-add-permission-for-environment-variants', '2024-10-02 13:06:34.666');
-INSERT INTO public.migrations VALUES (145, '/20221121133546-soft-delete-user', '2024-10-02 13:06:34.669');
-INSERT INTO public.migrations VALUES (146, '/20221124123914-add-favorites', '2024-10-02 13:06:34.683');
-INSERT INTO public.migrations VALUES (147, '/20221125185244-change-request-unique-approvals', '2024-10-02 13:06:34.694');
-INSERT INTO public.migrations VALUES (148, '/20221128165141-change-request-min-approvals', '2024-10-02 13:06:34.696');
-INSERT INTO public.migrations VALUES (149, '/20221205122253-skip-change-request', '2024-10-02 13:06:34.699');
-INSERT INTO public.migrations VALUES (150, '/20221220160345-user-pat-permissions', '2024-10-02 13:06:34.701');
-INSERT INTO public.migrations VALUES (151, '/20221221144132-service-account-users', '2024-10-02 13:06:34.704');
-INSERT INTO public.migrations VALUES (152, '/20230125065315-project-stats-table', '2024-10-02 13:06:34.713');
-INSERT INTO public.migrations VALUES (153, '/20230127111638-new-project-stats-field', '2024-10-02 13:06:34.716');
-INSERT INTO public.migrations VALUES (154, '/20230130113337-revert-user-pat-permissions', '2024-10-02 13:06:34.719');
-INSERT INTO public.migrations VALUES (155, '/20230208084046-project-api-token-permissions', '2024-10-02 13:06:34.721');
-INSERT INTO public.migrations VALUES (156, '/20230208093627-assign-project-api-token-permissions-editor', '2024-10-02 13:06:34.723');
-INSERT INTO public.migrations VALUES (157, '/20230208093750-assign-project-api-token-permissions-owner', '2024-10-02 13:06:34.726');
-INSERT INTO public.migrations VALUES (158, '/20230208093942-assign-project-api-token-permissions-member', '2024-10-02 13:06:34.728');
-INSERT INTO public.migrations VALUES (159, '/20230222084211-add-login-events-table', '2024-10-02 13:06:34.745');
-INSERT INTO public.migrations VALUES (160, '/20230222154915-create-notiications-table', '2024-10-02 13:06:34.764');
-INSERT INTO public.migrations VALUES (161, '/20230224093446-drop-createdBy-from-notifications-table', '2024-10-02 13:06:34.767');
-INSERT INTO public.migrations VALUES (162, '/20230227115320-rename-login-events-table-to-sign-on-log', '2024-10-02 13:06:34.77');
-INSERT INTO public.migrations VALUES (163, '/20230227120500-change-display-name-for-variants-per-env-permission', '2024-10-02 13:06:34.772');
-INSERT INTO public.migrations VALUES (164, '/20230227123106-add-setting-for-sign-on-log-retention', '2024-10-02 13:06:34.774');
-INSERT INTO public.migrations VALUES (165, '/20230302133740-rename-sign-on-log-table-to-login-history', '2024-10-02 13:06:34.777');
-INSERT INTO public.migrations VALUES (166, '/20230306103400-add-project-column-to-segments', '2024-10-02 13:06:34.78');
-INSERT INTO public.migrations VALUES (167, '/20230306103400-remove-direct-link-from-segment-permissions-to-admin', '2024-10-02 13:06:34.783');
-INSERT INTO public.migrations VALUES (168, '/20230309174400-add-project-segment-permission', '2024-10-02 13:06:34.785');
-INSERT INTO public.migrations VALUES (169, '/20230314131041-project-settings', '2024-10-02 13:06:34.792');
-INSERT INTO public.migrations VALUES (170, '/20230316092547-remove-project-stats-column', '2024-10-02 13:06:34.795');
-INSERT INTO public.migrations VALUES (171, '/20230411085947-skip-change-request-ui', '2024-10-02 13:06:34.798');
-INSERT INTO public.migrations VALUES (172, '/20230412062635-add-change-request-title', '2024-10-02 13:06:34.8');
-INSERT INTO public.migrations VALUES (173, '/20230412125618-add-title-to-strategy', '2024-10-02 13:06:34.805');
-INSERT INTO public.migrations VALUES (174, '/20230414105818-add-root-role-to-groups', '2024-10-02 13:06:34.81');
-INSERT INTO public.migrations VALUES (175, '/20230419104126-add-disabled-field-to-feature-strategy', '2024-10-02 13:06:34.815');
-INSERT INTO public.migrations VALUES (176, '/20230420125500-v5-strategy-changes', '2024-10-02 13:06:34.82');
-INSERT INTO public.migrations VALUES (177, '/20230420211308-update-context-fields-add-sessionId', '2024-10-02 13:06:34.826');
-INSERT INTO public.migrations VALUES (178, '/20230424090942-project-default-strategy-settings', '2024-10-02 13:06:34.833');
-INSERT INTO public.migrations VALUES (179, '/20230504145945-variant-metrics', '2024-10-02 13:06:34.847');
-INSERT INTO public.migrations VALUES (180, '/20230510113903-fix-api-token-username-migration', '2024-10-02 13:06:34.851');
-INSERT INTO public.migrations VALUES (181, '/20230615122909-fix-env-sort-order', '2024-10-02 13:06:34.856');
-INSERT INTO public.migrations VALUES (182, '/20230619105029-new-fine-grained-api-token-permissions', '2024-10-02 13:06:34.861');
-INSERT INTO public.migrations VALUES (183, '/20230619110243-assign-apitoken-permissions-to-rootroles', '2024-10-02 13:06:34.869');
-INSERT INTO public.migrations VALUES (184, '/20230621141239-refactor-api-token-permissions', '2024-10-02 13:06:34.872');
-INSERT INTO public.migrations VALUES (185, '/20230630080126-delete-deprecated-permissions', '2024-10-02 13:06:34.874');
-INSERT INTO public.migrations VALUES (186, '/20230706123907-events-announced-column', '2024-10-02 13:06:34.876');
-INSERT INTO public.migrations VALUES (187, '/20230711094214-add-potentially-stale-flag', '2024-10-02 13:06:34.879');
-INSERT INTO public.migrations VALUES (188, '/20230711163311-project-feature-limit', '2024-10-02 13:06:34.882');
-INSERT INTO public.migrations VALUES (189, '/20230712091834-strategy-variants', '2024-10-02 13:06:34.886');
-INSERT INTO public.migrations VALUES (190, '/20230802092725-add-last-seen-column-to-feature-environments', '2024-10-02 13:06:34.89');
-INSERT INTO public.migrations VALUES (191, '/20230802141830-add-feature-and-environment-last-seen-at-to-features-view', '2024-10-02 13:06:34.894');
-INSERT INTO public.migrations VALUES (192, '/20230803061359-change-request-optional-feature', '2024-10-02 13:06:34.897');
-INSERT INTO public.migrations VALUES (193, '/20230808104232-update-root-roles-descriptions', '2024-10-02 13:06:34.899');
-INSERT INTO public.migrations VALUES (194, '/20230814095253-change-request-rejections', '2024-10-02 13:06:34.911');
-INSERT INTO public.migrations VALUES (195, '/20230814115436-change-request-timzone-timestamps', '2024-10-02 13:06:34.971');
-INSERT INTO public.migrations VALUES (196, '/20230815065908-change-request-approve-reject-permission', '2024-10-02 13:06:35');
-INSERT INTO public.migrations VALUES (197, '/20230817095805-client-applications-usage-table', '2024-10-02 13:06:35.014');
-INSERT INTO public.migrations VALUES (198, '/20230818124614-update-client-applications-usage-table', '2024-10-02 13:06:35.027');
-INSERT INTO public.migrations VALUES (199, '/20230830121352-update-client-applications-usage-table', '2024-10-02 13:06:35.037');
-INSERT INTO public.migrations VALUES (200, '/20230905122605-add-feature-naming-description', '2024-10-02 13:06:35.044');
-INSERT INTO public.migrations VALUES (201, '/20230919104006-dependent-features', '2024-10-02 13:06:35.046');
-INSERT INTO public.migrations VALUES (202, '/20230927071830-reset-pnps-feedback', '2024-10-02 13:06:35.058');
-INSERT INTO public.migrations VALUES (203, '/20230927172930-events-announced-index', '2024-10-02 13:06:35.061');
-INSERT INTO public.migrations VALUES (204, '/20231002122426-update-dependency-permission', '2024-10-02 13:06:35.069');
-INSERT INTO public.migrations VALUES (205, '/20231003113443-last-seen-at-metrics-table', '2024-10-02 13:06:35.071');
-INSERT INTO public.migrations VALUES (206, '/20231004120900-create-changes-stats-table-and-trigger', '2024-10-02 13:06:35.093');
-INSERT INTO public.migrations VALUES (207, '/20231012082537-message-banners', '2024-10-02 13:06:35.108');
-INSERT INTO public.migrations VALUES (208, '/20231019110154-rename-message-banners-table-to-banners', '2024-10-02 13:06:35.111');
-INSERT INTO public.migrations VALUES (209, '/20231024121307-add-change-request-schedule', '2024-10-02 13:06:35.118');
-INSERT INTO public.migrations VALUES (210, '/20231025093422-default-project-mode', '2024-10-02 13:06:35.125');
-INSERT INTO public.migrations VALUES (211, '/20231030091931-add-created-by-and-status-change-request-schedule', '2024-10-02 13:06:35.133');
-INSERT INTO public.migrations VALUES (212, '/20231103064746-change-request-schedule-change-type', '2024-10-02 13:06:35.166');
-INSERT INTO public.migrations VALUES (213, '/20231121153304-add-permission-create-tag-type', '2024-10-02 13:06:35.168');
-INSERT INTO public.migrations VALUES (214, '/20231122121456-dedupe-any-duplicate-permissions', '2024-10-02 13:06:35.173');
-INSERT INTO public.migrations VALUES (215, '/20231123100052-drop-last-seen-foreign-key', '2024-10-02 13:06:35.175');
-INSERT INTO public.migrations VALUES (216, '/20231123155649-favor-permission-name-over-id', '2024-10-02 13:06:35.207');
-INSERT INTO public.migrations VALUES (217, '/20231211121444-features-created-by', '2024-10-02 13:06:35.214');
-INSERT INTO public.migrations VALUES (218, '/20231211122322-feature-types-created-by', '2024-10-02 13:06:35.217');
-INSERT INTO public.migrations VALUES (219, '/20231211122351-feature-tag-created-by', '2024-10-02 13:06:35.219');
-INSERT INTO public.migrations VALUES (220, '/20231211122426-feature-strategies-created-by', '2024-10-02 13:06:35.221');
-INSERT INTO public.migrations VALUES (221, '/20231211132341-add-created-by-to-role-permission', '2024-10-02 13:06:35.223');
-INSERT INTO public.migrations VALUES (222, '/20231211133008-add-created-by-to-role-user', '2024-10-02 13:06:35.225');
-INSERT INTO public.migrations VALUES (223, '/20231211133920-add-created-by-to-roles', '2024-10-02 13:06:35.228');
-INSERT INTO public.migrations VALUES (224, '/20231211134130-add-created-by-to-users', '2024-10-02 13:06:35.23');
-INSERT INTO public.migrations VALUES (225, '/20231211134633-add-created-by-to-apitokens', '2024-10-02 13:06:35.232');
-INSERT INTO public.migrations VALUES (226, '/20231212094044-event-created-by-user-id', '2024-10-02 13:06:35.238');
-INSERT INTO public.migrations VALUES (227, '/20231213111906-add-reason-to-change-request-schedule', '2024-10-02 13:06:35.241');
-INSERT INTO public.migrations VALUES (228, '/20231215105713-incoming-webhooks', '2024-10-02 13:06:35.272');
-INSERT INTO public.migrations VALUES (229, '/20231218165612-inc-webhook-tokens-rename-secret-to-token', '2024-10-02 13:06:35.275');
-INSERT INTO public.migrations VALUES (230, '/20231219100343-rename-new-columns-to-created-by-user-id', '2024-10-02 13:06:35.279');
-INSERT INTO public.migrations VALUES (231, '/20231221143955-feedback-table', '2024-10-02 13:06:35.293');
-INSERT INTO public.migrations VALUES (232, '/20231222071533-unleash-system-user', '2024-10-02 13:06:35.3');
-INSERT INTO public.migrations VALUES (233, '/20240102142100-incoming-webhooks-created-by', '2024-10-02 13:06:35.303');
-INSERT INTO public.migrations VALUES (234, '/20240102205517-observable-events', '2024-10-02 13:06:35.326');
-INSERT INTO public.migrations VALUES (235, '/20240108151652-add-daily-metrics', '2024-10-02 13:06:35.349');
-INSERT INTO public.migrations VALUES (236, '/20240109093021-incoming-webhooks-description', '2024-10-02 13:06:35.353');
-INSERT INTO public.migrations VALUES (237, '/20240109095348-add-reason-column-to-schedule', '2024-10-02 13:06:35.356');
-INSERT INTO public.migrations VALUES (238, '/20240111075911-update-system-user-email', '2024-10-02 13:06:35.359');
-INSERT INTO public.migrations VALUES (239, '/20240111125100-automated-actions', '2024-10-02 13:06:35.387');
-INSERT INTO public.migrations VALUES (240, '/20240116104456-drop-unused-column-permissionid', '2024-10-02 13:06:35.391');
-INSERT INTO public.migrations VALUES (241, '/20240116154700-unleash-admin-token-user', '2024-10-02 13:06:35.394');
-INSERT INTO public.migrations VALUES (242, '/20240117093601-add-more-granular-project-permissions', '2024-10-02 13:06:35.399');
-INSERT INTO public.migrations VALUES (243, '/20240118093611-missing-primary-keys', '2024-10-02 13:06:35.431');
-INSERT INTO public.migrations VALUES (244, '/20240119171200-action-states', '2024-10-02 13:06:35.456');
-INSERT INTO public.migrations VALUES (245, '/20240124123000-add-enabled-to-action-sets', '2024-10-02 13:06:35.459');
-INSERT INTO public.migrations VALUES (246, '/20240125084701-add-user-trends', '2024-10-02 13:06:35.466');
-INSERT INTO public.migrations VALUES (247, '/20240125085703-users-table-increae-image-url-size', '2024-10-02 13:06:35.469');
-INSERT INTO public.migrations VALUES (248, '/20240125090553-events-fix-incorrectly-assigned-sysuser-id', '2024-10-02 13:06:35.474');
-INSERT INTO public.migrations VALUES (249, '/20240125100000-events-system-user-old2new', '2024-10-02 13:06:35.476');
-INSERT INTO public.migrations VALUES (250, '/20240126095544-add-flag-trends', '2024-10-02 13:06:35.487');
-INSERT INTO public.migrations VALUES (251, '/20240130104757-flag-trends-health-time-to-production', '2024-10-02 13:06:35.49');
-INSERT INTO public.migrations VALUES (252, '/20240207164033-client-applications-announced-index', '2024-10-02 13:06:35.496');
-INSERT INTO public.migrations VALUES (253, '/20240208123212-create-stat-traffic-usage-table', '2024-10-02 13:06:35.518');
-INSERT INTO public.migrations VALUES (254, '/20240208130439-events-revision-id-index', '2024-10-02 13:06:35.524');
-INSERT INTO public.migrations VALUES (255, '/20240215133213-flag-trends-users', '2024-10-02 13:06:35.527');
-INSERT INTO public.migrations VALUES (256, '/20240220130622-add-action-state-indexes', '2024-10-02 13:06:35.539');
-INSERT INTO public.migrations VALUES (257, '/20240221082758-action-events', '2024-10-02 13:06:35.558');
-INSERT INTO public.migrations VALUES (258, '/20240221115502-drop-action-states', '2024-10-02 13:06:35.562');
-INSERT INTO public.migrations VALUES (259, '/20240222123532-project-metrics-summary-trends', '2024-10-02 13:06:35.587');
-INSERT INTO public.migrations VALUES (260, '/20240229093231-drop-fk-and-cascade-in-trends', '2024-10-02 13:06:35.591');
-INSERT INTO public.migrations VALUES (261, '/20240304084102-rename-observable-events-to-signals', '2024-10-02 13:06:35.617');
-INSERT INTO public.migrations VALUES (262, '/20240304160659-add-environment-type-trends', '2024-10-02 13:06:35.647');
-INSERT INTO public.migrations VALUES (263, '/20240305094305-features-remove-archived', '2024-10-02 13:06:35.651');
-INSERT INTO public.migrations VALUES (264, '/20240305121426-add-created-at-environment-type-trends', '2024-10-02 13:06:35.655');
-INSERT INTO public.migrations VALUES (265, '/20240305121702-add-metrics-summary-columns-to-flag-trends', '2024-10-02 13:06:35.658');
-INSERT INTO public.migrations VALUES (266, '/20240305131822-add-scim-id-column-to-user', '2024-10-02 13:06:35.664');
-INSERT INTO public.migrations VALUES (267, '/20240306145609-make-scim-id-idx-unique', '2024-10-02 13:06:35.671');
-INSERT INTO public.migrations VALUES (268, '/20240325081847-add-scim-id-for-groups', '2024-10-02 13:06:35.68');
-INSERT INTO public.migrations VALUES (269, '/20240326122126-add-index-on-group-name', '2024-10-02 13:06:35.687');
-INSERT INTO public.migrations VALUES (270, '/20240329064629-revert-feature-archived', '2024-10-02 13:06:35.69');
-INSERT INTO public.migrations VALUES (271, '/20240405120422-add-feature-lifecycles', '2024-10-02 13:06:35.703');
-INSERT INTO public.migrations VALUES (272, '/20240405174629-jobs', '2024-10-02 13:06:35.722');
-INSERT INTO public.migrations VALUES (273, '/20240408104624-fix-environment-type-trends', '2024-10-02 13:06:35.741');
-INSERT INTO public.migrations VALUES (274, '/20240418140646-add-ip-column-to-events-table', '2024-10-02 13:06:35.751');
-INSERT INTO public.migrations VALUES (275, '/20240425132155-flag-trends-bigint', '2024-10-02 13:06:35.777');
-INSERT INTO public.migrations VALUES (276, '/20240430075605-add-scim-external-id', '2024-10-02 13:06:35.802');
-INSERT INTO public.migrations VALUES (277, '/20240506141345-lifecycle-initial-stage', '2024-10-02 13:06:35.81');
-INSERT INTO public.migrations VALUES (278, '/20240507075431-client-metrics-env-daily-bigint', '2024-10-02 13:06:35.835');
-INSERT INTO public.migrations VALUES (279, '/20240508153244-feature-lifecycles-status', '2024-10-02 13:06:35.852');
-INSERT INTO public.migrations VALUES (280, '/20240523093355-toggle-to-flag-rename', '2024-10-02 13:06:35.854');
-INSERT INTO public.migrations VALUES (281, '/20240523113322-roles-toggle-to-flag-rename', '2024-10-02 13:06:35.857');
-INSERT INTO public.migrations VALUES (282, '/20240611092538-add-created-by-to-features-view', '2024-10-02 13:06:35.861');
-INSERT INTO public.migrations VALUES (283, '/20240705111827-used-passwords-table', '2024-10-02 13:06:35.881');
-INSERT INTO public.migrations VALUES (284, '/20240716135038-integration-events', '2024-10-02 13:06:35.899');
-INSERT INTO public.migrations VALUES (285, '/20240806140453-add-archived-at-to-projects', '2024-10-02 13:06:35.902');
-INSERT INTO public.migrations VALUES (286, '/20240812120954-add-archived-at-to-projects', '2024-10-02 13:06:35.908');
-INSERT INTO public.migrations VALUES (287, '/20240812132633-events-type-index', '2024-10-02 13:06:35.913');
-INSERT INTO public.migrations VALUES (288, '/20240821141555-segment-no-project-cleanup', '2024-10-02 13:06:35.92');
-INSERT INTO public.migrations VALUES (289, '/20240823091442-normalize-token-types', '2024-10-02 13:06:35.922');
-INSERT INTO public.migrations VALUES (290, '/20240828154255-user-first-seen-at', '2024-10-02 13:06:35.924');
-INSERT INTO public.migrations VALUES (291, '/20240830102144-onboarding-events', '2024-10-02 13:06:35.942');
-INSERT INTO public.migrations VALUES (292, '/20240903152133-clear-onboarding-events', '2024-10-02 13:06:35.948');
-INSERT INTO public.migrations VALUES (293, '/20240904084114-add-update-feature-dependency-editor', '2024-10-02 13:06:35.952');
-INSERT INTO public.migrations VALUES (294, '/20240919083625-client-metrics-env-variants-daily-to-bigint', '2024-10-02 13:06:35.967');
+INSERT INTO public.migrations VALUES (1, '/20141020151056-initial-schema', '2024-10-02 22:42:03.348');
+INSERT INTO public.migrations VALUES (2, '/20141110144153-add-description-to-features', '2024-10-02 22:42:03.354');
+INSERT INTO public.migrations VALUES (3, '/20141117200435-add-parameters-template-to-strategies', '2024-10-02 22:42:03.357');
+INSERT INTO public.migrations VALUES (4, '/20141117202209-insert-default-strategy', '2024-10-02 22:42:03.362');
+INSERT INTO public.migrations VALUES (5, '/20141118071458-default-strategy-event', '2024-10-02 22:42:03.368');
+INSERT INTO public.migrations VALUES (6, '/20141215210141-005-archived-flag-to-features', '2024-10-02 22:42:03.37');
+INSERT INTO public.migrations VALUES (7, '/20150210152531-006-rename-eventtype', '2024-10-02 22:42:03.379');
+INSERT INTO public.migrations VALUES (8, '/20160618193924-add-strategies-to-features', '2024-10-02 22:42:03.39');
+INSERT INTO public.migrations VALUES (9, '/20161027134128-create-metrics', '2024-10-02 22:42:03.405');
+INSERT INTO public.migrations VALUES (10, '/20161104074441-create-client-instances', '2024-10-02 22:42:03.417');
+INSERT INTO public.migrations VALUES (11, '/20161205203516-create-client-applications', '2024-10-02 22:42:03.431');
+INSERT INTO public.migrations VALUES (12, '/20161212101749-better-strategy-parameter-definitions', '2024-10-02 22:42:03.445');
+INSERT INTO public.migrations VALUES (13, '/20170211085502-built-in-strategies', '2024-10-02 22:42:03.449');
+INSERT INTO public.migrations VALUES (14, '/20170211090541-add-default-strategies', '2024-10-02 22:42:03.455');
+INSERT INTO public.migrations VALUES (15, '/20170306233934-timestamp-with-tz', '2024-10-02 22:42:03.569');
+INSERT INTO public.migrations VALUES (16, '/20170628205541-add-sdk-version-to-client-instances', '2024-10-02 22:42:03.623');
+INSERT INTO public.migrations VALUES (17, '/20190123204125-add-variants-to-features', '2024-10-02 22:42:03.626');
+INSERT INTO public.migrations VALUES (18, '/20191023184858-flexible-rollout-strategy', '2024-10-02 22:42:03.634');
+INSERT INTO public.migrations VALUES (19, '/20200102184820-create-context-fields', '2024-10-02 22:42:03.655');
+INSERT INTO public.migrations VALUES (20, '/20200227202711-settings', '2024-10-02 22:42:03.67');
+INSERT INTO public.migrations VALUES (21, '/20200329191251-settings-secret', '2024-10-02 22:42:03.676');
+INSERT INTO public.migrations VALUES (22, '/20200416201319-create-users', '2024-10-02 22:42:03.697');
+INSERT INTO public.migrations VALUES (23, '/20200429175747-users-settings', '2024-10-02 22:42:03.701');
+INSERT INTO public.migrations VALUES (24, '/20200805091409-add-feature-toggle-type', '2024-10-02 22:42:03.72');
+INSERT INTO public.migrations VALUES (25, '/20200805094311-add-feature-type-to-features', '2024-10-02 22:42:03.724');
+INSERT INTO public.migrations VALUES (26, '/20200806091734-add-stale-flag-to-features', '2024-10-02 22:42:03.727');
+INSERT INTO public.migrations VALUES (27, '/20200810200901-add-created-at-to-feature-types', '2024-10-02 22:42:03.73');
+INSERT INTO public.migrations VALUES (28, '/20200928194947-add-projects', '2024-10-02 22:42:03.75');
+INSERT INTO public.migrations VALUES (29, '/20200928195238-add-project-id-to-features', '2024-10-02 22:42:03.754');
+INSERT INTO public.migrations VALUES (30, '/20201216140726-add-last-seen-to-features', '2024-10-02 22:42:03.757');
+INSERT INTO public.migrations VALUES (31, '/20210105083014-add-tag-and-tag-types', '2024-10-02 22:42:03.799');
+INSERT INTO public.migrations VALUES (32, '/20210119084617-add-addon-table', '2024-10-02 22:42:03.817');
+INSERT INTO public.migrations VALUES (33, '/20210121115438-add-deprecated-column-to-strategies', '2024-10-02 22:42:03.822');
+INSERT INTO public.migrations VALUES (34, '/20210127094440-add-tags-column-to-events', '2024-10-02 22:42:03.824');
+INSERT INTO public.migrations VALUES (35, '/20210208203708-add-stickiness-to-context', '2024-10-02 22:42:03.827');
+INSERT INTO public.migrations VALUES (36, '/20210212114759-add-session-table', '2024-10-02 22:42:03.844');
+INSERT INTO public.migrations VALUES (37, '/20210217195834-rbac-tables', '2024-10-02 22:42:03.876');
+INSERT INTO public.migrations VALUES (38, '/20210218090213-generate-server-identifier', '2024-10-02 22:42:03.882');
+INSERT INTO public.migrations VALUES (39, '/20210302080040-add-pk-to-client-instances', '2024-10-02 22:42:03.89');
+INSERT INTO public.migrations VALUES (40, '/20210304115810-change-default-timestamp-to-now', '2024-10-02 22:42:03.894');
+INSERT INTO public.migrations VALUES (41, '/20210304141005-add-announce-field-to-application', '2024-10-02 22:42:03.898');
+INSERT INTO public.migrations VALUES (42, '/20210304150739-add-created-by-to-application', '2024-10-02 22:42:03.901');
+INSERT INTO public.migrations VALUES (43, '/20210322104356-api-tokens-table', '2024-10-02 22:42:03.911');
+INSERT INTO public.migrations VALUES (44, '/20210322104357-api-tokens-convert-enterprise', '2024-10-02 22:42:03.914');
+INSERT INTO public.migrations VALUES (45, '/20210323073508-reset-application-announcements', '2024-10-02 22:42:03.918');
+INSERT INTO public.migrations VALUES (46, '/20210409120136-create-reset-token-table', '2024-10-02 22:42:03.93');
+INSERT INTO public.migrations VALUES (47, '/20210414141220-fix-misspellings-in-role-descriptions', '2024-10-02 22:42:03.934');
+INSERT INTO public.migrations VALUES (48, '/20210415173116-rbac-rename-roles', '2024-10-02 22:42:03.937');
+INSERT INTO public.migrations VALUES (49, '/20210421133845-add-sort-order-to-strategies', '2024-10-02 22:42:03.94');
+INSERT INTO public.migrations VALUES (50, '/20210421135405-add-display-name-and-update-description-for-strategies', '2024-10-02 22:42:03.943');
+INSERT INTO public.migrations VALUES (51, '/20210423103647-lowercase-all-emails', '2024-10-02 22:42:03.95');
+INSERT INTO public.migrations VALUES (52, '/20210428062103-user-permission-to-rbac', '2024-10-02 22:42:03.953');
+INSERT INTO public.migrations VALUES (53, '/20210428103922-patch-role-table', '2024-10-02 22:42:03.956');
+INSERT INTO public.migrations VALUES (54, '/20210428103923-onboard-projects-to-rbac', '2024-10-02 22:42:03.961');
+INSERT INTO public.migrations VALUES (55, '/20210428103924-patch-admin-role-name', '2024-10-02 22:42:03.964');
+INSERT INTO public.migrations VALUES (56, '/20210428103924-patch-admin_role', '2024-10-02 22:42:03.968');
+INSERT INTO public.migrations VALUES (57, '/20210428103924-patch-role_permissions', '2024-10-02 22:42:03.971');
+INSERT INTO public.migrations VALUES (58, '/20210504101429-deprecate-strategies', '2024-10-02 22:42:03.974');
+INSERT INTO public.migrations VALUES (59, '/20210520171325-update-role-descriptions', '2024-10-02 22:42:03.976');
+INSERT INTO public.migrations VALUES (60, '/20210602115555-create-feedback-table', '2024-10-02 22:42:03.992');
+INSERT INTO public.migrations VALUES (61, '/20210610085817-features-strategies-table', '2024-10-02 22:42:04.024');
+INSERT INTO public.migrations VALUES (62, '/20210615115226-migrate-strategies-to-feature-strategies', '2024-10-02 22:42:04.03');
+INSERT INTO public.migrations VALUES (63, '/20210618091331-project-environments-table', '2024-10-02 22:42:04.042');
+INSERT INTO public.migrations VALUES (64, '/20210618100913-add-cascade-for-user-feedback', '2024-10-02 22:42:04.049');
+INSERT INTO public.migrations VALUES (65, '/20210624114602-change-type-of-feature-archived', '2024-10-02 22:42:04.067');
+INSERT INTO public.migrations VALUES (66, '/20210624114855-drop-strategies-column-from-features', '2024-10-02 22:42:04.08');
+INSERT INTO public.migrations VALUES (67, '/20210624115109-drop-enabled-column-from-features', '2024-10-02 22:42:04.084');
+INSERT INTO public.migrations VALUES (68, '/20210625102126-connect-default-project-to-global-environment', '2024-10-02 22:42:04.091');
+INSERT INTO public.migrations VALUES (69, '/20210629130734-add-health-rating-to-project', '2024-10-02 22:42:04.094');
+INSERT INTO public.migrations VALUES (70, '/20210830113948-connect-projects-to-global-envrionments', '2024-10-02 22:42:04.098');
+INSERT INTO public.migrations VALUES (71, '/20210831072631-add-sort-order-and-type-to-env', '2024-10-02 22:42:04.106');
+INSERT INTO public.migrations VALUES (72, '/20210907124058-add-dbcritic-indices', '2024-10-02 22:42:04.147');
+INSERT INTO public.migrations VALUES (73, '/20210907124850-add-dbcritic-primary-keys', '2024-10-02 22:42:04.155');
+INSERT INTO public.migrations VALUES (74, '/20210908100701-add-enabled-to-environments', '2024-10-02 22:42:04.161');
+INSERT INTO public.migrations VALUES (75, '/20210909085651-add-protected-field-to-environments', '2024-10-02 22:42:04.164');
+INSERT INTO public.migrations VALUES (76, '/20210913103159-api-keys-scoping', '2024-10-02 22:42:04.168');
+INSERT INTO public.migrations VALUES (77, '/20210915122001-add-project-and-environment-columns-to-events', '2024-10-02 22:42:04.179');
+INSERT INTO public.migrations VALUES (78, '/20210920104218-rename-global-env-to-default-env', '2024-10-02 22:42:04.192');
+INSERT INTO public.migrations VALUES (79, '/20210921105032-client-api-tokens-default', '2024-10-02 22:42:04.196');
+INSERT INTO public.migrations VALUES (80, '/20210922084509-add-non-null-constraint-to-environment-type', '2024-10-02 22:42:04.199');
+INSERT INTO public.migrations VALUES (81, '/20210922120521-add-tag-type-permission', '2024-10-02 22:42:04.203');
+INSERT INTO public.migrations VALUES (82, '/20210928065411-remove-displayname-from-environments', '2024-10-02 22:42:04.205');
+INSERT INTO public.migrations VALUES (83, '/20210928080601-add-development-and-production-environments', '2024-10-02 22:42:04.209');
+INSERT INTO public.migrations VALUES (84, '/20210928082228-connect-default-environment-to-all-existing-projects', '2024-10-02 22:42:04.212');
+INSERT INTO public.migrations VALUES (85, '/20211004104917-client-metrics-env', '2024-10-02 22:42:04.231');
+INSERT INTO public.migrations VALUES (86, '/20211011094226-add-environment-to-client-instances', '2024-10-02 22:42:04.245');
+INSERT INTO public.migrations VALUES (87, '/20211013093114-feature-strategies-parameters-not-null', '2024-10-02 22:42:04.254');
+INSERT INTO public.migrations VALUES (88, '/20211029094324-set-sort-order-env', '2024-10-02 22:42:04.258');
+INSERT INTO public.migrations VALUES (89, '/20211105104316-add-feature-name-column-to-events', '2024-10-02 22:42:04.267');
+INSERT INTO public.migrations VALUES (90, '/20211105105509-add-predata-column-to-events', '2024-10-02 22:42:04.27');
+INSERT INTO public.migrations VALUES (91, '/20211108130333-create-user-splash-table', '2024-10-02 22:42:04.289');
+INSERT INTO public.migrations VALUES (92, '/20211109103930-add-splash-entry-for-users', '2024-10-02 22:42:04.294');
+INSERT INTO public.migrations VALUES (93, '/20211126112551-disable-default-environment', '2024-10-02 22:42:04.3');
+INSERT INTO public.migrations VALUES (94, '/20211130142314-add-updated-at-to-projects', '2024-10-02 22:42:04.304');
+INSERT INTO public.migrations VALUES (95, '/20211202120808-add-custom-roles', '2024-10-02 22:42:04.366');
+INSERT INTO public.migrations VALUES (96, '/20211209205201-drop-client-metrics', '2024-10-02 22:42:04.388');
+INSERT INTO public.migrations VALUES (97, '/20220103134659-add-permissions-to-project-roles', '2024-10-02 22:42:04.404');
+INSERT INTO public.migrations VALUES (98, '/20220103143843-add-permissions-to-editor-role', '2024-10-02 22:42:04.407');
+INSERT INTO public.migrations VALUES (99, '/20220111112804-update-permission-descriptions', '2024-10-02 22:42:04.411');
+INSERT INTO public.migrations VALUES (100, '/20220111115613-move-feature-toggle-permission', '2024-10-02 22:42:04.415');
+INSERT INTO public.migrations VALUES (101, '/20220111120346-roles-unique-name', '2024-10-02 22:42:04.423');
+INSERT INTO public.migrations VALUES (102, '/20220111121010-update-project-for-editor-role', '2024-10-02 22:42:04.43');
+INSERT INTO public.migrations VALUES (103, '/20220111125620-role-permission-empty-string-for-non-environment-type', '2024-10-02 22:42:04.436');
+INSERT INTO public.migrations VALUES (104, '/20220119182603-update-toggle-types-description', '2024-10-02 22:42:04.44');
+INSERT INTO public.migrations VALUES (105, '/20220125200908-convert-old-feature-events', '2024-10-02 22:42:04.447');
+INSERT INTO public.migrations VALUES (106, '/20220128081242-add-impressiondata-to-features', '2024-10-02 22:42:04.451');
+INSERT INTO public.migrations VALUES (107, '/20220129113106-metrics-counters-as-bigint', '2024-10-02 22:42:04.471');
+INSERT INTO public.migrations VALUES (108, '/20220131082150-reset-feedback-form', '2024-10-02 22:42:04.484');
+INSERT INTO public.migrations VALUES (109, '/20220224081422-remove-project-column-from-roles', '2024-10-02 22:42:04.487');
+INSERT INTO public.migrations VALUES (110, '/20220224111626-add-current-time-context-field', '2024-10-02 22:42:04.49');
+INSERT INTO public.migrations VALUES (111, '/20220307130902-add-segments', '2024-10-02 22:42:04.523');
+INSERT INTO public.migrations VALUES (112, '/20220331085057-add-api-link-table', '2024-10-02 22:42:04.536');
+INSERT INTO public.migrations VALUES (113, '/20220405103233-add-segments-name-index', '2024-10-02 22:42:04.543');
+INSERT INTO public.migrations VALUES (114, '/20220408081222-clean-up-duplicate-foreign-key-role-permission', '2024-10-02 22:42:04.547');
+INSERT INTO public.migrations VALUES (115, '/20220411103724-add-legal-value-description', '2024-10-02 22:42:04.573');
+INSERT INTO public.migrations VALUES (116, '/20220425090847-add-token-permission', '2024-10-02 22:42:04.586');
+INSERT INTO public.migrations VALUES (117, '/20220511111823-patch-broken-feature-strategies', '2024-10-02 22:42:04.59');
+INSERT INTO public.migrations VALUES (118, '/20220511124923-fix-patch-broken-feature-strategies', '2024-10-02 22:42:04.592');
+INSERT INTO public.migrations VALUES (119, '/20220528143630-dont-cascade-environment-deletion-to-apitokens', '2024-10-02 22:42:04.595');
+INSERT INTO public.migrations VALUES (120, '/20220603081324-add-archive-at-to-feature-toggle', '2024-10-02 22:42:04.599');
+INSERT INTO public.migrations VALUES (121, '/20220704115624-add-user-groups', '2024-10-02 22:42:04.635');
+INSERT INTO public.migrations VALUES (122, '/20220711084613-add-projects-and-environments-for-addons', '2024-10-02 22:42:04.641');
+INSERT INTO public.migrations VALUES (123, '/20220808084524-add-group-permissions', '2024-10-02 22:42:04.644');
+INSERT INTO public.migrations VALUES (124, '/20220808110415-add-projects-foreign-key', '2024-10-02 22:42:04.652');
+INSERT INTO public.migrations VALUES (125, '/20220816121136-add-metadata-to-api-keys', '2024-10-02 22:42:04.655');
+INSERT INTO public.migrations VALUES (126, '/20220817130250-alter-api-tokens', '2024-10-02 22:42:04.657');
+INSERT INTO public.migrations VALUES (127, '/20220908093515-add-public-signup-tokens', '2024-10-02 22:42:04.681');
+INSERT INTO public.migrations VALUES (128, '/20220912165344-pat-tokens', '2024-10-02 22:42:04.695');
+INSERT INTO public.migrations VALUES (129, '/20220916093515-add-url-to-public-signup-tokens', '2024-10-02 22:42:04.698');
+INSERT INTO public.migrations VALUES (130, '/20220927110212-add-enabled-to-public-signup-tokens', '2024-10-02 22:42:04.701');
+INSERT INTO public.migrations VALUES (131, '/20221010114644-pat-auto-increment', '2024-10-02 22:42:04.718');
+INSERT INTO public.migrations VALUES (132, '/20221011155007-add-user-groups-mappings', '2024-10-02 22:42:04.73');
+INSERT INTO public.migrations VALUES (133, '/20221103111940-fix-migrations', '2024-10-02 22:42:04.733');
+INSERT INTO public.migrations VALUES (134, '/20221103112200-change-request', '2024-10-02 22:42:04.773');
+INSERT INTO public.migrations VALUES (135, '/20221103125732-change-request-remove-unique', '2024-10-02 22:42:04.778');
+INSERT INTO public.migrations VALUES (136, '/20221104123349-change-request-approval', '2024-10-02 22:42:04.797');
+INSERT INTO public.migrations VALUES (137, '/20221107121635-move-variants-to-per-environment', '2024-10-02 22:42:04.815');
+INSERT INTO public.migrations VALUES (138, '/20221107132528-change-request-project-options', '2024-10-02 22:42:04.819');
+INSERT INTO public.migrations VALUES (139, '/20221108114358-add-change-request-permissions', '2024-10-02 22:42:04.822');
+INSERT INTO public.migrations VALUES (140, '/20221110104933-add-change-request-settings', '2024-10-02 22:42:04.829');
+INSERT INTO public.migrations VALUES (141, '/20221110144113-revert-change-request-project-options', '2024-10-02 22:42:04.834');
+INSERT INTO public.migrations VALUES (142, '/20221114150559-change-request-comments', '2024-10-02 22:42:04.857');
+INSERT INTO public.migrations VALUES (143, '/20221115072335-add-required-approvals', '2024-10-02 22:42:04.871');
+INSERT INTO public.migrations VALUES (144, '/20221121114357-add-permission-for-environment-variants', '2024-10-02 22:42:04.877');
+INSERT INTO public.migrations VALUES (145, '/20221121133546-soft-delete-user', '2024-10-02 22:42:04.88');
+INSERT INTO public.migrations VALUES (146, '/20221124123914-add-favorites', '2024-10-02 22:42:04.899');
+INSERT INTO public.migrations VALUES (147, '/20221125185244-change-request-unique-approvals', '2024-10-02 22:42:04.907');
+INSERT INTO public.migrations VALUES (148, '/20221128165141-change-request-min-approvals', '2024-10-02 22:42:04.91');
+INSERT INTO public.migrations VALUES (149, '/20221205122253-skip-change-request', '2024-10-02 22:42:04.913');
+INSERT INTO public.migrations VALUES (150, '/20221220160345-user-pat-permissions', '2024-10-02 22:42:04.916');
+INSERT INTO public.migrations VALUES (151, '/20221221144132-service-account-users', '2024-10-02 22:42:04.918');
+INSERT INTO public.migrations VALUES (152, '/20230125065315-project-stats-table', '2024-10-02 22:42:04.93');
+INSERT INTO public.migrations VALUES (153, '/20230127111638-new-project-stats-field', '2024-10-02 22:42:04.933');
+INSERT INTO public.migrations VALUES (154, '/20230130113337-revert-user-pat-permissions', '2024-10-02 22:42:04.936');
+INSERT INTO public.migrations VALUES (155, '/20230208084046-project-api-token-permissions', '2024-10-02 22:42:04.939');
+INSERT INTO public.migrations VALUES (156, '/20230208093627-assign-project-api-token-permissions-editor', '2024-10-02 22:42:04.941');
+INSERT INTO public.migrations VALUES (157, '/20230208093750-assign-project-api-token-permissions-owner', '2024-10-02 22:42:04.944');
+INSERT INTO public.migrations VALUES (158, '/20230208093942-assign-project-api-token-permissions-member', '2024-10-02 22:42:04.947');
+INSERT INTO public.migrations VALUES (159, '/20230222084211-add-login-events-table', '2024-10-02 22:42:04.967');
+INSERT INTO public.migrations VALUES (160, '/20230222154915-create-notiications-table', '2024-10-02 22:42:04.989');
+INSERT INTO public.migrations VALUES (161, '/20230224093446-drop-createdBy-from-notifications-table', '2024-10-02 22:42:04.993');
+INSERT INTO public.migrations VALUES (162, '/20230227115320-rename-login-events-table-to-sign-on-log', '2024-10-02 22:42:04.996');
+INSERT INTO public.migrations VALUES (163, '/20230227120500-change-display-name-for-variants-per-env-permission', '2024-10-02 22:42:04.999');
+INSERT INTO public.migrations VALUES (164, '/20230227123106-add-setting-for-sign-on-log-retention', '2024-10-02 22:42:05.002');
+INSERT INTO public.migrations VALUES (165, '/20230302133740-rename-sign-on-log-table-to-login-history', '2024-10-02 22:42:05.004');
+INSERT INTO public.migrations VALUES (166, '/20230306103400-add-project-column-to-segments', '2024-10-02 22:42:05.008');
+INSERT INTO public.migrations VALUES (167, '/20230306103400-remove-direct-link-from-segment-permissions-to-admin', '2024-10-02 22:42:05.012');
+INSERT INTO public.migrations VALUES (168, '/20230309174400-add-project-segment-permission', '2024-10-02 22:42:05.014');
+INSERT INTO public.migrations VALUES (169, '/20230314131041-project-settings', '2024-10-02 22:42:05.023');
+INSERT INTO public.migrations VALUES (170, '/20230316092547-remove-project-stats-column', '2024-10-02 22:42:05.026');
+INSERT INTO public.migrations VALUES (171, '/20230411085947-skip-change-request-ui', '2024-10-02 22:42:05.029');
+INSERT INTO public.migrations VALUES (172, '/20230412062635-add-change-request-title', '2024-10-02 22:42:05.032');
+INSERT INTO public.migrations VALUES (173, '/20230412125618-add-title-to-strategy', '2024-10-02 22:42:05.037');
+INSERT INTO public.migrations VALUES (174, '/20230414105818-add-root-role-to-groups', '2024-10-02 22:42:05.043');
+INSERT INTO public.migrations VALUES (175, '/20230419104126-add-disabled-field-to-feature-strategy', '2024-10-02 22:42:05.049');
+INSERT INTO public.migrations VALUES (176, '/20230420125500-v5-strategy-changes', '2024-10-02 22:42:05.054');
+INSERT INTO public.migrations VALUES (177, '/20230420211308-update-context-fields-add-sessionId', '2024-10-02 22:42:05.065');
+INSERT INTO public.migrations VALUES (178, '/20230424090942-project-default-strategy-settings', '2024-10-02 22:42:05.077');
+INSERT INTO public.migrations VALUES (179, '/20230504145945-variant-metrics', '2024-10-02 22:42:05.109');
+INSERT INTO public.migrations VALUES (180, '/20230510113903-fix-api-token-username-migration', '2024-10-02 22:42:05.113');
+INSERT INTO public.migrations VALUES (181, '/20230615122909-fix-env-sort-order', '2024-10-02 22:42:05.118');
+INSERT INTO public.migrations VALUES (182, '/20230619105029-new-fine-grained-api-token-permissions', '2024-10-02 22:42:05.124');
+INSERT INTO public.migrations VALUES (183, '/20230619110243-assign-apitoken-permissions-to-rootroles', '2024-10-02 22:42:05.133');
+INSERT INTO public.migrations VALUES (184, '/20230621141239-refactor-api-token-permissions', '2024-10-02 22:42:05.137');
+INSERT INTO public.migrations VALUES (185, '/20230630080126-delete-deprecated-permissions', '2024-10-02 22:42:05.14');
+INSERT INTO public.migrations VALUES (186, '/20230706123907-events-announced-column', '2024-10-02 22:42:05.143');
+INSERT INTO public.migrations VALUES (187, '/20230711094214-add-potentially-stale-flag', '2024-10-02 22:42:05.147');
+INSERT INTO public.migrations VALUES (188, '/20230711163311-project-feature-limit', '2024-10-02 22:42:05.15');
+INSERT INTO public.migrations VALUES (189, '/20230712091834-strategy-variants', '2024-10-02 22:42:05.156');
+INSERT INTO public.migrations VALUES (190, '/20230802092725-add-last-seen-column-to-feature-environments', '2024-10-02 22:42:05.161');
+INSERT INTO public.migrations VALUES (191, '/20230802141830-add-feature-and-environment-last-seen-at-to-features-view', '2024-10-02 22:42:05.166');
+INSERT INTO public.migrations VALUES (192, '/20230803061359-change-request-optional-feature', '2024-10-02 22:42:05.169');
+INSERT INTO public.migrations VALUES (193, '/20230808104232-update-root-roles-descriptions', '2024-10-02 22:42:05.172');
+INSERT INTO public.migrations VALUES (194, '/20230814095253-change-request-rejections', '2024-10-02 22:42:05.186');
+INSERT INTO public.migrations VALUES (195, '/20230814115436-change-request-timzone-timestamps', '2024-10-02 22:42:05.248');
+INSERT INTO public.migrations VALUES (196, '/20230815065908-change-request-approve-reject-permission', '2024-10-02 22:42:05.281');
+INSERT INTO public.migrations VALUES (197, '/20230817095805-client-applications-usage-table', '2024-10-02 22:42:05.297');
+INSERT INTO public.migrations VALUES (198, '/20230818124614-update-client-applications-usage-table', '2024-10-02 22:42:05.315');
+INSERT INTO public.migrations VALUES (199, '/20230830121352-update-client-applications-usage-table', '2024-10-02 22:42:05.327');
+INSERT INTO public.migrations VALUES (200, '/20230905122605-add-feature-naming-description', '2024-10-02 22:42:05.336');
+INSERT INTO public.migrations VALUES (201, '/20230919104006-dependent-features', '2024-10-02 22:42:05.339');
+INSERT INTO public.migrations VALUES (202, '/20230927071830-reset-pnps-feedback', '2024-10-02 22:42:05.354');
+INSERT INTO public.migrations VALUES (203, '/20230927172930-events-announced-index', '2024-10-02 22:42:05.357');
+INSERT INTO public.migrations VALUES (204, '/20231002122426-update-dependency-permission', '2024-10-02 22:42:05.366');
+INSERT INTO public.migrations VALUES (205, '/20231003113443-last-seen-at-metrics-table', '2024-10-02 22:42:05.368');
+INSERT INTO public.migrations VALUES (206, '/20231004120900-create-changes-stats-table-and-trigger', '2024-10-02 22:42:05.391');
+INSERT INTO public.migrations VALUES (207, '/20231012082537-message-banners', '2024-10-02 22:42:05.408');
+INSERT INTO public.migrations VALUES (208, '/20231019110154-rename-message-banners-table-to-banners', '2024-10-02 22:42:05.412');
+INSERT INTO public.migrations VALUES (209, '/20231024121307-add-change-request-schedule', '2024-10-02 22:42:05.42');
+INSERT INTO public.migrations VALUES (210, '/20231025093422-default-project-mode', '2024-10-02 22:42:05.428');
+INSERT INTO public.migrations VALUES (211, '/20231030091931-add-created-by-and-status-change-request-schedule', '2024-10-02 22:42:05.436');
+INSERT INTO public.migrations VALUES (212, '/20231103064746-change-request-schedule-change-type', '2024-10-02 22:42:05.468');
+INSERT INTO public.migrations VALUES (213, '/20231121153304-add-permission-create-tag-type', '2024-10-02 22:42:05.471');
+INSERT INTO public.migrations VALUES (214, '/20231122121456-dedupe-any-duplicate-permissions', '2024-10-02 22:42:05.476');
+INSERT INTO public.migrations VALUES (215, '/20231123100052-drop-last-seen-foreign-key', '2024-10-02 22:42:05.479');
+INSERT INTO public.migrations VALUES (216, '/20231123155649-favor-permission-name-over-id', '2024-10-02 22:42:05.512');
+INSERT INTO public.migrations VALUES (217, '/20231211121444-features-created-by', '2024-10-02 22:42:05.519');
+INSERT INTO public.migrations VALUES (218, '/20231211122322-feature-types-created-by', '2024-10-02 22:42:05.522');
+INSERT INTO public.migrations VALUES (219, '/20231211122351-feature-tag-created-by', '2024-10-02 22:42:05.524');
+INSERT INTO public.migrations VALUES (220, '/20231211122426-feature-strategies-created-by', '2024-10-02 22:42:05.527');
+INSERT INTO public.migrations VALUES (221, '/20231211132341-add-created-by-to-role-permission', '2024-10-02 22:42:05.529');
+INSERT INTO public.migrations VALUES (222, '/20231211133008-add-created-by-to-role-user', '2024-10-02 22:42:05.531');
+INSERT INTO public.migrations VALUES (223, '/20231211133920-add-created-by-to-roles', '2024-10-02 22:42:05.534');
+INSERT INTO public.migrations VALUES (224, '/20231211134130-add-created-by-to-users', '2024-10-02 22:42:05.537');
+INSERT INTO public.migrations VALUES (225, '/20231211134633-add-created-by-to-apitokens', '2024-10-02 22:42:05.539');
+INSERT INTO public.migrations VALUES (226, '/20231212094044-event-created-by-user-id', '2024-10-02 22:42:05.545');
+INSERT INTO public.migrations VALUES (227, '/20231213111906-add-reason-to-change-request-schedule', '2024-10-02 22:42:05.548');
+INSERT INTO public.migrations VALUES (228, '/20231215105713-incoming-webhooks', '2024-10-02 22:42:05.581');
+INSERT INTO public.migrations VALUES (229, '/20231218165612-inc-webhook-tokens-rename-secret-to-token', '2024-10-02 22:42:05.585');
+INSERT INTO public.migrations VALUES (230, '/20231219100343-rename-new-columns-to-created-by-user-id', '2024-10-02 22:42:05.589');
+INSERT INTO public.migrations VALUES (231, '/20231221143955-feedback-table', '2024-10-02 22:42:05.603');
+INSERT INTO public.migrations VALUES (232, '/20231222071533-unleash-system-user', '2024-10-02 22:42:05.611');
+INSERT INTO public.migrations VALUES (233, '/20240102142100-incoming-webhooks-created-by', '2024-10-02 22:42:05.617');
+INSERT INTO public.migrations VALUES (234, '/20240102205517-observable-events', '2024-10-02 22:42:05.645');
+INSERT INTO public.migrations VALUES (235, '/20240108151652-add-daily-metrics', '2024-10-02 22:42:05.671');
+INSERT INTO public.migrations VALUES (236, '/20240109093021-incoming-webhooks-description', '2024-10-02 22:42:05.674');
+INSERT INTO public.migrations VALUES (237, '/20240109095348-add-reason-column-to-schedule', '2024-10-02 22:42:05.679');
+INSERT INTO public.migrations VALUES (238, '/20240111075911-update-system-user-email', '2024-10-02 22:42:05.683');
+INSERT INTO public.migrations VALUES (239, '/20240111125100-automated-actions', '2024-10-02 22:42:05.719');
+INSERT INTO public.migrations VALUES (240, '/20240116104456-drop-unused-column-permissionid', '2024-10-02 22:42:05.724');
+INSERT INTO public.migrations VALUES (241, '/20240116154700-unleash-admin-token-user', '2024-10-02 22:42:05.728');
+INSERT INTO public.migrations VALUES (242, '/20240117093601-add-more-granular-project-permissions', '2024-10-02 22:42:05.734');
+INSERT INTO public.migrations VALUES (243, '/20240118093611-missing-primary-keys', '2024-10-02 22:42:05.77');
+INSERT INTO public.migrations VALUES (244, '/20240119171200-action-states', '2024-10-02 22:42:05.798');
+INSERT INTO public.migrations VALUES (245, '/20240124123000-add-enabled-to-action-sets', '2024-10-02 22:42:05.801');
+INSERT INTO public.migrations VALUES (246, '/20240125084701-add-user-trends', '2024-10-02 22:42:05.809');
+INSERT INTO public.migrations VALUES (247, '/20240125085703-users-table-increae-image-url-size', '2024-10-02 22:42:05.813');
+INSERT INTO public.migrations VALUES (248, '/20240125090553-events-fix-incorrectly-assigned-sysuser-id', '2024-10-02 22:42:05.818');
+INSERT INTO public.migrations VALUES (249, '/20240125100000-events-system-user-old2new', '2024-10-02 22:42:05.821');
+INSERT INTO public.migrations VALUES (250, '/20240126095544-add-flag-trends', '2024-10-02 22:42:05.835');
+INSERT INTO public.migrations VALUES (251, '/20240130104757-flag-trends-health-time-to-production', '2024-10-02 22:42:05.839');
+INSERT INTO public.migrations VALUES (252, '/20240207164033-client-applications-announced-index', '2024-10-02 22:42:05.845');
+INSERT INTO public.migrations VALUES (253, '/20240208123212-create-stat-traffic-usage-table', '2024-10-02 22:42:05.87');
+INSERT INTO public.migrations VALUES (254, '/20240208130439-events-revision-id-index', '2024-10-02 22:42:05.877');
+INSERT INTO public.migrations VALUES (255, '/20240215133213-flag-trends-users', '2024-10-02 22:42:05.88');
+INSERT INTO public.migrations VALUES (256, '/20240220130622-add-action-state-indexes', '2024-10-02 22:42:05.893');
+INSERT INTO public.migrations VALUES (257, '/20240221082758-action-events', '2024-10-02 22:42:05.916');
+INSERT INTO public.migrations VALUES (258, '/20240221115502-drop-action-states', '2024-10-02 22:42:05.921');
+INSERT INTO public.migrations VALUES (259, '/20240222123532-project-metrics-summary-trends', '2024-10-02 22:42:05.948');
+INSERT INTO public.migrations VALUES (260, '/20240229093231-drop-fk-and-cascade-in-trends', '2024-10-02 22:42:05.952');
+INSERT INTO public.migrations VALUES (261, '/20240304084102-rename-observable-events-to-signals', '2024-10-02 22:42:05.978');
+INSERT INTO public.migrations VALUES (262, '/20240304160659-add-environment-type-trends', '2024-10-02 22:42:06.002');
+INSERT INTO public.migrations VALUES (263, '/20240305094305-features-remove-archived', '2024-10-02 22:42:06.006');
+INSERT INTO public.migrations VALUES (264, '/20240305121426-add-created-at-environment-type-trends', '2024-10-02 22:42:06.009');
+INSERT INTO public.migrations VALUES (265, '/20240305121702-add-metrics-summary-columns-to-flag-trends', '2024-10-02 22:42:06.012');
+INSERT INTO public.migrations VALUES (266, '/20240305131822-add-scim-id-column-to-user', '2024-10-02 22:42:06.018');
+INSERT INTO public.migrations VALUES (267, '/20240306145609-make-scim-id-idx-unique', '2024-10-02 22:42:06.025');
+INSERT INTO public.migrations VALUES (268, '/20240325081847-add-scim-id-for-groups', '2024-10-02 22:42:06.034');
+INSERT INTO public.migrations VALUES (269, '/20240326122126-add-index-on-group-name', '2024-10-02 22:42:06.04');
+INSERT INTO public.migrations VALUES (270, '/20240329064629-revert-feature-archived', '2024-10-02 22:42:06.044');
+INSERT INTO public.migrations VALUES (271, '/20240405120422-add-feature-lifecycles', '2024-10-02 22:42:06.058');
+INSERT INTO public.migrations VALUES (272, '/20240405174629-jobs', '2024-10-02 22:42:06.08');
+INSERT INTO public.migrations VALUES (273, '/20240408104624-fix-environment-type-trends', '2024-10-02 22:42:06.1');
+INSERT INTO public.migrations VALUES (274, '/20240418140646-add-ip-column-to-events-table', '2024-10-02 22:42:06.109');
+INSERT INTO public.migrations VALUES (275, '/20240425132155-flag-trends-bigint', '2024-10-02 22:42:06.136');
+INSERT INTO public.migrations VALUES (276, '/20240430075605-add-scim-external-id', '2024-10-02 22:42:06.159');
+INSERT INTO public.migrations VALUES (277, '/20240506141345-lifecycle-initial-stage', '2024-10-02 22:42:06.163');
+INSERT INTO public.migrations VALUES (278, '/20240507075431-client-metrics-env-daily-bigint', '2024-10-02 22:42:06.189');
+INSERT INTO public.migrations VALUES (279, '/20240508153244-feature-lifecycles-status', '2024-10-02 22:42:06.205');
+INSERT INTO public.migrations VALUES (280, '/20240523093355-toggle-to-flag-rename', '2024-10-02 22:42:06.207');
+INSERT INTO public.migrations VALUES (281, '/20240523113322-roles-toggle-to-flag-rename', '2024-10-02 22:42:06.21');
+INSERT INTO public.migrations VALUES (282, '/20240611092538-add-created-by-to-features-view', '2024-10-02 22:42:06.214');
+INSERT INTO public.migrations VALUES (283, '/20240705111827-used-passwords-table', '2024-10-02 22:42:06.233');
+INSERT INTO public.migrations VALUES (284, '/20240716135038-integration-events', '2024-10-02 22:42:06.251');
+INSERT INTO public.migrations VALUES (285, '/20240806140453-add-archived-at-to-projects', '2024-10-02 22:42:06.255');
+INSERT INTO public.migrations VALUES (286, '/20240812120954-add-archived-at-to-projects', '2024-10-02 22:42:06.26');
+INSERT INTO public.migrations VALUES (287, '/20240812132633-events-type-index', '2024-10-02 22:42:06.266');
+INSERT INTO public.migrations VALUES (288, '/20240821141555-segment-no-project-cleanup', '2024-10-02 22:42:06.272');
+INSERT INTO public.migrations VALUES (289, '/20240823091442-normalize-token-types', '2024-10-02 22:42:06.275');
+INSERT INTO public.migrations VALUES (290, '/20240828154255-user-first-seen-at', '2024-10-02 22:42:06.278');
+INSERT INTO public.migrations VALUES (291, '/20240830102144-onboarding-events', '2024-10-02 22:42:06.296');
+INSERT INTO public.migrations VALUES (292, '/20240903152133-clear-onboarding-events', '2024-10-02 22:42:06.302');
+INSERT INTO public.migrations VALUES (293, '/20240904084114-add-update-feature-dependency-editor', '2024-10-02 22:42:06.307');
+INSERT INTO public.migrations VALUES (294, '/20240919083625-client-metrics-env-variants-daily-to-bigint', '2024-10-02 22:42:06.323');
 
 
 --
@@ -2797,61 +2794,61 @@ INSERT INTO public.migrations VALUES (294, '/20240919083625-client-metrics-env-v
 -- Data for Name: permissions; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.permissions VALUES (1, 'ADMIN', 'Admin', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (3, 'CREATE_STRATEGY', 'Create activation strategies', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (4, 'CREATE_ADDON', 'Create addons', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (5, 'DELETE_ADDON', 'Delete addons', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (6, 'UPDATE_ADDON', 'Update addons', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (9, 'UPDATE_APPLICATION', 'Update applications', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (10, 'UPDATE_TAG_TYPE', 'Update tag types', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (11, 'DELETE_TAG_TYPE', 'Delete tag types', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (12, 'CREATE_PROJECT', 'Create projects', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (13, 'UPDATE_PROJECT', 'Update project', 'project', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (14, 'DELETE_PROJECT', 'Delete project', 'project', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (15, 'UPDATE_STRATEGY', 'Update strategies', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (16, 'DELETE_STRATEGY', 'Delete strategies', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (17, 'UPDATE_CONTEXT_FIELD', 'Update context fields', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (18, 'CREATE_CONTEXT_FIELD', 'Create context fields', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (19, 'DELETE_CONTEXT_FIELD', 'Delete context fields', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (20, 'READ_ROLE', 'Read roles', 'root', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (25, 'CREATE_FEATURE_STRATEGY', 'Create activation strategies', 'environment', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (26, 'UPDATE_FEATURE_STRATEGY', 'Update activation strategies', 'environment', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (27, 'DELETE_FEATURE_STRATEGY', 'Delete activation strategies', 'environment', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (50, 'CREATE_CLIENT_API_TOKEN', 'Create CLIENT API tokens', 'root', '2024-10-02 13:06:34.858811+13');
-INSERT INTO public.permissions VALUES (29, 'UPDATE_FEATURE_VARIANTS', 'Create/edit variants', 'project', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (31, 'CREATE_SEGMENT', 'Create segments', 'root', '2024-10-02 13:06:34.301041+13');
-INSERT INTO public.permissions VALUES (32, 'UPDATE_SEGMENT', 'Edit segments', 'root', '2024-10-02 13:06:34.301041+13');
-INSERT INTO public.permissions VALUES (33, 'DELETE_SEGMENT', 'Delete segments', 'root', '2024-10-02 13:06:34.301041+13');
-INSERT INTO public.permissions VALUES (42, 'READ_PROJECT_API_TOKEN', 'Read api tokens for a specific project', 'project', '2024-10-02 13:06:34.720907+13');
-INSERT INTO public.permissions VALUES (43, 'CREATE_PROJECT_API_TOKEN', 'Create api tokens for a specific project', 'project', '2024-10-02 13:06:34.720907+13');
-INSERT INTO public.permissions VALUES (44, 'DELETE_PROJECT_API_TOKEN', 'Delete api tokens for a specific project', 'project', '2024-10-02 13:06:34.720907+13');
-INSERT INTO public.permissions VALUES (37, 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', 'Update variants', 'environment', '2024-10-02 13:06:34.664709+13');
-INSERT INTO public.permissions VALUES (36, 'APPLY_CHANGE_REQUEST', 'Apply change requests', 'environment', '2024-10-02 13:06:34.623179+13');
-INSERT INTO public.permissions VALUES (51, 'UPDATE_CLIENT_API_TOKEN', 'Update CLIENT API tokens', 'root', '2024-10-02 13:06:34.858811+13');
-INSERT INTO public.permissions VALUES (45, 'UPDATE_PROJECT_SEGMENT', 'Create/edit project segment', 'project', '2024-10-02 13:06:34.784841+13');
-INSERT INTO public.permissions VALUES (38, 'SKIP_CHANGE_REQUEST', 'Skip change request process', 'environment', '2024-10-02 13:06:34.69861+13');
-INSERT INTO public.permissions VALUES (52, 'DELETE_CLIENT_API_TOKEN', 'Delete CLIENT API tokens', 'root', '2024-10-02 13:06:34.858811+13');
-INSERT INTO public.permissions VALUES (53, 'READ_CLIENT_API_TOKEN', 'Read CLIENT API tokens', 'root', '2024-10-02 13:06:34.858811+13');
-INSERT INTO public.permissions VALUES (35, 'APPROVE_CHANGE_REQUEST', 'Approve/Reject change requests', 'environment', '2024-10-02 13:06:34.623179+13');
-INSERT INTO public.permissions VALUES (2, 'CREATE_FEATURE', 'Create feature flags', 'project', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (7, 'UPDATE_FEATURE', 'Update feature flags', 'project', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (8, 'DELETE_FEATURE', 'Delete feature flags', 'project', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (30, 'MOVE_FEATURE_TOGGLE', 'Change feature flag project', 'project', '2024-10-02 13:06:34.223772+13');
-INSERT INTO public.permissions VALUES (28, 'UPDATE_FEATURE_ENVIRONMENT', 'Enable/disable flags', 'environment', '2024-10-02 13:06:34.109668+13');
-INSERT INTO public.permissions VALUES (54, 'CREATE_FRONTEND_API_TOKEN', 'Create FRONTEND API tokens', 'root', '2024-10-02 13:06:34.858811+13');
-INSERT INTO public.permissions VALUES (55, 'UPDATE_FRONTEND_API_TOKEN', 'Update FRONTEND API tokens', 'root', '2024-10-02 13:06:34.858811+13');
-INSERT INTO public.permissions VALUES (56, 'DELETE_FRONTEND_API_TOKEN', 'Delete FRONTEND API tokens', 'root', '2024-10-02 13:06:34.858811+13');
-INSERT INTO public.permissions VALUES (57, 'READ_FRONTEND_API_TOKEN', 'Read FRONTEND API tokens', 'root', '2024-10-02 13:06:34.858811+13');
-INSERT INTO public.permissions VALUES (58, 'UPDATE_FEATURE_DEPENDENCY', 'Update feature dependency', 'project', '2024-10-02 13:06:35.068605+13');
-INSERT INTO public.permissions VALUES (59, 'CREATE_TAG_TYPE', 'Create tag types', 'root', '2024-10-02 13:06:35.167832+13');
-INSERT INTO public.permissions VALUES (60, 'PROJECT_USER_ACCESS_READ', 'View only access to Project User Access', 'project', '2024-10-02 13:06:35.396135+13');
-INSERT INTO public.permissions VALUES (61, 'PROJECT_DEFAULT_STRATEGY_READ', 'View only access to default strategy configuration for project', 'project', '2024-10-02 13:06:35.396135+13');
-INSERT INTO public.permissions VALUES (62, 'PROJECT_CHANGE_REQUEST_READ', 'View only access to change request configuration for project', 'project', '2024-10-02 13:06:35.396135+13');
-INSERT INTO public.permissions VALUES (63, 'PROJECT_SETTINGS_READ', 'View only access to project settings', 'project', '2024-10-02 13:06:35.396135+13');
-INSERT INTO public.permissions VALUES (64, 'PROJECT_USER_ACCESS_WRITE', 'Write access to Project User Access', 'project', '2024-10-02 13:06:35.396135+13');
-INSERT INTO public.permissions VALUES (65, 'PROJECT_DEFAULT_STRATEGY_WRITE', 'Write access to default strategy configuration for project', 'project', '2024-10-02 13:06:35.396135+13');
-INSERT INTO public.permissions VALUES (66, 'PROJECT_CHANGE_REQUEST_WRITE', 'Write access to change request configuration for project', 'project', '2024-10-02 13:06:35.396135+13');
-INSERT INTO public.permissions VALUES (67, 'PROJECT_SETTINGS_WRITE', 'Write access to project settings', 'project', '2024-10-02 13:06:35.396135+13');
+INSERT INTO public.permissions VALUES (1, 'ADMIN', 'Admin', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (3, 'CREATE_STRATEGY', 'Create activation strategies', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (4, 'CREATE_ADDON', 'Create addons', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (5, 'DELETE_ADDON', 'Delete addons', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (6, 'UPDATE_ADDON', 'Update addons', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (9, 'UPDATE_APPLICATION', 'Update applications', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (10, 'UPDATE_TAG_TYPE', 'Update tag types', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (11, 'DELETE_TAG_TYPE', 'Delete tag types', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (12, 'CREATE_PROJECT', 'Create projects', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (13, 'UPDATE_PROJECT', 'Update project', 'project', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (14, 'DELETE_PROJECT', 'Delete project', 'project', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (15, 'UPDATE_STRATEGY', 'Update strategies', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (16, 'DELETE_STRATEGY', 'Delete strategies', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (17, 'UPDATE_CONTEXT_FIELD', 'Update context fields', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (18, 'CREATE_CONTEXT_FIELD', 'Create context fields', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (19, 'DELETE_CONTEXT_FIELD', 'Delete context fields', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (20, 'READ_ROLE', 'Read roles', 'root', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (25, 'CREATE_FEATURE_STRATEGY', 'Create activation strategies', 'environment', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (26, 'UPDATE_FEATURE_STRATEGY', 'Update activation strategies', 'environment', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (27, 'DELETE_FEATURE_STRATEGY', 'Delete activation strategies', 'environment', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (50, 'CREATE_CLIENT_API_TOKEN', 'Create CLIENT API tokens', 'root', '2024-10-02 22:42:05.121084+13');
+INSERT INTO public.permissions VALUES (29, 'UPDATE_FEATURE_VARIANTS', 'Create/edit variants', 'project', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (31, 'CREATE_SEGMENT', 'Create segments', 'root', '2024-10-02 22:42:04.492902+13');
+INSERT INTO public.permissions VALUES (32, 'UPDATE_SEGMENT', 'Edit segments', 'root', '2024-10-02 22:42:04.492902+13');
+INSERT INTO public.permissions VALUES (33, 'DELETE_SEGMENT', 'Delete segments', 'root', '2024-10-02 22:42:04.492902+13');
+INSERT INTO public.permissions VALUES (42, 'READ_PROJECT_API_TOKEN', 'Read api tokens for a specific project', 'project', '2024-10-02 22:42:04.938543+13');
+INSERT INTO public.permissions VALUES (43, 'CREATE_PROJECT_API_TOKEN', 'Create api tokens for a specific project', 'project', '2024-10-02 22:42:04.938543+13');
+INSERT INTO public.permissions VALUES (44, 'DELETE_PROJECT_API_TOKEN', 'Delete api tokens for a specific project', 'project', '2024-10-02 22:42:04.938543+13');
+INSERT INTO public.permissions VALUES (37, 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', 'Update variants', 'environment', '2024-10-02 22:42:04.874527+13');
+INSERT INTO public.permissions VALUES (36, 'APPLY_CHANGE_REQUEST', 'Apply change requests', 'environment', '2024-10-02 22:42:04.821433+13');
+INSERT INTO public.permissions VALUES (51, 'UPDATE_CLIENT_API_TOKEN', 'Update CLIENT API tokens', 'root', '2024-10-02 22:42:05.121084+13');
+INSERT INTO public.permissions VALUES (45, 'UPDATE_PROJECT_SEGMENT', 'Create/edit project segment', 'project', '2024-10-02 22:42:05.013978+13');
+INSERT INTO public.permissions VALUES (38, 'SKIP_CHANGE_REQUEST', 'Skip change request process', 'environment', '2024-10-02 22:42:04.912607+13');
+INSERT INTO public.permissions VALUES (52, 'DELETE_CLIENT_API_TOKEN', 'Delete CLIENT API tokens', 'root', '2024-10-02 22:42:05.121084+13');
+INSERT INTO public.permissions VALUES (53, 'READ_CLIENT_API_TOKEN', 'Read CLIENT API tokens', 'root', '2024-10-02 22:42:05.121084+13');
+INSERT INTO public.permissions VALUES (35, 'APPROVE_CHANGE_REQUEST', 'Approve/Reject change requests', 'environment', '2024-10-02 22:42:04.821433+13');
+INSERT INTO public.permissions VALUES (2, 'CREATE_FEATURE', 'Create feature flags', 'project', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (7, 'UPDATE_FEATURE', 'Update feature flags', 'project', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (8, 'DELETE_FEATURE', 'Delete feature flags', 'project', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (30, 'MOVE_FEATURE_TOGGLE', 'Change feature flag project', 'project', '2024-10-02 22:42:04.413613+13');
+INSERT INTO public.permissions VALUES (28, 'UPDATE_FEATURE_ENVIRONMENT', 'Enable/disable flags', 'environment', '2024-10-02 22:42:04.306679+13');
+INSERT INTO public.permissions VALUES (54, 'CREATE_FRONTEND_API_TOKEN', 'Create FRONTEND API tokens', 'root', '2024-10-02 22:42:05.121084+13');
+INSERT INTO public.permissions VALUES (55, 'UPDATE_FRONTEND_API_TOKEN', 'Update FRONTEND API tokens', 'root', '2024-10-02 22:42:05.121084+13');
+INSERT INTO public.permissions VALUES (56, 'DELETE_FRONTEND_API_TOKEN', 'Delete FRONTEND API tokens', 'root', '2024-10-02 22:42:05.121084+13');
+INSERT INTO public.permissions VALUES (57, 'READ_FRONTEND_API_TOKEN', 'Read FRONTEND API tokens', 'root', '2024-10-02 22:42:05.121084+13');
+INSERT INTO public.permissions VALUES (58, 'UPDATE_FEATURE_DEPENDENCY', 'Update feature dependency', 'project', '2024-10-02 22:42:05.36506+13');
+INSERT INTO public.permissions VALUES (59, 'CREATE_TAG_TYPE', 'Create tag types', 'root', '2024-10-02 22:42:05.470941+13');
+INSERT INTO public.permissions VALUES (60, 'PROJECT_USER_ACCESS_READ', 'View only access to Project User Access', 'project', '2024-10-02 22:42:05.730226+13');
+INSERT INTO public.permissions VALUES (61, 'PROJECT_DEFAULT_STRATEGY_READ', 'View only access to default strategy configuration for project', 'project', '2024-10-02 22:42:05.730226+13');
+INSERT INTO public.permissions VALUES (62, 'PROJECT_CHANGE_REQUEST_READ', 'View only access to change request configuration for project', 'project', '2024-10-02 22:42:05.730226+13');
+INSERT INTO public.permissions VALUES (63, 'PROJECT_SETTINGS_READ', 'View only access to project settings', 'project', '2024-10-02 22:42:05.730226+13');
+INSERT INTO public.permissions VALUES (64, 'PROJECT_USER_ACCESS_WRITE', 'Write access to Project User Access', 'project', '2024-10-02 22:42:05.730226+13');
+INSERT INTO public.permissions VALUES (65, 'PROJECT_DEFAULT_STRATEGY_WRITE', 'Write access to default strategy configuration for project', 'project', '2024-10-02 22:42:05.730226+13');
+INSERT INTO public.permissions VALUES (66, 'PROJECT_CHANGE_REQUEST_WRITE', 'Write access to change request configuration for project', 'project', '2024-10-02 22:42:05.730226+13');
+INSERT INTO public.permissions VALUES (67, 'PROJECT_SETTINGS_WRITE', 'Write access to project settings', 'project', '2024-10-02 22:42:05.730226+13');
 
 
 --
@@ -2884,14 +2881,14 @@ INSERT INTO public.project_environments VALUES ('default', 'production', NULL);
 -- Data for Name: project_stats; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.project_stats VALUES ('default', 0, 11, 0, 3, 0, 0, 0, 0);
+INSERT INTO public.project_stats VALUES ('default', 0, 0, 0, 0, 0, 0, 0, 0);
 
 
 --
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.projects VALUES ('default', 'Default', 'Default project', '2024-10-02 13:06:33.570173', 100, '2024-10-02 15:11:47.398+13', NULL);
+INSERT INTO public.projects VALUES ('default', 'Default', 'Default project', '2024-10-02 22:42:03.732718', 100, '2024-10-02 22:43:43.057+13', NULL);
 
 
 --
@@ -2916,119 +2913,119 @@ INSERT INTO public.projects VALUES ('default', 'Default', 'Default project', '20
 -- Data for Name: role_permission; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'development', 'CREATE_FEATURE_STRATEGY', NULL, 1);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'development', 'UPDATE_FEATURE_STRATEGY', NULL, 2);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'development', 'DELETE_FEATURE_STRATEGY', NULL, 3);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 4);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'production', 'CREATE_FEATURE_STRATEGY', NULL, 5);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'production', 'UPDATE_FEATURE_STRATEGY', NULL, 6);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'production', 'DELETE_FEATURE_STRATEGY', NULL, 7);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 8);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'default', 'CREATE_FEATURE_STRATEGY', NULL, 9);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'default', 'UPDATE_FEATURE_STRATEGY', NULL, 10);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'default', 'DELETE_FEATURE_STRATEGY', NULL, 11);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.210851+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 12);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'development', 'CREATE_FEATURE_STRATEGY', NULL, 13);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'development', 'UPDATE_FEATURE_STRATEGY', NULL, 14);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'development', 'DELETE_FEATURE_STRATEGY', NULL, 15);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 16);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'production', 'CREATE_FEATURE_STRATEGY', NULL, 17);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'production', 'UPDATE_FEATURE_STRATEGY', NULL, 18);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'production', 'DELETE_FEATURE_STRATEGY', NULL, 19);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 20);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'default', 'CREATE_FEATURE_STRATEGY', NULL, 21);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'default', 'UPDATE_FEATURE_STRATEGY', NULL, 22);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'default', 'DELETE_FEATURE_STRATEGY', NULL, 23);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.210851+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 24);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'development', 'CREATE_FEATURE_STRATEGY', NULL, 25);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'development', 'UPDATE_FEATURE_STRATEGY', NULL, 26);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'development', 'DELETE_FEATURE_STRATEGY', NULL, 27);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 28);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'production', 'CREATE_FEATURE_STRATEGY', NULL, 29);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'production', 'UPDATE_FEATURE_STRATEGY', NULL, 30);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'production', 'DELETE_FEATURE_STRATEGY', NULL, 31);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 32);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'default', 'CREATE_FEATURE_STRATEGY', NULL, 33);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'default', 'UPDATE_FEATURE_STRATEGY', NULL, 34);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'default', 'DELETE_FEATURE_STRATEGY', NULL, 35);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.218167+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 36);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'CREATE_FEATURE', NULL, 37);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'CREATE_STRATEGY', NULL, 38);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'CREATE_ADDON', NULL, 39);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'DELETE_ADDON', NULL, 40);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_ADDON', NULL, 41);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_FEATURE', NULL, 42);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'DELETE_FEATURE', NULL, 43);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_APPLICATION', NULL, 44);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_TAG_TYPE', NULL, 45);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'DELETE_TAG_TYPE', NULL, 46);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'CREATE_PROJECT', NULL, 47);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_PROJECT', NULL, 48);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'DELETE_PROJECT', NULL, 49);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_STRATEGY', NULL, 50);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'DELETE_STRATEGY', NULL, 51);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_CONTEXT_FIELD', NULL, 52);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'CREATE_CONTEXT_FIELD', NULL, 53);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'DELETE_CONTEXT_FIELD', NULL, 54);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_FEATURE_VARIANTS', NULL, 55);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.109668+13', '', 'CREATE_FEATURE', NULL, 56);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_FEATURE', NULL, 57);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.109668+13', '', 'DELETE_FEATURE', NULL, 58);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_PROJECT', NULL, 59);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.109668+13', '', 'DELETE_PROJECT', NULL, 60);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_FEATURE_VARIANTS', NULL, 61);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.109668+13', '', 'CREATE_FEATURE', NULL, 62);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_FEATURE', NULL, 63);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.109668+13', '', 'DELETE_FEATURE', NULL, 64);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.109668+13', '', 'UPDATE_FEATURE_VARIANTS', NULL, 65);
-INSERT INTO public.role_permission VALUES (1, '2024-10-02 13:06:34.109668+13', '', 'ADMIN', NULL, 66);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.223772+13', '', 'MOVE_FEATURE_TOGGLE', NULL, 67);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.223772+13', '', 'MOVE_FEATURE_TOGGLE', NULL, 68);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.301041+13', NULL, 'CREATE_SEGMENT', NULL, 69);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.301041+13', NULL, 'UPDATE_SEGMENT', NULL, 70);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.301041+13', NULL, 'DELETE_SEGMENT', NULL, 71);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.664709+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 72);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.664709+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 73);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.664709+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 74);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.664709+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 75);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.664709+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 76);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.664709+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 77);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.664709+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 78);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.664709+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 79);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.664709+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 80);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.723069+13', NULL, 'READ_PROJECT_API_TOKEN', NULL, 81);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.723069+13', NULL, 'CREATE_PROJECT_API_TOKEN', NULL, 82);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.723069+13', NULL, 'DELETE_PROJECT_API_TOKEN', NULL, 83);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.725412+13', NULL, 'READ_PROJECT_API_TOKEN', NULL, 84);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.725412+13', NULL, 'CREATE_PROJECT_API_TOKEN', NULL, 85);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:34.725412+13', NULL, 'DELETE_PROJECT_API_TOKEN', NULL, 86);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.727734+13', NULL, 'READ_PROJECT_API_TOKEN', NULL, 87);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.727734+13', NULL, 'CREATE_PROJECT_API_TOKEN', NULL, 88);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:34.727734+13', NULL, 'DELETE_PROJECT_API_TOKEN', NULL, 89);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.863785+13', NULL, 'READ_CLIENT_API_TOKEN', NULL, 90);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:34.863785+13', NULL, 'READ_FRONTEND_API_TOKEN', NULL, 91);
-INSERT INTO public.role_permission VALUES (5, '2024-10-02 13:06:35.068605+13', NULL, 'UPDATE_FEATURE_DEPENDENCY', NULL, 92);
-INSERT INTO public.role_permission VALUES (4, '2024-10-02 13:06:35.068605+13', NULL, 'UPDATE_FEATURE_DEPENDENCY', NULL, 93);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:35.167832+13', NULL, 'CREATE_TAG_TYPE', NULL, 94);
-INSERT INTO public.role_permission VALUES (2, '2024-10-02 13:06:35.949595+13', NULL, 'UPDATE_FEATURE_DEPENDENCY', NULL, 95);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'development', 'CREATE_FEATURE_STRATEGY', NULL, 1);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'development', 'UPDATE_FEATURE_STRATEGY', NULL, 2);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'development', 'DELETE_FEATURE_STRATEGY', NULL, 3);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 4);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'production', 'CREATE_FEATURE_STRATEGY', NULL, 5);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'production', 'UPDATE_FEATURE_STRATEGY', NULL, 6);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'production', 'DELETE_FEATURE_STRATEGY', NULL, 7);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 8);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'default', 'CREATE_FEATURE_STRATEGY', NULL, 9);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'default', 'UPDATE_FEATURE_STRATEGY', NULL, 10);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'default', 'DELETE_FEATURE_STRATEGY', NULL, 11);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.399721+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 12);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'development', 'CREATE_FEATURE_STRATEGY', NULL, 13);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'development', 'UPDATE_FEATURE_STRATEGY', NULL, 14);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'development', 'DELETE_FEATURE_STRATEGY', NULL, 15);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 16);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'production', 'CREATE_FEATURE_STRATEGY', NULL, 17);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'production', 'UPDATE_FEATURE_STRATEGY', NULL, 18);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'production', 'DELETE_FEATURE_STRATEGY', NULL, 19);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 20);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'default', 'CREATE_FEATURE_STRATEGY', NULL, 21);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'default', 'UPDATE_FEATURE_STRATEGY', NULL, 22);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'default', 'DELETE_FEATURE_STRATEGY', NULL, 23);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.399721+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 24);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'development', 'CREATE_FEATURE_STRATEGY', NULL, 25);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'development', 'UPDATE_FEATURE_STRATEGY', NULL, 26);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'development', 'DELETE_FEATURE_STRATEGY', NULL, 27);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 28);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'production', 'CREATE_FEATURE_STRATEGY', NULL, 29);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'production', 'UPDATE_FEATURE_STRATEGY', NULL, 30);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'production', 'DELETE_FEATURE_STRATEGY', NULL, 31);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 32);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'default', 'CREATE_FEATURE_STRATEGY', NULL, 33);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'default', 'UPDATE_FEATURE_STRATEGY', NULL, 34);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'default', 'DELETE_FEATURE_STRATEGY', NULL, 35);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.406919+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT', NULL, 36);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'CREATE_FEATURE', NULL, 37);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'CREATE_STRATEGY', NULL, 38);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'CREATE_ADDON', NULL, 39);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'DELETE_ADDON', NULL, 40);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_ADDON', NULL, 41);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_FEATURE', NULL, 42);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'DELETE_FEATURE', NULL, 43);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_APPLICATION', NULL, 44);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_TAG_TYPE', NULL, 45);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'DELETE_TAG_TYPE', NULL, 46);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'CREATE_PROJECT', NULL, 47);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_PROJECT', NULL, 48);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'DELETE_PROJECT', NULL, 49);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_STRATEGY', NULL, 50);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'DELETE_STRATEGY', NULL, 51);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_CONTEXT_FIELD', NULL, 52);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'CREATE_CONTEXT_FIELD', NULL, 53);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'DELETE_CONTEXT_FIELD', NULL, 54);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_FEATURE_VARIANTS', NULL, 55);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.306679+13', '', 'CREATE_FEATURE', NULL, 56);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_FEATURE', NULL, 57);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.306679+13', '', 'DELETE_FEATURE', NULL, 58);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_PROJECT', NULL, 59);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.306679+13', '', 'DELETE_PROJECT', NULL, 60);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_FEATURE_VARIANTS', NULL, 61);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.306679+13', '', 'CREATE_FEATURE', NULL, 62);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_FEATURE', NULL, 63);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.306679+13', '', 'DELETE_FEATURE', NULL, 64);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.306679+13', '', 'UPDATE_FEATURE_VARIANTS', NULL, 65);
+INSERT INTO public.role_permission VALUES (1, '2024-10-02 22:42:04.306679+13', '', 'ADMIN', NULL, 66);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.413613+13', '', 'MOVE_FEATURE_TOGGLE', NULL, 67);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.413613+13', '', 'MOVE_FEATURE_TOGGLE', NULL, 68);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.492902+13', NULL, 'CREATE_SEGMENT', NULL, 69);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.492902+13', NULL, 'UPDATE_SEGMENT', NULL, 70);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.492902+13', NULL, 'DELETE_SEGMENT', NULL, 71);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.874527+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 72);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.874527+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 73);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.874527+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 74);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.874527+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 75);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.874527+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 76);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.874527+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 77);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.874527+13', 'development', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 78);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.874527+13', 'production', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 79);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.874527+13', 'default', 'UPDATE_FEATURE_ENVIRONMENT_VARIANTS', NULL, 80);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.940946+13', NULL, 'READ_PROJECT_API_TOKEN', NULL, 81);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.940946+13', NULL, 'CREATE_PROJECT_API_TOKEN', NULL, 82);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:04.940946+13', NULL, 'DELETE_PROJECT_API_TOKEN', NULL, 83);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.943561+13', NULL, 'READ_PROJECT_API_TOKEN', NULL, 84);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.943561+13', NULL, 'CREATE_PROJECT_API_TOKEN', NULL, 85);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:04.943561+13', NULL, 'DELETE_PROJECT_API_TOKEN', NULL, 86);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.946973+13', NULL, 'READ_PROJECT_API_TOKEN', NULL, 87);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.946973+13', NULL, 'CREATE_PROJECT_API_TOKEN', NULL, 88);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:04.946973+13', NULL, 'DELETE_PROJECT_API_TOKEN', NULL, 89);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:05.126627+13', NULL, 'READ_CLIENT_API_TOKEN', NULL, 90);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:05.126627+13', NULL, 'READ_FRONTEND_API_TOKEN', NULL, 91);
+INSERT INTO public.role_permission VALUES (5, '2024-10-02 22:42:05.36506+13', NULL, 'UPDATE_FEATURE_DEPENDENCY', NULL, 92);
+INSERT INTO public.role_permission VALUES (4, '2024-10-02 22:42:05.36506+13', NULL, 'UPDATE_FEATURE_DEPENDENCY', NULL, 93);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:05.470941+13', NULL, 'CREATE_TAG_TYPE', NULL, 94);
+INSERT INTO public.role_permission VALUES (2, '2024-10-02 22:42:06.303838+13', NULL, 'UPDATE_FEATURE_DEPENDENCY', NULL, 95);
 
 
 --
 -- Data for Name: role_user; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.role_user VALUES (1, 1, '2024-10-02 13:06:36.331622+13', 'default', NULL);
+INSERT INTO public.role_user VALUES (1, 1, '2024-10-02 22:42:06.695408+13', 'default', NULL);
 
 
 --
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.roles VALUES (1, 'Admin', 'Users with the root admin role have superuser access to Unleash and can perform any operation within the Unleash platform.', 'root', '2024-10-02 13:06:33.679675+13', NULL, NULL);
-INSERT INTO public.roles VALUES (2, 'Editor', 'Users with the root editor role have access to most features in Unleash, but can not manage users and roles in the root scope. Editors will be added as project owners when creating projects and get superuser rights within the context of these projects. Users with the editor role will also get access to most permissions on the default project by default.', 'root', '2024-10-02 13:06:33.679675+13', NULL, NULL);
-INSERT INTO public.roles VALUES (3, 'Viewer', 'Users with the root viewer role can only read root resources in Unleash. Viewers can be added to specific projects as project members. Users with the viewer role may not view API tokens.', 'root', '2024-10-02 13:06:33.679675+13', NULL, NULL);
-INSERT INTO public.roles VALUES (4, 'Owner', 'Users with the project owner role have full control over the project, and can add and manage other users within the project context, manage feature flags within the project, and control advanced project features like archiving and deleting the project.', 'project', '2024-10-02 13:06:33.787549+13', NULL, NULL);
-INSERT INTO public.roles VALUES (5, 'Member', 'Users with the project member role are allowed to view, create, and update feature flags within a project, but have limited permissions in regards to managing the project''s user access and can not archive or delete the project.', 'project', '2024-10-02 13:06:33.787549+13', NULL, NULL);
+INSERT INTO public.roles VALUES (1, 'Admin', 'Users with the root admin role have superuser access to Unleash and can perform any operation within the Unleash platform.', 'root', '2024-10-02 22:42:03.847082+13', NULL, NULL);
+INSERT INTO public.roles VALUES (2, 'Editor', 'Users with the root editor role have access to most features in Unleash, but can not manage users and roles in the root scope. Editors will be added as project owners when creating projects and get superuser rights within the context of these projects. Users with the editor role will also get access to most permissions on the default project by default.', 'root', '2024-10-02 22:42:03.847082+13', NULL, NULL);
+INSERT INTO public.roles VALUES (3, 'Viewer', 'Users with the root viewer role can only read root resources in Unleash. Viewers can be added to specific projects as project members. Users with the viewer role may not view API tokens.', 'root', '2024-10-02 22:42:03.847082+13', NULL, NULL);
+INSERT INTO public.roles VALUES (4, 'Owner', 'Users with the project owner role have full control over the project, and can add and manage other users within the project context, manage feature flags within the project, and control advanced project features like archiving and deleting the project.', 'project', '2024-10-02 22:42:03.95802+13', NULL, NULL);
+INSERT INTO public.roles VALUES (5, 'Member', 'Users with the project member role are allowed to view, create, and update feature flags within a project, but have limited permissions in regards to managing the project''s user access and can not archive or delete the project.', 'project', '2024-10-02 22:42:03.95802+13', NULL, NULL);
 
 
 --
@@ -3041,8 +3038,8 @@ INSERT INTO public.roles VALUES (5, 'Member', 'Users with the project member rol
 -- Data for Name: settings; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.settings VALUES ('unleash.secret', '"b258e744f6b589c6809b1e020438da9d46fe10f1"');
-INSERT INTO public.settings VALUES ('instanceInfo', '{"id" : "5394d157-1af3-4156-9d56-087f27c95a8f"}');
+INSERT INTO public.settings VALUES ('unleash.secret', '"80cdbddfe4a1ca33069d3ceb7091aca29ff8040a"');
+INSERT INTO public.settings VALUES ('instanceInfo', '{"id" : "fc1d0892-8737-4235-be27-63a78b6258f9"}');
 INSERT INTO public.settings VALUES ('login_history_retention', '{"hours": 336}');
 
 
@@ -3082,18 +3079,18 @@ INSERT INTO public.stat_environment_updates VALUES ('2024-10-02', 'production', 
 -- Data for Name: strategies; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.strategies VALUES ('2024-10-02 13:06:33.286226+13', 'remoteAddress', 'Enable the feature for a specific set of IP addresses.', '[{"name":"IPs","type":"list","description":"List of IPs to enable the feature toggle for.","required":true}]', 1, false, 3, 'IPs', NULL);
-INSERT INTO public.strategies VALUES ('2024-10-02 13:06:33.286226+13', 'applicationHostname', 'Enable the feature for a specific set of hostnames.', '[{"name":"hostNames","type":"list","description":"List of hostnames to enable the feature toggle for.","required":false}]', 1, false, 4, 'Hosts', NULL);
-INSERT INTO public.strategies VALUES ('2024-10-02 13:06:33.199527+13', 'default', 'This strategy turns on / off for your entire userbase. Prefer using "Gradual rollout" strategy (100%=on, 0%=off).', '[]', 1, false, 1, 'Standard', NULL);
-INSERT INTO public.strategies VALUES ('2024-10-02 13:06:33.469786+13', 'flexibleRollout', 'Roll out to a percentage of your userbase, and ensure that the experience is the same for the user on each visit.', '[{"name":"rollout","type":"percentage","description":"","required":false},{"name":"stickiness","type":"string","description":"Used define stickiness. Possible values: default, userId, sessionId, random","required":true},{"name":"groupId","type":"string","description":"Used to define a activation groups, which allows you to correlate across feature toggles.","required":true}]', 1, false, 0, 'Gradual rollout', NULL);
-INSERT INTO public.strategies VALUES ('2024-10-02 13:06:33.286226+13', 'userWithId', 'Enable the feature for a specific set of userIds. Prefer using "Gradual rollout" strategy with user id constraints.', '[{"name":"userIds","type":"list","description":"","required":false}]', 1, true, 2, 'UserIDs', NULL);
+INSERT INTO public.strategies VALUES ('2024-10-02 22:42:03.451251+13', 'remoteAddress', 'Enable the feature for a specific set of IP addresses.', '[{"name":"IPs","type":"list","description":"List of IPs to enable the feature toggle for.","required":true}]', 1, false, 3, 'IPs', NULL);
+INSERT INTO public.strategies VALUES ('2024-10-02 22:42:03.451251+13', 'applicationHostname', 'Enable the feature for a specific set of hostnames.', '[{"name":"hostNames","type":"list","description":"List of hostnames to enable the feature toggle for.","required":false}]', 1, false, 4, 'Hosts', NULL);
+INSERT INTO public.strategies VALUES ('2024-10-02 22:42:03.359286+13', 'default', 'This strategy turns on / off for your entire userbase. Prefer using "Gradual rollout" strategy (100%=on, 0%=off).', '[]', 1, false, 1, 'Standard', NULL);
+INSERT INTO public.strategies VALUES ('2024-10-02 22:42:03.628063+13', 'flexibleRollout', 'Roll out to a percentage of your userbase, and ensure that the experience is the same for the user on each visit.', '[{"name":"rollout","type":"percentage","description":"","required":false},{"name":"stickiness","type":"string","description":"Used define stickiness. Possible values: default, userId, sessionId, random","required":true},{"name":"groupId","type":"string","description":"Used to define a activation groups, which allows you to correlate across feature toggles.","required":true}]', 1, false, 0, 'Gradual rollout', NULL);
+INSERT INTO public.strategies VALUES ('2024-10-02 22:42:03.451251+13', 'userWithId', 'Enable the feature for a specific set of userIds. Prefer using "Gradual rollout" strategy with user id constraints.', '[{"name":"userIds","type":"list","description":"","required":false}]', 1, true, 2, 'UserIDs', NULL);
 
 
 --
 -- Data for Name: tag_types; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.tag_types VALUES ('simple', 'Used to simplify filtering of features', '#', '2024-10-02 13:06:33.59504+13');
+INSERT INTO public.tag_types VALUES ('simple', 'Used to simplify filtering of features', '#', '2024-10-02 22:42:03.759205+13');
 
 
 --
@@ -3106,14 +3103,14 @@ INSERT INTO public.tag_types VALUES ('simple', 'Used to simplify filtering of fe
 -- Data for Name: unleash_session; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.unleash_session VALUES ('ZiNyjSKn2ukepiCw2yOrbJmlRyWISx-D', '{"cookie":{"originalMaxAge":172800000,"expires":"2024-10-04T00:06:42.498Z","secure":false,"httpOnly":true,"path":"/","sameSite":"lax"},"user":{"isAPI":false,"accountType":"User","id":1,"username":"admin","imageUrl":"https://gravatar.com/avatar/8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918?s=42&d=retro&r=g","seenAt":null,"loginAttempts":0,"createdAt":"2024-10-02T00:06:36.183Z","scimId":null}}', '2024-10-02 13:06:42.49999+13', '2024-10-04 15:14:16.349+13');
+INSERT INTO public.unleash_session VALUES ('BIYhp_UMT7z6mNRJN2AEC3gEuj_8Wf-X', '{"cookie":{"originalMaxAge":172800000,"expires":"2024-10-04T09:43:22.551Z","secure":false,"httpOnly":true,"path":"/","sameSite":"lax"},"user":{"isAPI":false,"accountType":"User","id":1,"username":"admin","imageUrl":"https://gravatar.com/avatar/8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918?s=42&d=retro&r=g","seenAt":null,"loginAttempts":0,"createdAt":"2024-10-02T09:42:06.545Z","scimId":null}}', '2024-10-02 22:43:22.552474+13', '2024-10-04 22:45:44.849+13');
 
 
 --
 -- Data for Name: used_passwords; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.used_passwords VALUES (1, '$2a$10$Gd5RvRryB8h5Eyo4j4hayuITIvmEP/BX3uWj26WMdMBrxwbO2fzZa', '2024-10-02 00:06:36.321868+13');
+INSERT INTO public.used_passwords VALUES (1, '$2a$10$POhSqTOcfU4wSmtz8eVxlOAQ4DErjt3it/yOb/5WeEcsFaiN1oCQC', '2024-10-02 09:42:06.672538+13');
 
 
 --
@@ -3144,9 +3141,9 @@ INSERT INTO public.used_passwords VALUES (1, '$2a$10$Gd5RvRryB8h5Eyo4j4hayuITIvm
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.users VALUES (-1337, 'Unleash System', 'unleash_system_user', NULL, NULL, NULL, 0, '2024-10-02 13:06:35.296105', NULL, NULL, '[]', NULL, false, -1337, true, NULL, NULL, NULL);
-INSERT INTO public.users VALUES (-42, 'Unleash Admin Token User', 'unleash_admin_token', NULL, NULL, NULL, 0, '2024-10-02 13:06:35.393574', NULL, NULL, '[]', NULL, false, -1337, true, NULL, NULL, NULL);
-INSERT INTO public.users VALUES (1, NULL, 'admin', NULL, NULL, '$2a$10$Gd5RvRryB8h5Eyo4j4hayuITIvmEP/BX3uWj26WMdMBrxwbO2fzZa', 0, '2024-10-02 13:06:36.183', '2024-10-02 13:06:42.488', NULL, '[]', NULL, false, NULL, false, NULL, NULL, NULL);
+INSERT INTO public.users VALUES (-1337, 'Unleash System', 'unleash_system_user', NULL, NULL, NULL, 0, '2024-10-02 22:42:05.606', NULL, NULL, '[]', NULL, false, -1337, true, NULL, NULL, NULL);
+INSERT INTO public.users VALUES (-42, 'Unleash Admin Token User', 'unleash_admin_token', NULL, NULL, NULL, 0, '2024-10-02 22:42:05.726884', NULL, NULL, '[]', NULL, false, -1337, true, NULL, NULL, NULL);
+INSERT INTO public.users VALUES (1, NULL, 'admin', NULL, NULL, '$2a$10$POhSqTOcfU4wSmtz8eVxlOAQ4DErjt3it/yOb/5WeEcsFaiN1oCQC', 0, '2024-10-02 22:42:06.545', '2024-10-02 22:43:22.542', NULL, '[]', NULL, false, NULL, false, NULL, NULL, NULL);
 
 
 --

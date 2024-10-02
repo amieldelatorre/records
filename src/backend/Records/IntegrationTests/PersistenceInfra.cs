@@ -151,7 +151,7 @@ public class PersistenceInfraBuilder
                 unleashWebContainer.GetMappedPublicPort(_unleashContainerPort), "api").Uri,
             CustomHttpHeaders = new Dictionary<string, string>
             {
-                { "Authorization", "default:production.98d90dccb96f15c73194e8248df6d839ffbc26c0ed5a8459943f1a97"}
+                { "Authorization", "default:production.310cc032e0cdc61174286e698447d10ffa1e48977fdff8a4ea9030ba"}
             }
         };
         var unleashFactory = new UnleashClientFactory();
