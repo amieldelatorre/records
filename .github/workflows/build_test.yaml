@@ -39,4 +39,6 @@ jobs:
         run: dotnet test UnitTests --no-restore --verbosity normal
         working-directory: ${{ env.backend-directory }}
 
-      # TODO: run integration tests
+      - name: Run integration tests
+        run: dotnet test IntegrationTests --no-restore --verbosity normal
+        working-directory: ${{ env.backend-directory }}

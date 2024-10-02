@@ -26,7 +26,7 @@
         "RECORDS__VALKEY_HOST": "localhost",
         "RECORDS__VALKEY_PORT": "6379",
         "UNLEASH__API_URL": "http://localhost:4242/api",
-        "UNLEASH__API_KEY": "default:production.0cecbbcffc816e47f2867128957eac436bbb6105dd3232f2e6526111",
+        "UNLEASH__API_KEY": "default:production.98d90dccb96f15c73194e8248df6d839ffbc26c0ed5a8459943f1a97",
         "UNLEASH__APP_NAME": "records"
       }
     },

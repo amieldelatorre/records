@@ -14,7 +14,7 @@ public class FeatureStatusTests
     {
         IFeatureToggleRepository featureToggleRepository = new NullFeatureToggleRepository();
         ICacheRepository cacheRepository = new NullCacheRepository();
-        var logger = Common.Logger.GetLogger();
+        var logger = Common.TestLogger.GetLogger();
 
         var featureStatus = new FeatureStatus(featureToggleRepository, cacheRepository, logger);
         var featureName = "anyFeature";

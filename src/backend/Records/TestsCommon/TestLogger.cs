@@ -1,6 +1,6 @@
 ﻿namespace Common;
 
-public static class Logger
+public static class TestLogger
 {
    public static Serilog.ILogger GetLogger()
    {
