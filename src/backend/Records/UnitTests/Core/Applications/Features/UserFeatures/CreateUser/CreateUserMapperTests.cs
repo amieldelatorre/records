@@ -28,7 +28,8 @@ public class CreateUserMapperTests
             FirstName = "Albert",
             LastName = "Einstein",
             Email = "albert.einstein@example.invalid",
-            Password = "hispassword",
+            PasswordHash = "hisPassword",
+            PasswordSalt = "passwordSalt",
             DateCreated = timeNowTestCase,
             DateUpdated = timeNowTestCase,
         };
@@ -55,7 +56,7 @@ public class CreateUserMapperTests
                 FirstName = "Albert",
                 LastName = "Einstein",
                 Email = "albert.einstein@example.invalid",
-                Password = "hispassword"
+                Password = "hisPassword"
             },
             new User
             {
@@ -63,7 +64,8 @@ public class CreateUserMapperTests
                 FirstName = "Albert",
                 LastName = "Einstein",
                 Email = "albert.einstein@example.invalid",
-                Password = "hispassword",
+                PasswordHash = "hashedPassword",
+                PasswordSalt = "passwordSalt",
                 DateCreated = DateTime.UtcNow,
                 DateUpdated = DateTime.UtcNow,
             }
@@ -75,7 +77,7 @@ public class CreateUserMapperTests
                 FirstName = " Albert    ",
                 LastName = "  Einstein ",
                 Email = " albert.einstein@example.invalid         ",
-                Password = "hispassword"
+                Password = "hisPassword"
             },
             new User
             {
@@ -83,7 +85,8 @@ public class CreateUserMapperTests
                 FirstName = "Albert",
                 LastName = "Einstein",
                 Email = "albert.einstein@example.invalid",
-                Password = "hispassword",
+                PasswordHash = "hashedPassword",
+                PasswordSalt = "passwordSalt",
                 DateCreated = DateTime.UtcNow,
                 DateUpdated = DateTime.UtcNow,
             }

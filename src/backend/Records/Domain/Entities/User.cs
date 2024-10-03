@@ -20,5 +20,9 @@ public class User : BaseEntity
     
     [Required]
     [Column(TypeName = "text")]
-    public required string Password { get; set; }
+    public required string PasswordHash { get; set; }
+
+    [Required]
+    [Column(TypeName = "text")]
+    public required string PasswordSalt { get; set; }
 }

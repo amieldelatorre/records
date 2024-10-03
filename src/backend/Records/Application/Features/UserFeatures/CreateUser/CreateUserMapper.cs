@@ -1,3 +1,4 @@
+using Application.Features.Password;
 using Domain.Entities;
 
 namespace Application.Features.UserFeatures.CreateUser;
@@ -6,6 +7,9 @@ public static class CreateUserMapper
 {
     public static User Map(CreateUserRequest createUserRequest)
     {
+        var hasher = new Pbkdf2PasswordHasher();
+        var passwordHashResponse = hasher.Hash(createUserRequest.Password);
+
         var now = DateTime.UtcNow;
         return new User
         {
@@ -13,7 +17,8 @@ public static class CreateUserMapper
             FirstName = createUserRequest.FirstName.Trim(),
             LastName = createUserRequest.LastName.Trim(),
             Email = createUserRequest.Email.Trim(),
-            Password = createUserRequest.Password,
+            PasswordHash = passwordHashResponse.HashedPassword,
+            PasswordSalt = passwordHashResponse.Salt,
             DateCreated = now,
             DateUpdated = now,
         };
