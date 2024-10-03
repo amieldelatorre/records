@@ -10,10 +10,10 @@ public class BaseEntity
     public Guid Id { get; set; }
 
     [Required]
-    [Column(TypeName = "timestamp")]
+    [Column(TypeName = "timestamp with time zone")]
     public required DateTime DateCreated { get; set; }
 
     [Required]
-    [Column(TypeName = "timestamp")]
+    [Column(TypeName = "timestamp with time zone")]
     public required DateTime DateUpdated { get; set; }
 }

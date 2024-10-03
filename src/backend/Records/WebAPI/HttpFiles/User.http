@@ -1,0 +1,33 @@
+@base_api_address = http://localhost:8080
+@user_v1_api_address = {{base_api_address}}/api/v1/user
+
+GET {{user_v1_api_address}}
+Accept: application/json
+
+###
+
+POST {{user_v1_api_address}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "FirstName": "Isaac",
+    "LastName": "Newton",
+    "Email": "isaac.newton@example.invalid",
+    "Password": "password"
+}
+
+###
+
+PUT {{user_v1_api_address}}
+Accept: application/json
+
+{
+    "FirstName": "Isaac",
+    "LastName": "Newton",
+    "Email": "isaac.newton@example.invalid",
+    "Password": "password"
+}
+###
+
+DELETE {{user_v1_api_address}}/guid

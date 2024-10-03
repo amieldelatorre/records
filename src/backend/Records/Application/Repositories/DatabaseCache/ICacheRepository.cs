@@ -4,7 +4,7 @@ namespace Application.Repositories.DatabaseCache;
 
 public interface ICacheRepository
 {
-    Task SetKey<T>(string key, T value, int expireSeconds);
-    Task<CacheRetrievalResult<T>> GetKey<T>(string key);
-    Task RemoveKey(string key);
+    Task Set<T>(string key, T value, int expireSeconds);
+    Task<CacheRetrievalResult<T>> Get<T>(string key);
+    Task Delete(string key);
 }

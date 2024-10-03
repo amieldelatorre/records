@@ -1,5 +1,5 @@
 services:
-  unleash-postgres:
+  unleash-postgres-db:
     image: postgres:17.0
     container_name: unleash-postgres-db
     hostname: unleash-postgres-db
@@ -35,11 +35,11 @@ services:
       - 4242:4242
     environment:
       TZ: ${TIMEZONE:-Pacific/Auckland}
-      DATABASE_URL: "postgres://${UNLEASH__POSTGRES_USER:-root}:${UNLEASH__POSTGRES_PASSWORD:-password}@unleash-postgres/${UNLEASH__POSTGRES_DB:-unleash}"
+      DATABASE_URL: "postgres://${UNLEASH__POSTGRES_USER:-root}:${UNLEASH__POSTGRES_PASSWORD:-password}@unleash-postgres-db/${UNLEASH__POSTGRES_DB:-unleash}"
       DATABASE_SSL: "false"
       LOG_LEVEL: "info"
     depends_on:
-      unleash-postgres:
+      unleash-postgres-db:
         condition: service_healthy
     command: [ "node", "index.js" ]
     healthcheck:

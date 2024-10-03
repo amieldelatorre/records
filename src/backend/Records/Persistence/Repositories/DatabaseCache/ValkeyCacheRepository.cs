@@ -1,23 +1,68 @@
+using System.Diagnostics;
 using Application.Common;
 using Application.Repositories;
 using Application.Repositories.DatabaseCache;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace Persistence.Repositories.DatabaseCache;
 
-public class ValkeyCacheRepository : ICacheRepository
+public class ValkeyCacheRepository(
+    IDatabase valkeyDatabase,
+    Serilog.ILogger logger
+    ) : ICacheRepository
 {
-    public Task SetKey<T>(string key, T value, int expireSeconds)
+    public async Task Set<T>(string key, T value, int expireSeconds)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var json = JsonConvert.SerializeObject(value);
+            await valkeyDatabase.StringSetAsync(key, json, TimeSpan.FromSeconds(expireSeconds));
+            logger.Debug("added item to cache: {key}", key);
+        }
+        catch (Exception ex)
+        {
+            logger.Error("failed to add item with {key} to cache: {error}", key, ex.Message);
+        }
     }
 
-    public Task<CacheRetrievalResult<T>> GetKey<T>(string key)
+    public async Task<CacheRetrievalResult<T>> Get<T>(string key)
     {
-        throw new NotImplementedException();
+        try
+        {
+            string? json = await valkeyDatabase.StringGetAsync(key);
+
+            if (string.IsNullOrEmpty(json))
+                return new CacheRetrievalResult<T>(false);
+
+            var result = JsonConvert.DeserializeObject<T>(json);
+            Debug.Assert(result != null);
+            var cacheRetrievalResult = new CacheRetrievalResult<T>(true, result);
+            logger.Debug("retrieved item from cache: {key}", key);
+            return cacheRetrievalResult;
+        }
+        catch (Exception ex)
+        {
+            logger.Error("failed to get item with {key} from cache: {error}", key, ex.Message);
+            return new CacheRetrievalResult<T>(false);
+        }
+
     }
 
-    public Task RemoveKey(string key)
+    public async Task Delete(string key)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var keyExists = await valkeyDatabase.KeyExistsAsync(key);
+            if (keyExists)
+            {
+                await valkeyDatabase.KeyDeleteAsync(key);
+                logger.Debug("deleted item from cache: {key}", key);
+            }
+        }
+        catch (Exception ex)
+        {
+           logger.Error("failed to delete item with {key} from cache: {error}", key, ex.Message);
+        }
     }
 }
