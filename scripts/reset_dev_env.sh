@@ -5,17 +5,17 @@ SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")
 PROJECT_ROOT="${SCRIPT_ROOT}/.."
 # Go to project root
 cd "${PROJECT_ROOT}"
-sleep_time=5
+sleep_time=20
 
 docker compose down
-echo "Sleeping for ${sleep_time}s to let container shutdown successfully" 
+echo "Sleeping for ${sleep_time}s to let containers shutdown successfully" 
 sleep "${sleep_time}"
 
 
 rm -rf ./docker_data
 
 docker compose up records-postgres-db unleash-postgres-db -d
-echo "Sleeping for ${sleep_time}s to let container start up successfully" 
+echo "Sleeping for ${sleep_time}s to let containers start up successfully" 
 sleep "${sleep_time}"
 
 recordsDumpFilepath="${PROJECT_ROOT}/src/backend/Records/IntegrationTests/Data/records_postgres_dump.sql"
@@ -23,3 +23,5 @@ unleashDumpFilepath="${PROJECT_ROOT}/src/backend/Records/IntegrationTests/Data/u
 
 cat "${recordsDumpFilepath}" | docker exec -i records-postgres-db psql -U root -d records
 cat "${unleashDumpFilepath}" | docker exec -i unleash-postgres-db psql -U root -d unleash
+
+docker compose up -d
