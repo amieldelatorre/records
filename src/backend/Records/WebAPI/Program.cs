@@ -15,7 +15,7 @@ Log.Logger.Information("performing Web API startup configuration");
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
     });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,7 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistenceServices();
-builder.Services.AddUserFeatures();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
