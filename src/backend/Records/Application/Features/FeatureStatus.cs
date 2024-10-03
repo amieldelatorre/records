@@ -20,7 +20,7 @@ public class FeatureStatus(
 
         try
         {
-            var cacheValue = await cacheRepository.GetKey<string>(featureToggleCacheKey);
+            var cacheValue = await cacheRepository.Get<string>(featureToggleCacheKey);
             if (cacheValue.IsInCache)
             {
                 logger.Debug($"feature '{featureName}' is not in cache");
@@ -28,7 +28,7 @@ public class FeatureStatus(
             }
 
             featureIsEnabled = await featureToggleRepository.IsFeatureEnabled(featureToggleName);
-            await cacheRepository.SetKey(featureToggleCacheKey, featureIsEnabled.ToString(), DefaultCacheExpirationSeconds);
+            await cacheRepository.Set(featureToggleCacheKey, featureIsEnabled.ToString(), DefaultCacheExpirationSeconds);
         }
         catch (Exception ex)
         {

@@ -5,20 +5,19 @@ namespace Persistence.Repositories.DatabaseCache;
 
 public class NullCacheRepository : ICacheRepository
 {
-    private static Task _emptyTask = Task.FromResult(0);
 
-    public Task SetKey<T>(string key, T value, int expireSeconds)
+    public Task Set<T>(string key, T value, int expireSeconds)
     {
-        return _emptyTask;
+        return Task.CompletedTask;
     }
 
-    public Task<CacheRetrievalResult<T>> GetKey<T>(string key)
+    public Task<CacheRetrievalResult<T>> Get<T>(string key)
     {
         return Task.FromResult(new CacheRetrievalResult<T>(false));
     }
 
-    public Task RemoveKey(string key)
+    public Task Delete(string key)
     {
-        return _emptyTask;
+        return Task.CompletedTask;
     }
 }

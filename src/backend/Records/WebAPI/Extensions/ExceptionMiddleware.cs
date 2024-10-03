@@ -1,8 +1,10 @@
+using Application.Common;
+using Newtonsoft.Json;
+
 namespace WebAPI.Extensions;
 
 public class ExceptionMiddleware(RequestDelegate next, Serilog.ILogger logger)
 {
-    // TODO: Handle exceptions
     public async Task InvokeAsync(HttpContext httpContext)
     {
         try
@@ -20,8 +22,9 @@ public class ExceptionMiddleware(RequestDelegate next, Serilog.ILogger logger)
     {
         httpContext.Response.ContentType = "application/json";
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        await Task.Delay(0);
-        // TODO: Create BaseResponse object and Add to Base response errors
-        // await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(baseresponseobject);
+
+        var errors = new Dictionary<string, List<string>>{{"Server", ["Cannot handle your request right now. Please try again later."]}};
+        var result = new BaseResult(ResultStatusTypes.ServerError, errors);
+        await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(result));
     }
 }
