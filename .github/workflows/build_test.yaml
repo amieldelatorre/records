@@ -77,7 +77,7 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}/webapi
           tags: |
-            type=ref,enable=true,prefix=dev_,event=branch
+            type=ref,enable=true,prefix=dev_,suffix=_${{ github.run_number }},event=branch
 
       - name: Docker Build and Push Web API
         id: webapi-push
