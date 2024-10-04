@@ -1,5 +1,6 @@
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -22,6 +23,7 @@ public class UserController(
    }
 
    [HttpGet]
+   [Authorize]
    public async Task<ActionResult<UserResult>> Get()
    {
       await Task.Delay(0);

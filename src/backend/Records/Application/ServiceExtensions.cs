@@ -1,4 +1,3 @@
-using Application.Configuration;
 using Application.Features;
 using Application.Features.AuthFeatures.Jwt.JwtCreate;
 using Application.Features.AuthFeatures.Login;
@@ -12,9 +11,6 @@ public static class ServiceExtensions
 {
     public static void AddApplicationServices(this IServiceCollection services)
     {
-        var globalConfiguration = GlobalConfiguration.GetGlobalConfiguration();
-        services.AddSingleton(globalConfiguration);
-
         services.AddScoped<FeatureStatus>();
 
         services.AddScoped<ICachedUserRepository, CachedUserRepository>();

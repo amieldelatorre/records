@@ -13,7 +13,7 @@ namespace Application.Features.AuthFeatures.Jwt.JwtCreate;
 public class JwtCreateHandler(
     FeatureStatus featureStatus,
     LoginHandler loginHandler,
-    GlobalConfiguration globalConfiguration,
+    JwtConfiguration jwtConfiguration,
     Serilog.ILogger logger)
 {
     private const string FeatureName = "JwtCreate";
@@ -33,28 +33,26 @@ public class JwtCreateHandler(
             return new JwtCreateResult(ResultStatusTypes.InvalidCredentials, LoginHandler.GetInvalidCredentialsMessage());
 
         Debug.Assert(loginRequestIsValid.User != null);
-        var tokenResponse = CreateToken(loginRequestIsValid.User, globalConfiguration);
+        var tokenResponse = CreateToken(loginRequestIsValid.User, jwtConfiguration);
         return new JwtCreateResult(ResultStatusTypes.Created, tokenResponse);
     }
 
-    public static JwtCreateResponse CreateToken(User user, GlobalConfiguration globalConfiguration)
+    public static JwtCreateResponse CreateToken(User user, JwtConfiguration jwtConfiguration)
     {
         var issuedTime = DateTime.UtcNow;
-        var expiry = issuedTime.AddSeconds(globalConfiguration.JwtTokenValidTimeSeconds.Value);
+        var expiry = issuedTime.AddSeconds(jwtConfiguration.JwtTokenValidTimeSeconds.Value);
         var claims = new Dictionary<string, object>
         {
             ["userId"] = user.Id,
         };
 
-        var signingKey = ECDsa.Create();
-        signingKey.ImportFromPem(globalConfiguration.JwtEcdsa384PrivateKey.Value);
-        var signingCredentials = new SigningCredentials(new ECDsaSecurityKey(signingKey), SecurityAlgorithms.EcdsaSha384);
+        var signingCredentials = new SigningCredentials(jwtConfiguration.JwtEcdsa384SecurityKey, jwtConfiguration.JwtEcdsa384Algorithm);
 
         var tokenHandler = new JsonWebTokenHandler();
         var descriptor = new SecurityTokenDescriptor
         {
-            Issuer = globalConfiguration.JwtIssuer.Value,
-            Audience = globalConfiguration.JwtAudience.Value,
+            Issuer = jwtConfiguration.JwtIssuer.Value,
+            Audience = jwtConfiguration.JwtAudience.Value,
             Claims = claims,
             IssuedAt = issuedTime,
             NotBefore = issuedTime,

@@ -1,18 +1,21 @@
-using System.Diagnostics;
+using System.Security.Cryptography;
 using Application.Configuration.EnvironmentVariables;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Application.Configuration;
+namespace Application.Features.AuthFeatures.Jwt;
 
-public class GlobalConfiguration
+public class JwtConfiguration
 {
     public StringEnvironmentVariable JwtEcdsa384PrivateKey { get; set; } = new ("RECORDS__JWT_ECDSA_384_PRIVATE_KEY", true);
+    public ECDsaSecurityKey? JwtEcdsa384SecurityKey { get; set; }
+    public string? JwtEcdsa384Algorithm { get; set; }
     public IntEnvironmentVariable JwtTokenValidTimeSeconds { get; set; } = new ("RECORDS__JWT_VALID_TIME_SECONDS", false, 604800);
     public StringEnvironmentVariable JwtIssuer { get; set; } = new ("RECORDS__JWT_ISSUER", false, "records");
     public StringEnvironmentVariable JwtAudience { get; set; } = new ("RECORDS__JWT_AUDIENCE", false, "records");
 
-    public static GlobalConfiguration GetGlobalConfiguration()
+    public static JwtConfiguration GetConfiguration()
     {
-        var config = new GlobalConfiguration();
+        var config = new JwtConfiguration();
         var errors = new List<EnvironmentVariable>();
 
         config.JwtEcdsa384PrivateKey.GetEnvironmentVariable();
@@ -30,6 +33,12 @@ public class GlobalConfiguration
 
         if (errors.Count > 0)
             EnvironmentVariable.PrintMissingEnvironmentVariablesAndExit(errors);
+
+        var signingBuilder = ECDsa.Create();
+        signingBuilder.ImportFromPem(config.JwtEcdsa384PrivateKey.Value);
+        var signingKey = new ECDsaSecurityKey(signingBuilder);
+        config.JwtEcdsa384SecurityKey = signingKey;
+        config.JwtEcdsa384Algorithm = SecurityAlgorithms.EcdsaSha384;
 
         return config;
     }
