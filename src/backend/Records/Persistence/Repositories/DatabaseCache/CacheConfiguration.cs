@@ -1,8 +1,8 @@
-using Persistence.Extensions;
+using Application.Configuration.EnvironmentVariables;
 
 namespace Persistence.Repositories.DatabaseCache;
 
 public static class CacheConfiguration
 {
-    public static EnvironmentVariable<bool> EnableCaching = new("ENABLE_CACHING", false, true);
+    public static BoolEnvironmentVariable EnableCaching = new("ENABLE_CACHING", false, true);
 }

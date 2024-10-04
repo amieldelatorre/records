@@ -5,6 +5,7 @@ public enum ResultStatusTypes
     Created,
     Ok,
     FeatureDisabled,
+    InvalidCredentials,
     ValidationError,
     ServerError,
 }

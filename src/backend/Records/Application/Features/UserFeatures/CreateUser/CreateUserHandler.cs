@@ -10,10 +10,9 @@ namespace Application.Features.UserFeatures.CreateUser;
 public class CreateUserHandler(
     FeatureStatus featureStatus,
     ICachedUserRepository cachedUserRepository,
-    Serilog.ILogger logger
-    )
+    Serilog.ILogger logger)
 {
-    private const string FeatureName = "CreateUser";
+    private const string FeatureName = "UserCreate";
 
     public async Task<UserResult> Handle(CreateUserRequest request)
     {

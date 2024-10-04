@@ -1,5 +1,6 @@
 using Application.Common;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace WebAPI.Extensions;
 
@@ -25,6 +26,6 @@ public class ExceptionMiddleware(RequestDelegate next, Serilog.ILogger logger)
 
         var errors = new Dictionary<string, List<string>>{{"Server", ["Cannot handle your request right now. Please try again later."]}};
         var result = new BaseResult(ResultStatusTypes.ServerError, errors);
-        await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(result));
+        await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(result, Configuration.JsonSerializerConfig));
     }
 }

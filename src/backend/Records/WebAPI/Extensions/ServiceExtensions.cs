@@ -12,10 +12,4 @@ public static class ServiceExtensions
                 .AllowAnyHeader());
         });
     }
-
-    public static void ConfigureBuilder(this IApplicationBuilder app)
-    {
-        app.UseCors();
-        app.UseMiddleware<ExceptionMiddleware>();
-    }
 }

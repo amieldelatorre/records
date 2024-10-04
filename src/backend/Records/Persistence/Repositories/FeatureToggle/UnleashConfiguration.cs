@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Persistence.Extensions;
+using Application.Configuration.EnvironmentVariables;
 using Unleash;
 using Unleash.ClientFactory;
 
@@ -7,39 +7,36 @@ namespace Persistence.Repositories.FeatureToggle;
 
 public class UnleashConfiguration
 {
-    private static EnvironmentVariable<string> _apiUrl = new ("UNLEASH__API_URL", true);
-    private static EnvironmentVariable<string> _apiKey = new ("UNLEASH__API_KEY", true);
-    private static EnvironmentVariable<string> _appName = new ("UNLEASH__APP_NAME", true);
+    private static StringEnvironmentVariable _apiUrl = new ("UNLEASH__API_URL", true);
+    private static StringEnvironmentVariable _apiKey = new ("UNLEASH__API_KEY", true);
+    private static StringEnvironmentVariable _appName = new ("UNLEASH__APP_NAME", true);
 
     public static IUnleash GetClient()
     {
         Serilog.Log.Logger.Information("environment variable '{envVarName}' is set to 'true'. Retrieving unleash client", FeatureToggleConfiguration.EnableFeatureToggles.Name);
-        var errors = new List<string>();
+        var errors = new List<EnvironmentVariable>();
 
-        var apiUrl = EnvironmentVariable<string>.GetEnvironmentVariable(_apiUrl);
-        if (string.IsNullOrWhiteSpace(apiUrl))
-            errors.Add(_apiUrl.Name);
-
-        var apiKey = EnvironmentVariable<string>.GetEnvironmentVariable(_apiKey);
-        if (string.IsNullOrWhiteSpace(apiKey))
-            errors.Add(_apiKey.Name);
-
-        var appName = EnvironmentVariable<string>.GetEnvironmentVariable(_appName);
-        if (string.IsNullOrWhiteSpace(appName))
-            errors.Add(_appName.Name);
+        _apiKey.GetEnvironmentVariable();
+        if (!_apiKey.IsValid)
+            errors.Add(_apiKey);
+        _apiUrl.GetEnvironmentVariable();
+        if (!_apiUrl.IsValid)
+            errors.Add(_apiUrl);
+        _appName.GetEnvironmentVariable();
+        if (!_appName.IsValid)
+            errors.Add(_appName);
 
         if (errors.Count > 0)
-            EnvironmentVariable<string>.PrintMissingEnvironmentVariablesAndExit(errors);
+            EnvironmentVariable.PrintMissingEnvironmentVariablesAndExit(errors);
 
-        Debug.Assert(apiUrl != null && apiKey != null && appName != null);
-
+        Debug.Assert(_apiUrl.Value != null && _apiKey.Value != null);
         var settings = new UnleashSettings()
         {
-            AppName = appName,
-            UnleashApi = new Uri(apiUrl),
+            AppName = _appName.Value,
+            UnleashApi = new Uri(_apiUrl.Value),
             CustomHttpHeaders = new Dictionary<string, string>()
             {
-                { "Authorization", apiKey }
+                { "Authorization", _apiKey.Value }
             }
         };
 

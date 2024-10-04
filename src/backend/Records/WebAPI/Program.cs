@@ -1,8 +1,11 @@
 using Application;
+using Application.Features.AuthFeatures.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using Serilog;
 using WebAPI.Extensions;
-using Newtonsoft.Json.Serialization;
+using WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +18,7 @@ Log.Logger.Information("performing Web API startup configuration");
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+        options.SerializerSettings.ContractResolver = Configuration.JsonSerializerConfig.ContractResolver;
     });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,7 +26,31 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistenceServices();
-builder.Services.AddUserFeatures();
+builder.Services.AddApplicationServices();
+
+var jwtConfiguration = JwtConfiguration.GetConfiguration();
+builder.Services.AddSingleton(jwtConfiguration);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.IncludeErrorDetails = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = jwtConfiguration.JwtIssuer.Value,
+        ValidAudience = jwtConfiguration.JwtAudience.Value,
+        IssuerSigningKey = jwtConfiguration.JwtEcdsa384SecurityKey,
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = true
+    };
+});
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -34,8 +61,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureBuilder();
-
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,4 +1,4 @@
-using Persistence.Extensions;
+using Application.Configuration.EnvironmentVariables;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Json;
@@ -7,7 +7,7 @@ namespace WebAPI.Extensions;
 
 public static class BuilderExtensions
 {
-    private static EnvironmentVariable<string> _logLevel = new("LOG_LEVEL", false, "INFO");
+    private static StringEnvironmentVariable _logLevel = new("LOG_LEVEL", false, "INFO");
 
     public static void ConfigureLogging(this WebApplicationBuilder builder)
     {
@@ -29,10 +29,9 @@ public static class BuilderExtensions
 
     private static Serilog.Events.LogEventLevel GetLogLevel()
     {
-        var logLevelValue = EnvironmentVariable<string>.GetEnvironmentVariable(_logLevel);
-
+        _logLevel.GetEnvironmentVariable();
         Serilog.Events.LogEventLevel logLevel;
-        if (!Enum.TryParse<LogEventLevel>(logLevelValue, true, out logLevel))
+        if (!Enum.TryParse<LogEventLevel>(_logLevel.Value, true, out logLevel))
             logLevel = Serilog.Events.LogEventLevel.Information;
 
         return logLevel;
