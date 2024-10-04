@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Persistence.Extensions;
+using Application.Configuration;
 using Serilog;
 using StackExchange.Redis;
 

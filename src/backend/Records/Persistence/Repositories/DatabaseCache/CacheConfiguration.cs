@@ -1,4 +1,4 @@
-using Persistence.Extensions;
+using Application.Configuration;
 
 namespace Persistence.Repositories.DatabaseCache;
 

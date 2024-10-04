@@ -1,19 +1,27 @@
 using Application.Features.Password;
 using Application.Repositories.DatabaseCache;
 
-namespace Application.Features.Auth.Login;
+namespace Application.Features.AuthFeatures.Login;
 
 public class LoginHandler(ICachedUserRepository userRepository)
 {
-    public async Task<bool> Handle(LoginRequest request, CancellationToken cancellationToken)
+    public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         var passwordHasher = new Pbkdf2PasswordHasher();
         var user = await userRepository.GetByEmail(request.Email, cancellationToken);
         if (user == null)
-            return false;
-        
+            return new LoginResponse
+            {
+                Success = false,
+                User = null
+            };
+
         var credentialsIsValid = passwordHasher.Verify(request.Password, user.PasswordHash, user.PasswordSalt);
-        return credentialsIsValid;
+        return new LoginResponse
+        {
+            Success = credentialsIsValid,
+            User = user
+        };
     }
 
     public static Dictionary<string, List<string>> GetInvalidCredentialsMessage()

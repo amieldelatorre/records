@@ -1,4 +1,4 @@
-namespace Application.Features.Auth.Jwt.JwtCreate;
+namespace Application.Features.AuthFeatures.Jwt.JwtCreate;
 
 public class JwtCreateResponse
 {

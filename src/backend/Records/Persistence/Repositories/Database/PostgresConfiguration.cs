@@ -1,7 +1,7 @@
 using System.Diagnostics;
+using Application.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
-using Persistence.Extensions;
 using Serilog;
 
 namespace Persistence.Repositories.Database;

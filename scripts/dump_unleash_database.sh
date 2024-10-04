@@ -16,6 +16,6 @@ sleep "${sleep_time}"
 filepath="${PROJECT_ROOT}/src/backend/Records/IntegrationTests/Data/unleash_postgres_dump.sql"
 
 # pgdump_all -c # Includes SQL commands to clean (drop) databases before recreating them
-docker exec -t unleash-postgres-db pg_dump -U root -d unleash --inserts >> "${filepath}"
+docker exec -t unleash-postgres-db pg_dump -U root -d unleash --inserts > "${filepath}"
 
 echo "Unleash database dump has been created at ${filepath}"

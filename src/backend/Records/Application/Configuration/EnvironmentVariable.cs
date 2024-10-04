@@ -1,9 +1,10 @@
 using Serilog;
 
-namespace Persistence.Extensions;
+namespace Application.Configuration;
 
 public struct EnvironmentVariable<T>
 {
+    // TODO: Refactor to not use static methods
     public string Name { get; }
     public bool IsRequired { get; }
     public T? Default { get; }
@@ -46,6 +47,11 @@ public struct EnvironmentVariable<T>
 
         PrintMissingEnvironmentVariablesAndExit([environmentVariable.Name]);
         return false;
+    }
+
+    public static int GetEnvironmentVariable(EnvironmentVariable<int> environmentVariable)
+    {
+        throw new NotImplementedException();
     }
 
     public static void PrintMissingEnvironmentVariablesAndExit(List<string> missingEnvironmentVariableNames)

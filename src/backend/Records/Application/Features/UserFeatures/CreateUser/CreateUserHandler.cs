@@ -12,7 +12,7 @@ public class CreateUserHandler(
     ICachedUserRepository cachedUserRepository,
     Serilog.ILogger logger)
 {
-    private const string FeatureName = "CreateUser";
+    private const string FeatureName = "UserCreate";
 
     public async Task<UserResult> Handle(CreateUserRequest request)
     {

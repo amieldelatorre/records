@@ -1,4 +1,4 @@
-using Persistence.Extensions;
+using Application.Configuration;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Json;

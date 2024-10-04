@@ -14,8 +14,9 @@ public static class ControllerExtensions<T> where T : BaseResult
             {
                 ResultStatusTypes.Created => StatusCodes.Status201Created,
                 ResultStatusTypes.Ok => StatusCodes.Status200OK,
-                ResultStatusTypes.ValidationError => StatusCodes.Status400BadRequest,
                 ResultStatusTypes.FeatureDisabled => StatusCodes.Status403Forbidden,
+                ResultStatusTypes.InvalidCredentials => StatusCodes.Status401Unauthorized,
+                ResultStatusTypes.ValidationError => StatusCodes.Status400BadRequest,
                 ResultStatusTypes.ServerError => StatusCodes.Status500InternalServerError,
                 _ => StatusCodes.Status500InternalServerError,
             }

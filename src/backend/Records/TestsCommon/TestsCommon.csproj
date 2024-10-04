@@ -20,10 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Data\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Remove="Data\unleash_postgres_dump.sql" />
     </ItemGroup>
 

@@ -1,6 +1,6 @@
 using Application.Common;
 
-namespace Application.Features.Auth.Jwt.JwtCreate;
+namespace Application.Features.AuthFeatures.Jwt.JwtCreate;
 
 public class JwtCreateResult : BaseResult
 {
@@ -10,5 +10,10 @@ public class JwtCreateResult : BaseResult
     public JwtCreateResult(ResultStatusTypes status, Dictionary<string, List<string>> errors) : base(status, errors)
     {
         Credentials = null;
+    }
+
+    public JwtCreateResult(ResultStatusTypes status, JwtCreateResponse credentials) : base(status)
+    {
+        Credentials = credentials;
     }
 }

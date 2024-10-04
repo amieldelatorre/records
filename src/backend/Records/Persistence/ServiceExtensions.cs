@@ -1,10 +1,10 @@
+using Application.Configuration;
 using Application.Repositories.Database;
 using Application.Repositories.DatabaseCache;
 using Application.Repositories.FeatureToggle;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
-using Persistence.Extensions;
 using Persistence.Repositories.Database;
 using Persistence.Repositories.DatabaseCache;
 using Persistence.Repositories.FeatureToggle;

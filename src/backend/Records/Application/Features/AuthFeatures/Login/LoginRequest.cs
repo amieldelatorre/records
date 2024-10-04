@@ -1,4 +1,4 @@
-namespace Application.Features.Auth.Login;
+namespace Application.Features.AuthFeatures.Login;
 
 public class LoginRequest
 {
