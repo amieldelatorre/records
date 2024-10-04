@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Application.Configuration;
+using Application.Configuration.EnvironmentVariables;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Serilog;
@@ -8,37 +8,39 @@ namespace Persistence.Repositories.Database;
 
 public static class PostgresConfiguration
 {
-    private static EnvironmentVariable<string> _host = new("RECORDS__POSTGRES_HOST", true);
-    private static EnvironmentVariable<string> _port = new("RECORDS__POSTGRES_PORT", true);
-    private static EnvironmentVariable<string> _database = new("RECORDS__POSTGRES_DB", true);
-    private static EnvironmentVariable<string> _username = new("RECORDS__POSTGRES_USER", true);
-    private static EnvironmentVariable<string> _password = new("RECORDS__POSTGRES_PASSWORD", true);
-    private static EnvironmentVariable<bool> _migrateDatabase = new("RECORDS__MIGRATE_DATABASE", false, false);
+    private static StringEnvironmentVariable _host = new("RECORDS__POSTGRES_HOST", true);
+    private static StringEnvironmentVariable _port = new("RECORDS__POSTGRES_PORT", true);
+    private static StringEnvironmentVariable _database = new("RECORDS__POSTGRES_DB", true);
+    private static StringEnvironmentVariable _username = new("RECORDS__POSTGRES_USER", true);
+    private static StringEnvironmentVariable _password = new("RECORDS__POSTGRES_PASSWORD", true);
+    private static BoolEnvironmentVariable _migrateDatabase = new("RECORDS__MIGRATE_DATABASE", false, false);
 
     public static string GetConnectionString()
     {
-        var errors = new List<string>();
-        var host = EnvironmentVariable<string>.GetEnvironmentVariable(_host);
-        if (string.IsNullOrWhiteSpace(host) && _host.IsRequired)
-            errors.Add(_host.Name);
-        var port = EnvironmentVariable<string>.GetEnvironmentVariable(_port);
-        if (string.IsNullOrWhiteSpace(port) && _host.IsRequired)
-            errors.Add(_port.Name);
-        var database = EnvironmentVariable<string>.GetEnvironmentVariable(_database);
-        if (string.IsNullOrWhiteSpace(database) && _host.IsRequired)
-            errors.Add(_database.Name);
-        var username = EnvironmentVariable<string>.GetEnvironmentVariable(_username);
-        if (string.IsNullOrWhiteSpace(username) && _host.IsRequired)
-            errors.Add(_username.Name);
-        var password = EnvironmentVariable<string>.GetEnvironmentVariable(_password);
-        if (string.IsNullOrWhiteSpace(password) && _host.IsRequired)
-            errors.Add(_password.Name);
+        var errors = new List<EnvironmentVariable>();
+        _host.GetEnvironmentVariable();
+        if (!_host.IsValid)
+            errors.Add(_host);
+        _port.GetEnvironmentVariable();
+        if (!_port.IsValid)
+            errors.Add(_port);
+        _database.GetEnvironmentVariable();
+        if (!_database.IsValid)
+            errors.Add(_database);
+        _username.GetEnvironmentVariable();
+        if (!_username.IsValid)
+            errors.Add(_username);
+        _password.GetEnvironmentVariable();
+        if (!_password.IsValid)
+            errors.Add(_password);
+        _migrateDatabase.GetEnvironmentVariable();
+        if (!_migrateDatabase.IsValid)
+            errors.Add(_migrateDatabase);
 
         if (errors.Count > 0)
-            EnvironmentVariable<string>.PrintMissingEnvironmentVariablesAndExit(errors);
+            EnvironmentVariable.PrintMissingEnvironmentVariablesAndExit(errors);
 
-        Debug.Assert(host != null && port != null && database != null && username != null && password != null);
-        var connectionString = $"Host={host}; Port={port}; Database={database}; Username={username}; Password={password}";
+        var connectionString = $"Host={_host.Value}; Port={_port.Value}; Database={_database.Value}; Username={_username.Value}; Password={_password.Value}";
         return connectionString;
     }
 
@@ -112,8 +114,7 @@ public static class PostgresConfiguration
             return true;
         }
 
-        var willMigrateDatabase = EnvironmentVariable<bool>.GetEnvironmentVariable(_migrateDatabase);
-        if (!willMigrateDatabase)
+        if (!_migrateDatabase.Value)
         {
             Log.Logger.Error("there are pending database migrations needed, please set the environment variable {envVarName} to true if you want to run the migrations", _migrateDatabase.Name);
             return false;

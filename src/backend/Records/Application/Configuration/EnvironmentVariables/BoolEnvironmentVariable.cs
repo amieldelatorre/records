@@ -2,7 +2,7 @@ using Serilog;
 
 namespace Application.Configuration.EnvironmentVariables;
 
-public class BoolEnvironmentVariable : IEnvironmentVariable<bool>
+public class BoolEnvironmentVariable : EnvironmentVariable<bool>
 {
     public BoolEnvironmentVariable(string name, bool isRequired, bool defaultValue) :
         base(name, isRequired, defaultValue) { }

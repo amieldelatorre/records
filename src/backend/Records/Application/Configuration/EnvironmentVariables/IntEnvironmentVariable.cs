@@ -2,7 +2,7 @@ using Serilog;
 
 namespace Application.Configuration.EnvironmentVariables;
 
-public class IntEnvironmentVariable : IEnvironmentVariable<int>
+public class IntEnvironmentVariable : EnvironmentVariable<int>
 {
     public int MinValue { get; set; }
 

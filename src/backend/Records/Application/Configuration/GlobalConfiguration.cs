@@ -13,7 +13,7 @@ public class GlobalConfiguration
     public static GlobalConfiguration GetGlobalConfiguration()
     {
         var config = new GlobalConfiguration();
-        var errors = new List<IEnvironmentVariable>();
+        var errors = new List<EnvironmentVariable>();
 
         config.JwtEcdsa384PrivateKey.GetEnvironmentVariable();
         if (!config.JwtEcdsa384PrivateKey.IsValid)
@@ -29,7 +29,7 @@ public class GlobalConfiguration
             errors.Add(config.JwtAudience);
 
         if (errors.Count > 0)
-            IEnvironmentVariable<object>.PrintMissingEnvironmentVariablesAndExit(errors);
+            EnvironmentVariable.PrintMissingEnvironmentVariablesAndExit(errors);
 
         return config;
     }

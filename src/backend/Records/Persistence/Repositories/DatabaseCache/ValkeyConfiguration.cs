@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Application.Configuration;
+using Application.Configuration.EnvironmentVariables;
 using Serilog;
 using StackExchange.Redis;
 
@@ -7,27 +7,26 @@ namespace Persistence.Repositories.DatabaseCache;
 
 public class ValkeyConfiguration
 {
-    private static EnvironmentVariable<string> _host = new("RECORDS__VALKEY_HOST", true);
-    private static EnvironmentVariable<string> _port = new("RECORDS__VALKEY_PORT", true);
+    private static StringEnvironmentVariable _host = new("RECORDS__VALKEY_HOST", true);
+    private static StringEnvironmentVariable _port = new("RECORDS__VALKEY_PORT", true);
 
     public static string GetConnectionString()
     {
         Log.Logger.Information("environment variable '{envVarName}' is set to 'true'. Retrieving Valkey connection details", CacheConfiguration.EnableCaching.Name);
-        var errors = new List<string>();
+        var errors = new List<EnvironmentVariable>();
 
-        var host = EnvironmentVariable<string>.GetEnvironmentVariable(_host);
-        if (string.IsNullOrWhiteSpace(host))
-            errors.Add(_host.Name);
+        _host.GetEnvironmentVariable();
+        if (!_host.IsValid)
+            errors.Add(_host);
 
-        var port = EnvironmentVariable<string>.GetEnvironmentVariable(_port);
-        if (string.IsNullOrWhiteSpace(port))
-            errors.Add(_port.Name);
+        _port.GetEnvironmentVariable();
+        if (!_port.IsValid)
+            errors.Add(_port);
 
         if (errors.Count > 0)
-            EnvironmentVariable<string>.PrintMissingEnvironmentVariablesAndExit(errors);
+            EnvironmentVariable.PrintMissingEnvironmentVariablesAndExit(errors);
 
-        Debug.Assert(host != null && port != null);
-        var connectionString = $"{host}:{port}";
+        var connectionString = $"{_host.Value}:{_port.Value}";
         return connectionString;
     }
 

@@ -1,6 +1,6 @@
 namespace Application.Configuration.EnvironmentVariables;
 
-public class StringEnvironmentVariable : IEnvironmentVariable<string>
+public class StringEnvironmentVariable : EnvironmentVariable<string>
 {
     public StringEnvironmentVariable(string name, bool isRequired, string? defaultValue = null) :
         base(name, isRequired, defaultValue) { }

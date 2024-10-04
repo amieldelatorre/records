@@ -1,4 +1,4 @@
-using Application.Configuration;
+using Application.Configuration.EnvironmentVariables;
 using Application.Repositories.Database;
 using Application.Repositories.DatabaseCache;
 using Application.Repositories.FeatureToggle;
@@ -21,8 +21,8 @@ public static class ServiceExtensions
         PostgresConfiguration.Configure(connectionString);
         services.AddDbContext<DataContext>(options => options.UseNpgsql(connectionString));
 
-        var enableCaching = EnvironmentVariable<bool>.GetEnvironmentVariable(CacheConfiguration.EnableCaching);
-        if (enableCaching)
+        CacheConfiguration.EnableCaching.GetEnvironmentVariable();
+        if (CacheConfiguration.EnableCaching.Value)
         {
             var valkeyConnectionString = ValkeyConfiguration.GetConnectionString();
             var valkeyDatabase = ValkeyConfiguration.GetDatabase(valkeyConnectionString);
@@ -37,8 +37,8 @@ public static class ServiceExtensions
 
         services.AddScoped<IUserRepository, PostgresUserRepository>();
 
-        var enableFeatureToggles = EnvironmentVariable<bool>.GetEnvironmentVariable(FeatureToggleConfiguration.EnableFeatureToggles);
-        if (enableFeatureToggles)
+        FeatureToggleConfiguration.EnableFeatureToggles.GetEnvironmentVariable();
+        if (FeatureToggleConfiguration.EnableFeatureToggles.Value)
         {
             var unleashClient = UnleashConfiguration.GetClient();
             services.AddSingleton(unleashClient);
