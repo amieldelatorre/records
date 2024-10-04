@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using Serilog;
 using WebAPI.Extensions;
-using Newtonsoft.Json.Serialization;
+using WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,7 @@ Log.Logger.Information("performing Web API startup configuration");
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        options.SerializerSettings.ContractResolver = Configuration.JsonSerializerConfig.ContractResolver;
     });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -51,6 +51,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
