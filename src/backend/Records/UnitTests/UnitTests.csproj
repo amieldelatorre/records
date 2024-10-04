@@ -23,10 +23,15 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\IntegrationTests\IntegrationTests.csproj" />
       <ProjectReference Include="..\TestsCommon\TestsCommon.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
       <ProjectReference Include="..\WebAPI\WebAPI.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Core\Applications\Features\Auth\Login\" />
     </ItemGroup>
 
 </Project>
