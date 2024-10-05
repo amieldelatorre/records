@@ -1,11 +1,9 @@
-using WebAPI.Controllers;
 using Application.Common;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebAPI.Controllers.ControllerExtensions;
 
-namespace UnitTests.Presentation.WebAPI.Controllers;
+namespace UnitTests.Presentation.WebAPI.Controllers.ControllerExtensions;
 
 public class HttpResponseFromResultTests
 {

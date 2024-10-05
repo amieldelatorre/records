@@ -1,8 +1,10 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Application.Common;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
 using Application.Features.UserFeatures.GetUser;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -35,11 +37,15 @@ public class UserControllerTests
         await StandardPersistenceInfra.Dispose();
         await NullPersistenceInfra.Dispose();
     }
-    private static UserController GetUserController(PersistenceInfra persistenceInfra)
+
+    private static UserController GetUserController(PersistenceInfra persistenceInfra, HttpContext? httpContext = null)
     {
         Debug.Assert(persistenceInfra.RecordsFeatureStatus != null && persistenceInfra.CachedUserRepository != null);
 
         var httpContextAccessor = new HttpContextAccessor();
+        if (httpContext != null)
+            httpContextAccessor.HttpContext = httpContext;
+
         var claimsInformation = new ClaimsInformation(httpContextAccessor);
         var createUserHandler = new CreateUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
         var getUserHandler = new GetUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
@@ -48,6 +54,7 @@ public class UserControllerTests
         var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler, getUserHandler);
         return userController;
     }
+
     [Test]
     [TestCaseSource(nameof(_postUserTestCases))]
     public async Task PostUserTests(CreateUserRequest request,
@@ -84,13 +91,95 @@ public class UserControllerTests
         });
     }
 
+    [Test]
+    [TestCaseSource(nameof(_getUserTestCases))]
+    public async Task GetUserTest(string guidString, int expectedStatusCode, UserResult expectedResult)
+    {
+        await ActualGetUserTest(StandardPersistenceInfra, guidString, expectedStatusCode, expectedResult);
+        await ActualGetUserTest(NullPersistenceInfra, guidString, expectedStatusCode, expectedResult);
+    }
+
+    private static async Task ActualGetUserTest(PersistenceInfra persistenceInfra, string guidString,
+        int expectedStatusCode, UserResult expectedResult)
+    {
+        var claims = new[] { new Claim("userId", guidString) };
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(claims))
+        };
+        var userController = GetUserController(persistenceInfra, httpContext);
+
+        var actual = await userController.Get();
+        var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
+        var actualResult = (actual.Result as ObjectResult)?.Value as UserResult;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
+            if ((expectedResult.User == null && actualResult?.User != null) ||
+                (expectedResult.User != null && actualResult?.User == null))
+                Assert.Fail("expectedResult.User and actualUserResult.User does not match");
+
+            if (expectedResult.User != null)
+            {
+                Assert.That(actualResult?.User?.FirstName, Is.EqualTo(expectedResult.User.FirstName));
+                Assert.That(actualResult?.User?.LastName, Is.EqualTo(expectedResult.User.LastName));
+                Assert.That(actualResult?.User?.Email, Is.EqualTo(expectedResult.User.Email));
+            }
+        });
+
+    }
+
     private static object[] _getUserTestCases =
     [
         new object[]
         {
-            "",
-
+            "571fac2e-317c-417e-982d-be2943edb07e",
+            200,
+            new UserResult(ResultStatusTypes.Ok, new UserResponse
+            {
+                Id = new Guid("571fac2e-317c-417e-982d-be2943edb07e"),
+                FirstName = "Albert",
+                LastName = "Einstein",
+                Email = "albert.einstein@records.invalid",
+                DateCreated = default,
+                DateUpdated = default
+            })
         },
+        new object[]
+        {
+            "719b57e8-0a85-403e-9742-43ace59fe88d",
+            200,
+            new UserResult(ResultStatusTypes.Ok, new UserResponse
+            {
+                Id = new Guid("719b57e8-0a85-403e-9742-43ace59fe88d"),
+                FirstName = "Marie",
+                LastName = "Curie",
+                Email = "marie.curie@records.invalid",
+                DateCreated = default,
+                DateUpdated = default
+            })
+        },
+        new object[]
+        {
+            "3e098063-d9a4-4b24-9088-7a548b92796a",
+            200,
+            new UserResult(ResultStatusTypes.Ok, new UserResponse
+            {
+                Id = new Guid("3e098063-d9a4-4b24-9088-7a548b92796a"),
+                FirstName = "Stephen",
+                LastName = "Hawking",
+                Email = "stephen.hawking@records.invalid",
+                DateCreated = default,
+                DateUpdated = default
+            })
+        },
+        new object[]
+        {
+            "3e098063-d9a4-4b24-9088-123412312345",
+            404,
+            new UserResult(ResultStatusTypes.NotFound)
+        }
     ];
 
     private static object[] _postUserTestCases =
