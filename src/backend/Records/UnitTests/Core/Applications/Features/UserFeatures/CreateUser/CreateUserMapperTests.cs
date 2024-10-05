@@ -1,3 +1,4 @@
+using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
 using Domain.Entities;
 
@@ -34,7 +35,7 @@ public class CreateUserMapperTests
             DateUpdated = timeNowTestCase,
         };
 
-        var actual = CreateUserMapper.Map(testCase);
+        var actual = UserResponse.MapFrom(testCase);
 
         Assert.Multiple(() =>
         {

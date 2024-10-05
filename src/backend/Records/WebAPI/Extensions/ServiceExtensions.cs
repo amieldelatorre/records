@@ -1,3 +1,5 @@
+using WebAPI.Controllers.ControllerExtensions;
+
 namespace WebAPI.Extensions;
 
 public static class ServiceExtensions
@@ -11,5 +13,7 @@ public static class ServiceExtensions
                 .AllowAnyMethod()
                 .AllowAnyHeader());
         });
+
+        services.AddScoped<ClaimsInformation>();
     }
 }

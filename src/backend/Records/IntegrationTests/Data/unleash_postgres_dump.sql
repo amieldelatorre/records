@@ -23,22 +23,22 @@ SET row_security = off;
 
 CREATE FUNCTION public.assign_unleash_permission_to_role(permission_name text, role_name text) RETURNS void
     LANGUAGE plpgsql
-    AS $$
-declare
-    var_role_id int;
-    var_permission text;
-BEGIN
-    var_role_id := (SELECT r.id FROM roles r WHERE r.name = role_name);
-    var_permission := (SELECT p.permission FROM permissions p WHERE p.permission = permission_name);
-
-    IF NOT EXISTS (
-        SELECT 1
-        FROM role_permission AS rp
-        WHERE rp.role_id = var_role_id AND rp.permission = var_permission
-    ) THEN
-        INSERT INTO role_permission(role_id, permission) VALUES (var_role_id, var_permission);
-    END IF;
-END
+    AS $$
+declare
+    var_role_id int;
+    var_permission text;
+BEGIN
+    var_role_id := (SELECT r.id FROM roles r WHERE r.name = role_name);
+    var_permission := (SELECT p.permission FROM permissions p WHERE p.permission = permission_name);
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM role_permission AS rp
+        WHERE rp.role_id = var_role_id AND rp.permission = var_permission
+    ) THEN
+        INSERT INTO role_permission(role_id, permission) VALUES (var_role_id, var_permission);
+    END IF;
+END
 $$;
 
 
@@ -50,25 +50,25 @@ ALTER FUNCTION public.assign_unleash_permission_to_role(permission_name text, ro
 
 CREATE FUNCTION public.assign_unleash_permission_to_role_for_all_environments(permission_name text, role_name text) RETURNS void
     LANGUAGE plpgsql
-    AS $$
-declare
-    var_role_id int;
-    var_permission text;
-BEGIN
-    var_role_id := (SELECT id FROM roles r WHERE r.name = role_name);
-    var_permission := (SELECT p.permission FROM permissions p WHERE p.permission = permission_name);
-
-    INSERT INTO role_permission (role_id, permission, environment)
-        SELECT var_role_id, var_permission, e.name
-        FROM environments e
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM role_permission rp
-            WHERE rp.role_id = var_role_id
-            AND rp.permission = var_permission
-            AND rp.environment = e.name
-        );
-END;
+    AS $$
+declare
+    var_role_id int;
+    var_permission text;
+BEGIN
+    var_role_id := (SELECT id FROM roles r WHERE r.name = role_name);
+    var_permission := (SELECT p.permission FROM permissions p WHERE p.permission = permission_name);
+
+    INSERT INTO role_permission (role_id, permission, environment)
+        SELECT var_role_id, var_permission, e.name
+        FROM environments e
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM role_permission rp
+            WHERE rp.role_id = var_role_id
+            AND rp.permission = var_permission
+            AND rp.environment = e.name
+        );
+END;
 $$;
 
 
@@ -80,11 +80,11 @@ ALTER FUNCTION public.assign_unleash_permission_to_role_for_all_environments(per
 
 CREATE FUNCTION public.date_floor_round(base_date timestamp with time zone, round_interval interval) RETURNS timestamp with time zone
     LANGUAGE sql STABLE
-    AS $_$
-SELECT to_timestamp(
-    (EXTRACT(epoch FROM $1)::integer / EXTRACT(epoch FROM $2)::integer)
-    * EXTRACT(epoch FROM $2)::integer
-)
+    AS $_$
+SELECT to_timestamp(
+    (EXTRACT(epoch FROM $1)::integer / EXTRACT(epoch FROM $2)::integer)
+    * EXTRACT(epoch FROM $2)::integer
+)
 $_$;
 
 
@@ -96,14 +96,14 @@ ALTER FUNCTION public.date_floor_round(base_date timestamp with time zone, round
 
 CREATE FUNCTION public.unleash_update_stat_environment_changes_counter() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$
-        BEGIN
-            IF NEW.environment IS NOT NULL THEN
-                INSERT INTO stat_environment_updates(day, environment, updates) SELECT DATE_TRUNC('Day', NEW.created_at), NEW.environment, 1 ON CONFLICT (day, environment) DO UPDATE SET updates = stat_environment_updates.updates + 1;
-            END IF;
-
-            return null;
-        END;
+    AS $$
+        BEGIN
+            IF NEW.environment IS NOT NULL THEN
+                INSERT INTO stat_environment_updates(day, environment, updates) SELECT DATE_TRUNC('Day', NEW.created_at), NEW.environment, 1 ON CONFLICT (day, environment) DO UPDATE SET updates = stat_environment_updates.updates + 1;
+            END IF;
+
+            return null;
+        END;
     $$;
 
 
@@ -1570,7 +1570,7 @@ CREATE TABLE public.project_settings (
     feature_naming_pattern text,
     feature_naming_example text,
     feature_naming_description text,
-    CONSTRAINT project_settings_project_mode_values CHECK (((project_mode)::text = ANY ((ARRAY['open'::character varying, 'protected'::character varying, 'private'::character varying])::text[])))
+    CONSTRAINT project_settings_project_mode_values CHECK (((project_mode)::text = ANY (ARRAY[('open'::character varying)::text, ('protected'::character varying)::text, ('private'::character varying)::text])))
 );
 
 
@@ -2195,7 +2195,7 @@ INSERT INTO public.api_token_project VALUES ('default:production.30d020981e4026e
 -- Data for Name: api_tokens; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.api_tokens VALUES ('default:production.30d020981e4026e09c4bb07039a58a4abc51a54cd1297e0554e9bffe', 'production', 'client', '2024-10-04 13:39:12.777227+13', NULL, '2024-10-04 13:44:31.217+13', 'production', NULL, 'production', NULL);
+INSERT INTO public.api_tokens VALUES ('default:production.30d020981e4026e09c4bb07039a58a4abc51a54cd1297e0554e9bffe', 'production', 'client', '2024-10-04 13:39:12.777227+13', NULL, '2024-10-05 13:16:27.572+13', 'production', NULL, 'production', NULL);
 
 
 --
@@ -2250,7 +2250,7 @@ INSERT INTO public.api_tokens VALUES ('default:production.30d020981e4026e09c4bb0
 -- Data for Name: client_applications; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.client_applications VALUES ('records', '2024-10-04 13:39:42.675304+13', '2024-10-04 13:39:42.674+13', '2024-10-04 13:39:42.674+13', '["default","userWithId","gradualRolloutUserId","gradualRolloutRandom","applicationHostname","gradualRolloutSessionId","remoteAddress","flexibleRollout"]', NULL, NULL, NULL, NULL, true, 'unleash_system_user');
+INSERT INTO public.client_applications VALUES ('records', '2024-10-04 13:39:42.675304+13', '2024-10-05 13:16:37.64+13', '2024-10-05 13:16:37.64+13', '["default","userWithId","gradualRolloutUserId","gradualRolloutRandom","applicationHostname","gradualRolloutSessionId","remoteAddress","flexibleRollout"]', NULL, NULL, NULL, NULL, true, 'unleash_system_user');
 
 
 --
@@ -2265,6 +2265,10 @@ INSERT INTO public.client_applications_usage VALUES ('records', 'default', 'prod
 --
 
 INSERT INTO public.client_instances VALUES ('records', 'DESKTOP-K2RQV8G-generated-8e07d6b2-e3bc-4f53-a618-ec1a09063fcc', '::ffff:172.19.0.1', '2024-10-04 13:44:41.047+13', '2024-10-04 13:39:42.683377+13', 'unleash-client-dotnet:v4.1.13', 'production');
+INSERT INTO public.client_instances VALUES ('records', 'DESKTOP-K2RQV8G-generated-7015d89e-39af-434a-861c-9768ba276f8c', '::ffff:172.19.0.1', '2024-10-04 20:38:40.018+13', '2024-10-04 20:31:43.871333+13', 'unleash-client-dotnet:v4.1.13', 'production');
+INSERT INTO public.client_instances VALUES ('records', 'DESKTOP-K2RQV8G-generated-05c665f7-d3bb-45b6-892d-5ce5bb163039', '::ffff:172.19.0.1', '2024-10-05 13:13:47.649848+13', '2024-10-05 13:13:47.649848+13', 'unleash-client-dotnet:v4.1.13', 'production');
+INSERT INTO public.client_instances VALUES ('records', 'DESKTOP-K2RQV8G-generated-8ba1508b-c068-4386-bcc1-89999bd2b39a', '::ffff:172.19.0.1', '2024-10-05 13:16:25.462+13', '2024-10-05 13:14:27.646446+13', 'unleash-client-dotnet:v4.1.13', 'production');
+INSERT INTO public.client_instances VALUES ('records', 'DESKTOP-K2RQV8G-generated-98fb4ac9-8874-451e-8800-10e865c5f580', '::ffff:172.19.0.1', '2024-10-05 13:18:37.2+13', '2024-10-05 13:16:37.646299+13', 'unleash-client-dotnet:v4.1.13', 'production');
 
 
 --
@@ -2272,6 +2276,9 @@ INSERT INTO public.client_instances VALUES ('records', 'DESKTOP-K2RQV8G-generate
 --
 
 INSERT INTO public.client_metrics_env VALUES ('records_JwtCreate', 'records', 'production', '2024-10-04 13:00:00+13', 5, 36);
+INSERT INTO public.client_metrics_env VALUES ('records_UserCreate', 'records', 'production', '2024-10-04 20:00:00+13', 1, 0);
+INSERT INTO public.client_metrics_env VALUES ('records_JwtCreate', 'records', 'production', '2024-10-04 20:00:00+13', 4, 0);
+INSERT INTO public.client_metrics_env VALUES ('records_UserGet', 'records', 'production', '2024-10-05 13:00:00+13', 0, 1);
 
 
 --
@@ -2353,6 +2360,11 @@ INSERT INTO public.events VALUES (22, '2024-10-04 13:39:12.782797+13', 'api-toke
 INSERT INTO public.events VALUES (23, '2024-10-04 13:39:57.781054+13', 'feature-environment-disabled', 'admin', NULL, '[]', 'default', 'production', 'records_JwtCreate', NULL, true, 1, '::ffff:172.19.0.1');
 INSERT INTO public.events VALUES (24, '2024-10-04 13:40:17.167674+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'production', 'records_JwtCreate', NULL, true, 1, '::ffff:172.19.0.1');
 INSERT INTO public.events VALUES (25, '2024-10-04 13:41:46.329048+13', 'application-created', 'unleash_system_user', '{"appName":"records","createdAt":"2024-10-04T00:39:42.675Z","updatedAt":"2024-10-04T00:39:42.674Z","description":null,"strategies":["default","userWithId","gradualRolloutUserId","gradualRolloutRandom","applicationHostname","gradualRolloutSessionId","remoteAddress","flexibleRollout"],"createdBy":"unleash_system_user","url":null,"color":null,"icon":null}', '[]', NULL, NULL, NULL, NULL, true, -1337, '');
+INSERT INTO public.events VALUES (26, '2024-10-05 13:18:12.655959+13', 'feature-created', 'admin', '{"name":"records_UserGet","description":null,"type":"kill-switch","project":"default","stale":false,"createdAt":"2024-10-05T00:18:12.642Z","lastSeenAt":null,"impressionData":false,"archivedAt":null,"archived":false}', '[]', 'default', NULL, 'records_UserGet', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (27, '2024-10-05 13:18:14.247964+13', 'feature-strategy-add', 'admin', '{"id":"0225b7b7-4fd0-4af3-a13d-e49d808ee7a3","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"records_UserGet","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'development', 'records_UserGet', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (28, '2024-10-05 13:18:14.255219+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'development', 'records_UserGet', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (29, '2024-10-05 13:18:16.033228+13', 'feature-strategy-add', 'admin', '{"id":"07eee102-ad47-4e18-ad3a-552349702b9f","name":"flexibleRollout","title":null,"disabled":false,"constraints":[],"parameters":{"groupId":"records_UserGet","rollout":"100","stickiness":"default"},"variants":[],"sortOrder":0,"segments":[]}', '[]', 'default', 'production', 'records_UserGet', NULL, true, 1, '::ffff:172.19.0.1');
+INSERT INTO public.events VALUES (30, '2024-10-05 13:18:16.039294+13', 'feature-environment-enabled', 'admin', NULL, '[]', 'default', 'production', 'records_UserGet', NULL, true, 1, '::ffff:172.19.0.1');
 
 
 --
@@ -2379,6 +2391,8 @@ INSERT INTO public.feature_environments VALUES ('production', 'records_tests_Fea
 INSERT INTO public.feature_environments VALUES ('development', 'records_test_FeatureDisabled', false, '[]', NULL);
 INSERT INTO public.feature_environments VALUES ('production', 'records_test_FeatureDisabled', false, '[]', NULL);
 INSERT INTO public.feature_environments VALUES ('production', 'records_JwtCreate', true, '[]', NULL);
+INSERT INTO public.feature_environments VALUES ('development', 'records_UserGet', true, '[]', NULL);
+INSERT INTO public.feature_environments VALUES ('production', 'records_UserGet', true, '[]', NULL);
 
 
 --
@@ -2391,6 +2405,9 @@ INSERT INTO public.feature_lifecycles VALUES ('records_tests_FeatureEnabled', 'i
 INSERT INTO public.feature_lifecycles VALUES ('records_test_FeatureDisabled', 'initial', '2024-10-04 13:39:01.704+13', NULL, NULL);
 INSERT INTO public.feature_lifecycles VALUES ('records_JwtCreate', 'pre-live', '2024-10-04 13:40:42.683+13', NULL, NULL);
 INSERT INTO public.feature_lifecycles VALUES ('records_JwtCreate', 'live', '2024-10-04 13:40:42.685+13', NULL, NULL);
+INSERT INTO public.feature_lifecycles VALUES ('records_UserCreate', 'pre-live', '2024-10-04 20:33:43.886+13', NULL, NULL);
+INSERT INTO public.feature_lifecycles VALUES ('records_UserCreate', 'live', '2024-10-04 20:33:43.891+13', NULL, NULL);
+INSERT INTO public.feature_lifecycles VALUES ('records_UserGet', 'initial', '2024-10-05 13:18:12.961+13', NULL, NULL);
 
 
 --
@@ -2403,6 +2420,8 @@ INSERT INTO public.feature_strategies VALUES ('17f683e9-3d19-42c0-b335-feb5a295b
 INSERT INTO public.feature_strategies VALUES ('5802bc03-237e-44f9-8e89-df920d2950b1', 'records_JwtCreate', 'default', 'production', 'flexibleRollout', '{"groupId": "records_JwtCreate", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-04 13:38:06.892832+13', NULL, false, '[]', NULL);
 INSERT INTO public.feature_strategies VALUES ('d34b2bb1-1b17-44c8-9e79-46438c625a7f', 'records_tests_FeatureEnabled', 'default', 'development', 'flexibleRollout', '{"groupId": "records_tests_FeatureEnabled", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-04 13:38:37.532746+13', NULL, false, '[]', NULL);
 INSERT INTO public.feature_strategies VALUES ('f684e6c3-7563-44bf-a288-3204d0c3cbb0', 'records_tests_FeatureEnabled', 'default', 'production', 'flexibleRollout', '{"groupId": "records_tests_FeatureEnabled", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-04 13:38:38.995609+13', NULL, false, '[]', NULL);
+INSERT INTO public.feature_strategies VALUES ('0225b7b7-4fd0-4af3-a13d-e49d808ee7a3', 'records_UserGet', 'default', 'development', 'flexibleRollout', '{"groupId": "records_UserGet", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-05 13:18:14.242686+13', NULL, false, '[]', NULL);
+INSERT INTO public.feature_strategies VALUES ('07eee102-ad47-4e18-ad3a-552349702b9f', 'records_UserGet', 'default', 'production', 'flexibleRollout', '{"groupId": "records_UserGet", "rollout": "100", "stickiness": "default"}', '[]', 0, '2024-10-05 13:18:16.029581+13', NULL, false, '[]', NULL);
 
 
 --
@@ -2436,6 +2455,7 @@ INSERT INTO public.features VALUES ('2024-10-04 13:37:21.650419+13', 'records_Us
 INSERT INTO public.features VALUES ('2024-10-04 13:38:03.111143+13', 'records_JwtCreate', NULL, '[]', 'kill-switch', false, 'default', NULL, false, NULL, NULL, 1, false);
 INSERT INTO public.features VALUES ('2024-10-04 13:38:35.904828+13', 'records_tests_FeatureEnabled', NULL, '[]', 'kill-switch', false, 'default', NULL, false, NULL, NULL, 1, false);
 INSERT INTO public.features VALUES ('2024-10-04 13:39:00.699537+13', 'records_test_FeatureDisabled', NULL, '[]', 'release', false, 'default', NULL, false, NULL, NULL, 1, false);
+INSERT INTO public.features VALUES ('2024-10-05 13:18:12.64296+13', 'records_UserGet', NULL, '[]', 'kill-switch', false, 'default', NULL, false, NULL, NULL, 1, false);
 
 
 --
@@ -2484,7 +2504,9 @@ INSERT INTO public.features VALUES ('2024-10-04 13:39:00.699537+13', 'records_te
 -- Data for Name: last_seen_at_metrics; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.last_seen_at_metrics VALUES ('records_JwtCreate', 'production', '2024-10-04 13:41:49.004+13');
+INSERT INTO public.last_seen_at_metrics VALUES ('records_UserCreate', 'production', '2024-10-04 20:34:03.859+13');
+INSERT INTO public.last_seen_at_metrics VALUES ('records_JwtCreate', 'production', '2024-10-04 20:35:03.858+13');
+INSERT INTO public.last_seen_at_metrics VALUES ('records_UserGet', 'production', '2024-10-05 13:17:57.581+13');
 
 
 --
@@ -2909,7 +2931,7 @@ INSERT INTO public.project_stats VALUES ('default', 0, 19, 0, 4, 0, 0, 0, 0);
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.projects VALUES ('default', 'Default', 'Default project', '2024-10-04 13:36:35.352718', 100, '2024-10-04 13:41:52.817+13', NULL);
+INSERT INTO public.projects VALUES ('default', 'Default', 'Default project', '2024-10-04 13:36:35.352718', 100, '2024-10-05 12:25:39.442+13', NULL);
 
 
 --
@@ -3088,6 +3110,8 @@ INSERT INTO public.settings VALUES ('login_history_retention', '{"hours": 336}')
 
 INSERT INTO public.stat_environment_updates VALUES ('2024-10-04', 'development', 6);
 INSERT INTO public.stat_environment_updates VALUES ('2024-10-04', 'production', 9);
+INSERT INTO public.stat_environment_updates VALUES ('2024-10-05', 'development', 2);
+INSERT INTO public.stat_environment_updates VALUES ('2024-10-05', 'production', 2);
 
 
 --
@@ -3124,7 +3148,7 @@ INSERT INTO public.tag_types VALUES ('simple', 'Used to simplify filtering of fe
 -- Data for Name: unleash_session; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-INSERT INTO public.unleash_session VALUES ('6ib_dM73jxOQxhY9ehBTGvHW6iuKfxEY', '{"cookie":{"originalMaxAge":172800000,"expires":"2024-10-06T00:36:43.981Z","secure":false,"httpOnly":true,"path":"/","sameSite":"lax"},"user":{"isAPI":false,"accountType":"User","id":1,"username":"admin","imageUrl":"https://gravatar.com/avatar/8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918?s=42&d=retro&r=g","seenAt":null,"loginAttempts":0,"createdAt":"2024-10-04T00:36:37.748Z","scimId":null}}', '2024-10-04 13:36:43.983121+13', '2024-10-06 13:45:50.065+13');
+INSERT INTO public.unleash_session VALUES ('6ib_dM73jxOQxhY9ehBTGvHW6iuKfxEY', '{"cookie":{"originalMaxAge":172800000,"expires":"2024-10-06T00:36:43.981Z","secure":false,"httpOnly":true,"path":"/","sameSite":"lax"},"user":{"isAPI":false,"accountType":"User","id":1,"username":"admin","imageUrl":"https://gravatar.com/avatar/8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918?s=42&d=retro&r=g","seenAt":null,"loginAttempts":0,"createdAt":"2024-10-04T00:36:37.748Z","scimId":null}}', '2024-10-04 13:36:43.983121+13', '2024-10-07 13:18:48.409+13');
 
 
 --
@@ -3234,7 +3258,7 @@ SELECT pg_catalog.setval('public.change_requests_id_seq', 1, false);
 -- Name: events_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
 --
 
-SELECT pg_catalog.setval('public.events_id_seq', 25, true);
+SELECT pg_catalog.setval('public.events_id_seq', 30, true);
 
 
 --
@@ -4181,7 +4205,7 @@ CREATE INDEX idx_events_created_at_desc ON public.events USING btree (created_at
 -- Name: idx_events_feature_type_id; Type: INDEX; Schema: public; Owner: root
 --
 
-CREATE INDEX idx_events_feature_type_id ON public.events USING btree (id) WHERE ((feature_name IS NOT NULL) OR ((type)::text = ANY ((ARRAY['segment-updated'::character varying, 'feature_import'::character varying, 'features-imported'::character varying])::text[])));
+CREATE INDEX idx_events_feature_type_id ON public.events USING btree (id) WHERE ((feature_name IS NOT NULL) OR ((type)::text = ANY (ARRAY[('segment-updated'::character varying)::text, ('feature_import'::character varying)::text, ('features-imported'::character varying)::text])));
 
 
 --

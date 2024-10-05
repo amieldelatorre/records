@@ -25,9 +25,16 @@ public class CachedUserRepository(
         return newUser;
     }
 
-    public Task<User> Get(User entity)
+    public async Task<User?> Get(Guid userId)
     {
-        throw new NotImplementedException();
+        var cacheKey = UserIdCacheKey(userId);
+        var cachedUser = await cacheRepository.Get<User>(cacheKey);
+
+        if (cachedUser.IsInCache)
+            return cachedUser.Value;
+
+        var user = await userRepository.Get(userId);
+        return user;
     }
 
     public Task<User> Update(User entity)

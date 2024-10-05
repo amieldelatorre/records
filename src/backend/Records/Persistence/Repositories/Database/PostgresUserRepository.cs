@@ -15,9 +15,10 @@ public class PostgresUserRepository(DataContext dbContext) : IUserRepository
         return entity;
     }
 
-    public Task<User> Get(User entity)
+    public async Task<User?> Get(Guid userId)
     {
-        throw new NotImplementedException();
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        return user;
     }
 
     public Task<User> Update(User entity)

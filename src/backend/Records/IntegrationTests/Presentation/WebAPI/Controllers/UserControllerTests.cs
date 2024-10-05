@@ -2,9 +2,12 @@ using System.Diagnostics;
 using Application.Common;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
+using Application.Features.UserFeatures.GetUser;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebAPI.Controllers;
+using WebAPI.Controllers.ControllerExtensions;
 
 namespace IntegrationTests.Presentation.WebAPI.Controllers;
 
@@ -37,6 +40,20 @@ public class UserControllerTestsSetup
 
 public class UserControllerTests
 {
+    private static UserController GetUserController(PersistenceInfra persistenceInfra)
+    {
+        Debug.Assert(persistenceInfra.RecordsFeatureStatus != null && persistenceInfra.CachedUserRepository != null);
+
+        var httpContextAccessor = new HttpContextAccessor();
+        var claimsInformation = new ClaimsInformation(httpContextAccessor);
+        var createUserHandler = new CreateUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
+        var getUserHandler = new GetUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
+
+
+        var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler, getUserHandler);
+        return userController;
+    }
+
     private static object[] _postUserTestCases =
     {
         new object[]
@@ -124,9 +141,7 @@ public class UserControllerTests
     private static async Task ActualPostUserTests(PersistenceInfra persistenceInfra, CreateUserRequest request,
         int expectedStatusCode, UserResult expectedResult)
     {
-        Debug.Assert(persistenceInfra.RecordsFeatureStatus != null && persistenceInfra.CachedUserRepository != null);
-        var createUserHandler = new CreateUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
-        var userController = new UserController(persistenceInfra.Logger, createUserHandler);
+        var userController = GetUserController(persistenceInfra);
         var actual = await userController.Post(request);
 
         var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
