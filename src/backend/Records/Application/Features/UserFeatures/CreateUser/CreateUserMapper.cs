@@ -23,17 +23,4 @@ public static class CreateUserMapper
             DateUpdated = now,
         };
     }
-
-    public static UserResponse Map(User user)
-    {
-        return new UserResponse
-        {
-            Id = user.Id,
-            DateCreated = user.DateCreated,
-            DateUpdated = user.DateUpdated,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
-        };
-    }
 }

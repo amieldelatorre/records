@@ -6,6 +6,7 @@ public enum ResultStatusTypes
     Ok,
     FeatureDisabled,
     InvalidCredentials,
+    NotFound,
     ValidationError,
     ServerError,
 }
@@ -46,5 +47,4 @@ public class BaseResult
         else
             Errors[key] = [message];
     }
-
 }

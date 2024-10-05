@@ -52,6 +52,9 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.ConfigureApiExtensions();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

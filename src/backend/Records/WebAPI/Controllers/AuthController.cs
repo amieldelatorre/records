@@ -2,6 +2,7 @@ using Application.Features.AuthFeatures.Jwt.JwtCreate;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.AuthFeatures.Jwt.JwtCreate;
 using Application.Features.AuthFeatures.Login;
+using WebAPI.Controllers.ControllerExtensions;
 
 namespace WebAPI.Controllers;
 
@@ -24,6 +25,6 @@ public class AuthController(
     {
         logger.Debug("new request to create JWT token");
         var result = await jwtCreateHandler.Handle(loginRequest);
-        return ControllerExtensions<JwtCreateResult>.HttpResponseFromResult(result);
+        return HttpResponseFromResult<JwtCreateResult>.Map(result);
     }
 }

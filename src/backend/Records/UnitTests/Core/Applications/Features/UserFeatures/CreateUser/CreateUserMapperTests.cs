@@ -1,3 +1,4 @@
+using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
 using Domain.Entities;
 
@@ -27,14 +28,14 @@ public class CreateUserMapperTests
             Id = Guid.NewGuid(),
             FirstName = "Albert",
             LastName = "Einstein",
-            Email = "albert.einstein@example.invalid",
+            Email = "albert.einstein@records.invalid",
             PasswordHash = "hisPassword",
             PasswordSalt = "passwordSalt",
             DateCreated = timeNowTestCase,
             DateUpdated = timeNowTestCase,
         };
 
-        var actual = CreateUserMapper.Map(testCase);
+        var actual = UserResponse.MapFrom(testCase);
 
         Assert.Multiple(() =>
         {
@@ -55,7 +56,7 @@ public class CreateUserMapperTests
             {
                 FirstName = "Albert",
                 LastName = "Einstein",
-                Email = "albert.einstein@example.invalid",
+                Email = "albert.einstein@records.invalid",
                 Password = "hisPassword"
             },
             new User
@@ -63,7 +64,7 @@ public class CreateUserMapperTests
                 Id = Guid.NewGuid(),
                 FirstName = "Albert",
                 LastName = "Einstein",
-                Email = "albert.einstein@example.invalid",
+                Email = "albert.einstein@records.invalid",
                 PasswordHash = "hashedPassword",
                 PasswordSalt = "passwordSalt",
                 DateCreated = DateTime.UtcNow,
@@ -76,7 +77,7 @@ public class CreateUserMapperTests
             {
                 FirstName = " Albert    ",
                 LastName = "  Einstein ",
-                Email = " albert.einstein@example.invalid         ",
+                Email = " albert.einstein@records.invalid         ",
                 Password = "hisPassword"
             },
             new User
@@ -84,7 +85,7 @@ public class CreateUserMapperTests
                 Id = Guid.NewGuid(),
                 FirstName = "Albert",
                 LastName = "Einstein",
-                Email = "albert.einstein@example.invalid",
+                Email = "albert.einstein@records.invalid",
                 PasswordHash = "hashedPassword",
                 PasswordSalt = "passwordSalt",
                 DateCreated = DateTime.UtcNow,

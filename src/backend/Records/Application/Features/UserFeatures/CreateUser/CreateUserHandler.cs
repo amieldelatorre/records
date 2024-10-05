@@ -42,7 +42,7 @@ public class CreateUserHandler(
         }
 
         await cachedUserRepository.Create(user);
-        var result = new UserResult(ResultStatusTypes.Created, CreateUserMapper.Map(user));
+        var result = new UserResult(ResultStatusTypes.Created, UserResponse.MapFrom(user));
         return result;
     }
 }

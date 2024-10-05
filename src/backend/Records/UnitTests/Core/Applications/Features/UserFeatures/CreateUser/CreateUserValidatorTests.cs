@@ -34,7 +34,7 @@ public class CreateUserValidatorTests
             {
                 FirstName = "Valid",
                 LastName = "Valid",
-                Email = "mail@example.invalid",
+                Email = "mail@records.invalid",
                 Password = "notval"
             },
             new ExpectedValidationResult()
@@ -52,7 +52,7 @@ public class CreateUserValidatorTests
             {
                 FirstName = "Valid",
                 LastName = "Valid",
-                Email = "mail@example.invalid",
+                Email = "mail@records.invalid",
                 Password = "not val"
             },
             new ExpectedValidationResult()
@@ -91,7 +91,7 @@ public class CreateUserValidatorTests
             {
                 FirstName = "Albert",
                 LastName = "Einstein",
-                Email = "albert.einstein@example.invalid",
+                Email = "albert.einstein@records.invalid",
                 Password = "hispassword"
             },
             new ExpectedValidationResult()
@@ -106,7 +106,7 @@ public class CreateUserValidatorTests
             {
                 FirstName = " Albert    ",
                 LastName = "  Einstein ",
-                Email = " albert.einstein@example.invalid         ",
+                Email = " albert.einstein@records.invalid         ",
                 Password = "hispassword"
             },
             new ExpectedValidationResult()

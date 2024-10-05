@@ -1,12 +1,11 @@
-using WebAPI.Controllers;
 using Application.Common;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using WebAPI.Controllers.ControllerExtensions;
 
-namespace UnitTests.Presentation.WebAPI.Controllers;
+namespace UnitTests.Presentation.WebAPI.Controllers.ControllerExtensions;
 
-public class ControllerExtensionsTests
+public class HttpResponseFromResultTests
 {
     internal static object[] HttpResponseFromResultTestsProvider =
     [
@@ -27,6 +26,16 @@ public class ControllerExtensionsTests
         },
         new object[]
         {
+            new BaseResult(ResultStatusTypes.InvalidCredentials, new Dictionary<string, List<string>>()),
+            StatusCodes.Status401Unauthorized
+        },
+        new object[]
+        {
+            new BaseResult(ResultStatusTypes.NotFound, new Dictionary<string, List<string>>()),
+            StatusCodes.Status404NotFound
+        },
+        new object[]
+        {
             new BaseResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>()),
             StatusCodes.Status400BadRequest
         },
@@ -43,9 +52,9 @@ public class ControllerExtensionsTests
     ];
 
     [Test, TestCaseSource(nameof(HttpResponseFromResultTestsProvider))]
-    public void HttpResponseFromResultTests(BaseResult test, int expectedStatusCode)
+    public void MapResponseFromResultTests(BaseResult test, int expectedStatusCode)
     {
-        IConvertToActionResult actual = ControllerExtensions<BaseResult>.HttpResponseFromResult(test);
+        IConvertToActionResult actual = HttpResponseFromResult<BaseResult>.Map(test);
         var actualWithStatusCode = actual.Convert() as IStatusCodeActionResult;
 
         Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));

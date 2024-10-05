@@ -1,7 +1,9 @@
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
+using Application.Features.UserFeatures.GetUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Controllers.ControllerExtensions;
 
 namespace WebAPI.Controllers;
 
@@ -16,22 +18,25 @@ namespace WebAPI.Controllers;
 [ApiController]
 public class UserController(
    Serilog.ILogger logger,
-   CreateUserHandler createUserHandler
-   ) : ControllerBase
+   ClaimsInformation claimsInformation,
+   CreateUserHandler createUserHandler,
+   GetUserHandler getUserHandler) : ControllerBase
 {
    [HttpPost]
    public async Task<ActionResult<UserResult>> Post([FromBody] CreateUserRequest createUserRequest)
    {
       logger.Debug("new request to create user");
       var result = await createUserHandler.Handle(createUserRequest);
-      return ControllerExtensions<UserResult>.HttpResponseFromResult(result);
+      return HttpResponseFromResult<UserResult>.Map(result);
    }
 
    [HttpGet]
    [Authorize]
    public async Task<ActionResult<UserResult>> Get()
    {
-      await Task.Delay(0);
-      throw new NotImplementedException();
+      logger.Debug("New request to get user");
+      var userId = claimsInformation.UserId();
+      var result = await getUserHandler.Handle(userId);
+      return HttpResponseFromResult<UserResult>.Map(result);
    }
 }
