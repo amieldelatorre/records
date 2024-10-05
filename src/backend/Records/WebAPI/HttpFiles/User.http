@@ -27,7 +27,7 @@ Accept: application/json
 {
     "FirstName": "Isaac",
     "LastName": "Newton",
-    "Email": "isaac.newton@example.invalid",
+    "Email": "isaac.newton@records.invalid",
     "Password": "password"
 }
 ###

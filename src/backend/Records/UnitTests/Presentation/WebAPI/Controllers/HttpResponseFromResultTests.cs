@@ -28,6 +28,16 @@ public class HttpResponseFromResultTests
         },
         new object[]
         {
+            new BaseResult(ResultStatusTypes.InvalidCredentials, new Dictionary<string, List<string>>()),
+            StatusCodes.Status401Unauthorized
+        },
+        new object[]
+        {
+            new BaseResult(ResultStatusTypes.NotFound, new Dictionary<string, List<string>>()),
+            StatusCodes.Status404NotFound
+        },
+        new object[]
+        {
             new BaseResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>()),
             StatusCodes.Status400BadRequest
         },

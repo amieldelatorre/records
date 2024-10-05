@@ -16,7 +16,7 @@ public class JwtCreateHandlerTests
             Id = Guid.NewGuid(),
             FirstName = "Albert",
             LastName = "Einstein",
-            Email = "albert.einstein@example.invalid",
+            Email = "albert.einstein@records.invalid",
             PasswordHash = "hashedPassword",
             PasswordSalt = "passwordSalt",
             DateCreated = DateTime.UtcNow,
