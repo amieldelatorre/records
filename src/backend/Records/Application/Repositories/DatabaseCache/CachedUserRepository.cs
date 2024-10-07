@@ -15,17 +15,16 @@ public class CachedUserRepository(
     public static string UserIdCacheKey(Guid id) => $"{_cachePrefix}::id:{id}";
     public static string UserEmailCacheKey(string email) => $"{_cachePrefix}::email:{email}";
 
-    public async Task<User> Create(User entity)
+    public async Task Create(User user, CancellationToken cancellationToken)
     {
-        var newUser = await userRepository.Create(entity);
-        logger.Debug("created new user with {id}", newUser.Id);
+        await userRepository.Create(user, cancellationToken);
+        logger.Debug("created new user with {id}", user.Id);
 
-        var cacheKey = UserIdCacheKey(newUser.Id);
-        await cacheRepository.Set(cacheKey, newUser, _defaultCacheExpirationSeconds);
-        return newUser;
+        var cacheKey = UserIdCacheKey(user.Id);
+        await cacheRepository.Set(cacheKey, user, _defaultCacheExpirationSeconds);
     }
 
-    public async Task<User?> Get(Guid userId)
+    public async Task<User?> Get(Guid userId, CancellationToken cancellationToken)
     {
         var cacheKey = UserIdCacheKey(userId);
         var cachedUser = await cacheRepository.Get<User>(cacheKey);
@@ -33,16 +32,18 @@ public class CachedUserRepository(
         if (cachedUser.IsInCache)
             return cachedUser.Value;
 
-        var user = await userRepository.Get(userId);
+        var user = await userRepository.Get(userId, cancellationToken);
         return user;
     }
 
-    public Task<User> Update(User entity)
+    public async Task Update(User user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var cacheKey = UserIdCacheKey(user.Id);
+        await userRepository.Update(user, cancellationToken);
+        await cacheRepository.Set(cacheKey, user, _defaultCacheExpirationSeconds);
     }
 
-    public Task Delete(User entity)
+    public Task Delete(User entity, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

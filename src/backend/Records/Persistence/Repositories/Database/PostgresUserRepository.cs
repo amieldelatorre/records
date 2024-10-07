@@ -8,25 +8,25 @@ namespace Persistence.Repositories.Database;
 
 public class PostgresUserRepository(DataContext dbContext) : IUserRepository
 {
-    public async Task<User> Create(User entity)
+    public async Task Create(User user, CancellationToken cancellationToken)
     {
-        await dbContext.Users.AddAsync(entity);
-        await dbContext.SaveChangesAsync();
-        return entity;
+        dbContext.Users.Add(user);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<User?> Get(Guid userId)
+    public async Task<User?> Get(Guid userId, CancellationToken cancellationToken)
     {
-        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
         return user;
     }
 
-    public Task<User> Update(User entity)
+    public async Task Update(User user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        dbContext.Users.Update(user);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Task Delete(User entity)
+    public Task Delete(User entity, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

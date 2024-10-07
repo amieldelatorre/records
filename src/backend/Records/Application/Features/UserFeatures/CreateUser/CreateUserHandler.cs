@@ -41,7 +41,7 @@ public class CreateUserHandler(
             return errorResult;
         }
 
-        await cachedUserRepository.Create(user);
+        await cachedUserRepository.Create(user, cancellationTokenSource.Token);
         var result = new UserResult(ResultStatusTypes.Created, UserResponse.MapFrom(user));
         return result;
     }

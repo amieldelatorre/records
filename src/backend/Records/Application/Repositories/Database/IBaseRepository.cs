@@ -4,8 +4,8 @@ namespace Application.Repositories.Database;
 
 public interface IBaseRepository<T> where T : BaseEntity
 {
-    Task<T> Create(T entity);
-    Task<T?> Get(Guid guid);
-    Task<T> Update(T entity);
-    Task Delete(T entity);
+    Task Create(T entity, CancellationToken cancellationToken);
+    Task<T?> Get(Guid guid, CancellationToken cancellationToken);
+    Task Update(T entity, CancellationToken cancellationToken);
+    Task Delete(T entity, CancellationToken cancellationToken);
 }
