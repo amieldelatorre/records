@@ -4,6 +4,7 @@ using Application.Common;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
 using Application.Features.UserFeatures.GetUser;
+using Application.Features.UserFeatures.UpdateUser;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,9 +50,10 @@ public class UserControllerTests
         var claimsInformation = new ClaimsInformation(httpContextAccessor);
         var createUserHandler = new CreateUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
         var getUserHandler = new GetUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
+        var updateUserHandler = new UpdateUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
 
 
-        var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler, getUserHandler);
+        var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler, getUserHandler, updateUserHandler);
         return userController;
     }
 
@@ -87,6 +89,11 @@ public class UserControllerTests
                 Assert.That(actualUserResult?.User?.FirstName, Is.EqualTo(expectedResult.User.FirstName));
                 Assert.That(actualUserResult?.User?.LastName, Is.EqualTo(expectedResult.User.LastName));
                 Assert.That(actualUserResult?.User?.Email, Is.EqualTo(expectedResult.User.Email));
+            }
+
+            if (expectedResult.Errors.Count > 0)
+            {
+                Assert.That(actualUserResult?.Errors, Is.EqualTo(expectedResult.Errors));
             }
         });
     }
@@ -126,16 +133,90 @@ public class UserControllerTests
                 Assert.That(actualResult?.User?.LastName, Is.EqualTo(expectedResult.User.LastName));
                 Assert.That(actualResult?.User?.Email, Is.EqualTo(expectedResult.User.Email));
             }
+
+            if (expectedResult.Errors.Count > 0)
+            {
+                Assert.That(actualResult?.Errors, Is.EqualTo(expectedResult.Errors));
+            }
         });
 
     }
 
-    private static object[] _getUserTestCases =
+    [Test]
+    [TestCaseSource(nameof(_updateUserTestCases))]
+    public async Task UpdateUserTest(string guidString, UpdateUserRequest request, int expectedStatusCode, UserResult expectedResult)
+    {
+        await ActualUpdateUserTest(StandardPersistenceInfra, guidString, request, expectedStatusCode, expectedResult);
+        await ActualUpdateUserTest(NullPersistenceInfra, guidString, request, expectedStatusCode, expectedResult);
+    }
+
+    public static async Task ActualUpdateUserTest(PersistenceInfra infra, string guidString, UpdateUserRequest request, int expectedStatusCode, UserResult expectedResult)
+    {
+        var claims = new[] { new Claim("userId", guidString) };
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(claims))
+        };
+        var userController = GetUserController(infra, httpContext);
+
+        var actual = await userController.Put(request);
+        var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
+        var actualResult = (actual.Result as ObjectResult)?.Value as UserResult;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
+            if ((expectedResult.User == null && actualResult?.User != null) ||
+                (expectedResult.User != null && actualResult?.User == null))
+                Assert.Fail("expectedResult.User and actualUserResult.User does not match");
+
+            if (expectedResult.User != null)
+            {
+                Assert.That(new Guid(guidString), Is.EqualTo(expectedResult.User.Id));
+                Assert.That(actualResult?.User?.FirstName, Is.EqualTo(expectedResult.User.FirstName));
+                Assert.That(actualResult?.User?.LastName, Is.EqualTo(expectedResult.User.LastName));
+                Assert.That(actualResult?.User?.Email, Is.EqualTo(expectedResult.User.Email));
+            }
+
+            if (expectedResult.Errors.Count > 0)
+            {
+                Assert.That(actualResult?.Errors, Is.EqualTo(expectedResult.Errors));
+            }
+        });
+    }
+
+    private static object[] _updateUserTestCases =
     [
         new object[]
         {
+            "3e098063-d9a4-4b24-9088-7a548b92796a",
+            new UpdateUserRequest
+            {
+                FirstName = "Stephen2",
+                LastName = "Hawking2",
+                Email = "stephen2.hawking2@records.invalid",
+            },
+            StatusCodes.Status200OK,
+            new UserResult(ResultStatusTypes.Ok, new UserResponse
+            {
+                Id = new Guid("3e098063-d9a4-4b24-9088-7a548b92796a"),
+                FirstName = "Stephen2",
+                LastName = "Hawking2",
+                Email = "stephen2.hawking2@records.invalid",
+                DateCreated = default,
+                DateUpdated = default
+            })
+        },
+        new object[]
+        {
             "571fac2e-317c-417e-982d-be2943edb07e",
-            200,
+            new UpdateUserRequest
+            {
+                FirstName = "             Albert",
+                LastName = "  Einstein     ",
+                Email = "albert.einstein@records.invalid",
+            },
+            StatusCodes.Status200OK,
             new UserResult(ResultStatusTypes.Ok, new UserResponse
             {
                 Id = new Guid("571fac2e-317c-417e-982d-be2943edb07e"),
@@ -149,7 +230,59 @@ public class UserControllerTests
         new object[]
         {
             "719b57e8-0a85-403e-9742-43ace59fe88d",
-            200,
+            new UpdateUserRequest
+            {
+                FirstName = "",
+                LastName = "",
+                Email = null,
+            },
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"FirstName", ["'First Name' must not be empty."]},
+                {"LastName", ["'Last Name' must not be empty."]},
+                {"Email", ["'Email' must not be empty."]},
+            })
+        },
+        new object[]
+        {
+            "719b57e8-0a85-403e-9742-43ace59fe88d",
+            new UpdateUserRequest
+            {
+                FirstName = "  ",
+                LastName = "",
+                Email = "not an email",
+            },
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"FirstName", ["'First Name' must not be empty."]},
+                {"LastName", ["'Last Name' must not be empty."]},
+                {"Email", ["'Email' is not a valid email address."]},
+            })
+        },
+    ];
+
+    private static object[] _getUserTestCases =
+    [
+        new object[]
+        {
+            "571fac2e-317c-417e-982d-be2943edb07e",
+            StatusCodes.Status200OK,
+            new UserResult(ResultStatusTypes.Ok, new UserResponse
+            {
+                Id = new Guid("571fac2e-317c-417e-982d-be2943edb07e"),
+                FirstName = "Albert",
+                LastName = "Einstein",
+                Email = "albert.einstein@records.invalid",
+                DateCreated = default,
+                DateUpdated = default
+            })
+        },
+        new object[]
+        {
+            "719b57e8-0a85-403e-9742-43ace59fe88d",
+            StatusCodes.Status200OK,
             new UserResult(ResultStatusTypes.Ok, new UserResponse
             {
                 Id = new Guid("719b57e8-0a85-403e-9742-43ace59fe88d"),
@@ -163,7 +296,7 @@ public class UserControllerTests
         new object[]
         {
             "3e098063-d9a4-4b24-9088-7a548b92796a",
-            200,
+            StatusCodes.Status200OK,
             new UserResult(ResultStatusTypes.Ok, new UserResponse
             {
                 Id = new Guid("3e098063-d9a4-4b24-9088-7a548b92796a"),
@@ -177,7 +310,7 @@ public class UserControllerTests
         new object[]
         {
             "3e098063-d9a4-4b24-9088-123412312345",
-            404,
+            StatusCodes.Status404NotFound,
             new UserResult(ResultStatusTypes.NotFound)
         }
     ];
@@ -193,7 +326,7 @@ public class UserControllerTests
                 Email = "       isaac.newton@records.invalid ",
                 Password = "testPassword"
             },
-            201,
+            StatusCodes.Status201Created,
             new UserResult(ResultStatusTypes.Created, new UserResponse
             {
                 FirstName = "Isaac",
@@ -212,7 +345,7 @@ public class UserControllerTests
                 Email = "pythagoras.of.samos@records.invalid",
                 Password = "testPassword"
             },
-            201,
+            StatusCodes.Status201Created,
             new UserResult(ResultStatusTypes.Created, new UserResponse
             {
                 FirstName = "Pythagoras",
@@ -231,8 +364,8 @@ public class UserControllerTests
                 Email = "albert.einstein@records.invalid",
                 Password = "test Pa"
             },
-            400,
-            new UserResult(ResultStatusTypes.Created, new Dictionary<string, List<string>>
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
             {
                 {"FirstName", ["'First Name' must not be empty."]},
                 {"LastName", ["'Last Name' must not be empty."]},
@@ -248,8 +381,8 @@ public class UserControllerTests
                 Email = "albert.einstein@records.invalid",
                 Password = "testPassword"
             },
-            400,
-            new UserResult(ResultStatusTypes.Created, new Dictionary<string, List<string>>
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
             {
                 {"Email", ["'Email' is already in use."]},
             })
