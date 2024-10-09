@@ -5,6 +5,7 @@ using Application.Features.UserFeatures.CreateUser;
 using Application.Features.UserFeatures.DeleteUser;
 using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
+using Application.Features.UserFeatures.UpdateUserPassword;
 using Application.Repositories.DatabaseCache;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +21,7 @@ public static class ServiceExtensions
         services.AddScoped<CreateUserHandler>();
         services.AddScoped<GetUserHandler>();
         services.AddScoped<UpdateUserHandler>();
+        services.AddScoped<UpdateUserPasswordHandler>();
         services.AddScoped<DeleteUserHandler>();
 
         services.AddScoped<LoginHandler>();

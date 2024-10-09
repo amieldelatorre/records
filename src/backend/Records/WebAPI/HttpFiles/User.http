@@ -32,6 +32,20 @@ Authorization: Bearer eyJhbGciOiJFUzM4NCIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJyZWNvcmRzI
     "LastName": "Hawking",
     "Email": "stephen.hawking@records.invalid"
 }
+
+###
+
+PUT {{user_v1_api_address}}/3e098063-d9a4-4b24-9088-7a548b92796a/password
+Accept: application/json
+Content-Type: application/json
+// Token might be expired, generate a new one with a POST request to the JWT endpoint in the Auth.http file
+Authorization: Bearer eyJhbGciOiJFUzM4NCIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJyZWNvcmRzIiwiaXNzIjoicmVjb3JkcyIsImV4cCI6MTcyODYzMjA0MywiaWF0IjoxNzI4MDI3MjQzLCJuYmYiOjE3MjgwMjcyNDMsInVzZXJJZCI6IjNlMDk4MDYzLWQ5YTQtNGIyNC05MDg4LTdhNTQ4YjkyNzk2YSJ9.qze8k_9CWtXilipJ7UwrrBNLlR-zWT4pH0yJkqGxMXXATyza1aA_EKASPra5egINzbvrge0rel5ZQF3E3wckANu47XvLzZ1ryzMyezTSYXug1593VYXazc9EzDP7f_Lh
+
+{
+  "CurrentPassword": "password",
+  "NewPassword": "newPassword"
+}
+
 ###
 
 DELETE {{user_v1_api_address}}

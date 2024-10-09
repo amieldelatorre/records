@@ -1,12 +1,13 @@
 using System.Diagnostics;
 using System.Security.Claims;
 using Application.Common;
+using Application.Features.Password;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
 using Application.Features.UserFeatures.DeleteUser;
 using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
-using Domain.Entities;
+using Application.Features.UserFeatures.UpdateUserPassword;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -52,9 +53,12 @@ public class UserControllerTests
         var createUserHandler = new CreateUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
         var getUserHandler = new GetUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
         var updateUserHandler = new UpdateUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
+        var updateUserPasswordHandler = new UpdateUserPasswordHandler(persistenceInfra.RecordsFeatureStatus,
+            persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
         var deleteUserHandler = new DeleteUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
 
-        var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler, getUserHandler, updateUserHandler, deleteUserHandler);
+        var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler,
+            getUserHandler, updateUserHandler, updateUserPasswordHandler, deleteUserHandler);
         return userController;
     }
 
@@ -247,6 +251,111 @@ public class UserControllerTests
             Assert.That(expectedDeletedUser, Is.Null);
         });
     }
+
+    [Test, TestCaseSource(nameof(_updateUserPasswordTestCases))]
+    public async Task UpdateUserPasswordTest(string claimsGuidString, string parameterGuidString,
+        UpdateUserPasswordRequest request, int expectedStatusCode, UserResult expectedResult)
+    {
+        await ActualUpdateUserPasswordTest(StandardPersistenceInfra, claimsGuidString, parameterGuidString, request,
+            expectedStatusCode, expectedResult);
+        await ActualUpdateUserPasswordTest(NullPersistenceInfra, claimsGuidString, parameterGuidString, request,
+            expectedStatusCode, expectedResult);
+    }
+
+    public async Task ActualUpdateUserPasswordTest(PersistenceInfra infra,
+        string claimsGuidString, string parameterGuidString, UpdateUserPasswordRequest request,
+        int expectedStatusCode, UserResult expectedResult)
+    {
+        var claims = new[] { new Claim("userId", claimsGuidString) };
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(claims))
+        };
+        var userController = GetUserController(infra, httpContext);
+
+
+        var actual = await userController.PutPassword(parameterGuidString, request);
+        var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
+        var actualResult = (actual.Result as ObjectResult)?.Value as UserResult;
+
+        await Assert.MultipleAsync(async () =>
+        {
+            Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
+            Assert.That(actualResult?.Errors, Is.EqualTo(expectedResult.Errors));
+
+            if (expectedStatusCode == StatusCodes.Status200OK)
+            {
+                Debug.Assert(infra.UserRepository != null);
+                var user = await infra.UserRepository.Get(new Guid(claimsGuidString), new CancellationTokenSource().Token);
+                Debug.Assert(user != null);
+                var validNewPasswordLogin =
+                    new Pbkdf2PasswordHasher().Verify(request.NewPassword, user.PasswordHash, user.PasswordSalt);
+                var invalidOldPasswordLogin =
+                    new Pbkdf2PasswordHasher().Verify(request.CurrentPassword, user.PasswordHash, user.PasswordSalt);
+
+                Assert.That(validNewPasswordLogin, Is.True);
+                Assert.That(invalidOldPasswordLogin, Is.False);
+            }
+        });
+    }
+
+    private static object[] _updateUserPasswordTestCases =
+    [
+        new object[]
+        {
+            "3e098063-d9a4-4b24-9088-7a548b92796a",
+            "719b57e8-0a85-403e-9742-43ace59fe88d",
+            new UpdateUserPasswordRequest
+            {
+                CurrentPassword = "password1",
+                NewPassword = "newPassword",
+            },
+            StatusCodes.Status404NotFound,
+            new UserResult(ResultStatusTypes.NotFound)
+        },
+        new object[]
+        {
+            "3e098063-d9a4-4b24-9088-7a548b92796a",
+            "3e098063-d9a4-4b24-9088-7a548b92796a",
+            new UpdateUserPasswordRequest
+            {
+                CurrentPassword = "wrongPassword",
+                NewPassword = "newPassword",
+            },
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.NotFound, new Dictionary<string, List<string>>
+            {
+                { "CurrentPassword", ["'Current Password' is incorrect."] }
+            })
+        },
+        new object[]
+        {
+            "3e098063-d9a4-4b24-9088-7a548b92796a",
+            "3e098063-d9a4-4b24-9088-7a548b92796a",
+            new UpdateUserPasswordRequest
+            {
+                CurrentPassword = "",
+                NewPassword = "newPassword",
+            },
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.NotFound, new Dictionary<string, List<string>>
+            {
+                { "CurrentPassword", ["'Current Password' is incorrect."] }
+            })
+        },
+        new object[]
+        {
+            "719b57e8-0a85-403e-9742-43ace59fe88d",
+            "719b57e8-0a85-403e-9742-43ace59fe88d",
+            new UpdateUserPasswordRequest
+            {
+                CurrentPassword = "password123214",
+                NewPassword = "newPassword",
+            },
+            StatusCodes.Status200OK,
+            new UserResult(ResultStatusTypes.Ok)
+        },
+    ];
 
     private static object[] _deleteUserTestCases =
     [
