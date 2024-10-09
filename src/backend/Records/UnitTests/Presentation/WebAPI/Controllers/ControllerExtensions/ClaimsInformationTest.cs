@@ -6,8 +6,7 @@ namespace UnitTests.Presentation.WebAPI.Controllers.ControllerExtensions;
 
 public class ClaimsInformationTest
 {
-    [Test]
-    [TestCaseSource(nameof(_userIdTestCases))]
+    [Test, TestCaseSource(nameof(_userIdTestCases))]
     public void UserIdTest(string? userId, Guid? expectedId)
     {
 

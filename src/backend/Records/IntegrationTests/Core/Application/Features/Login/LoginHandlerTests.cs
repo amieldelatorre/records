@@ -23,8 +23,7 @@ public class LoginHandlerTests
         await infra.Dispose();
     }
 
-    [Test]
-    [TestCaseSource(nameof(_loginTestCases))]
+    [Test, TestCaseSource(nameof(_loginTestCases))]
     public async Task HandlerLoginTests(LoginRequest loginRequest, LoginResponse expectedResponse)
     {
         Debug.Assert(infra.CachedUserRepository != null);

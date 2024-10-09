@@ -5,8 +5,7 @@ namespace UnitTests.Core.Applications.Features.UserFeatures.UpdateUser;
 
 public class UpdateUserValidatorTests
 {
-    [Test]
-    [TestCaseSource(nameof(_validationTestCases))]
+    [Test, TestCaseSource(nameof(_validationTestCases))]
     public void ValidationTest(UpdateUserRequest request, ExpectedValidationResult expected)
     {
         var validator = new UpdateUserValidator();
