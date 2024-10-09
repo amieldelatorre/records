@@ -1,5 +1,6 @@
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
+using Application.Features.UserFeatures.DeleteUser;
 using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,8 @@ public class UserController(
    ClaimsInformation claimsInformation,
    CreateUserHandler createUserHandler,
    GetUserHandler getUserHandler,
-   UpdateUserHandler updateUserHandler) : ControllerBase
+   UpdateUserHandler updateUserHandler,
+   DeleteUserHandler deleteUserHandler) : ControllerBase
 {
    [HttpPost]
    public async Task<ActionResult<UserResult>> Post([FromBody] CreateUserRequest createUserRequest)
@@ -49,6 +51,16 @@ public class UserController(
       logger.Debug("new request to update user");
       var userId = claimsInformation.UserId();
       var result = await updateUserHandler.Handle(userId, updateUserRequest);
+      return HttpResponseFromResult<UserResult>.Map(result);
+   }
+
+   [HttpDelete]
+   [Authorize]
+   public async Task<ActionResult<UserResult>> Delete()
+   {
+      logger.Debug("new request to delete user");
+      var userId = claimsInformation.UserId();
+      var result = await deleteUserHandler.Handle(userId);
       return HttpResponseFromResult<UserResult>.Map(result);
    }
 }

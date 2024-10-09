@@ -1,13 +1,9 @@
 using System.Diagnostics;
 using Application.Features.AuthFeatures.Jwt.JwtCreate;
 using Application.Features.AuthFeatures.Login;
-using Application.Features.UserFeatures.CreateUser;
-using Application.Features.UserFeatures.GetUser;
 using Common.Configuration;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebAPI.Controllers;
-using WebAPI.Controllers.ControllerExtensions;
 
 namespace IntegrationTests.Presentation.WebAPI.Controllers;
 
@@ -50,8 +46,7 @@ public class AuthControllerTests
         return authController;
     }
 
-    [Test]
-    [TestCaseSource(nameof(_jwtCreateTestCases))]
+    [Test, TestCaseSource(nameof(_jwtCreateTestCases))]
     public async Task JwtCreateTest(LoginRequest loginRequest, int expectedStatusCode)
     {
         await ActualJwtCreateTest(StandardInfra, loginRequest, expectedStatusCode);

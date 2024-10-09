@@ -5,8 +5,7 @@ namespace UnitTests.Core.Applications.Features.UserFeatures;
 
 public class UserResponseTests
 {
-    [Test]
-    [TestCaseSource(nameof(UserResponseMapFromUserTestCases))]
+    [Test, TestCaseSource(nameof(UserResponseMapFromUserTestCases))]
     public void UserResponse_MapFromUserTests(User user, UserResponse expectedResult)
     {
         var actual = UserResponse.MapFrom(user);

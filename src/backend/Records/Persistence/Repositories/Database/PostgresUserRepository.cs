@@ -1,4 +1,3 @@
-using Application.Repositories;
 using Application.Repositories.Database;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -26,9 +25,10 @@ public class PostgresUserRepository(DataContext dbContext) : IUserRepository
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Task Delete(User entity, CancellationToken cancellationToken)
+    public async Task Delete(User user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        dbContext.Users.Remove(user);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<User?> GetByEmail(string email, CancellationToken cancellationToken)

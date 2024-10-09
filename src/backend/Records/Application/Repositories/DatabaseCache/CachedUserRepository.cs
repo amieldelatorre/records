@@ -43,9 +43,10 @@ public class CachedUserRepository(
         await cacheRepository.Set(cacheKey, user, _defaultCacheExpirationSeconds);
     }
 
-    public Task Delete(User entity, CancellationToken cancellationToken)
+    public async Task Delete(User user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await userRepository.Delete(user, cancellationToken);
+        await cacheRepository.Delete(user.Id.ToString());
     }
 
     public Task<User?> GetByEmail(string email, CancellationToken cancellationToken)

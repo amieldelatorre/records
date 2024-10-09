@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Application.Common;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
+using Application.Features.UserFeatures.DeleteUser;
 using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
 using Domain.Entities;
@@ -51,14 +52,13 @@ public class UserControllerTests
         var createUserHandler = new CreateUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
         var getUserHandler = new GetUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
         var updateUserHandler = new UpdateUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
+        var deleteUserHandler = new DeleteUserHandler(persistenceInfra.RecordsFeatureStatus, persistenceInfra.CachedUserRepository, persistenceInfra.Logger);
 
-
-        var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler, getUserHandler, updateUserHandler);
+        var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler, getUserHandler, updateUserHandler, deleteUserHandler);
         return userController;
     }
 
-    [Test]
-    [TestCaseSource(nameof(_postUserTestCases))]
+    [Test, TestCaseSource(nameof(_postUserTestCases))]
     public async Task PostUserTests(CreateUserRequest request,
         int expectedStatusCode, UserResult expectedResult)
     {
@@ -98,8 +98,7 @@ public class UserControllerTests
         });
     }
 
-    [Test]
-    [TestCaseSource(nameof(_getUserTestCases))]
+    [Test, TestCaseSource(nameof(_getUserTestCases))]
     public async Task GetUserTest(string guidString, int expectedStatusCode, UserResult expectedResult)
     {
         await ActualGetUserTest(StandardPersistenceInfra, guidString, expectedStatusCode, expectedResult);
@@ -142,8 +141,7 @@ public class UserControllerTests
 
     }
 
-    [Test]
-    [TestCaseSource(nameof(_updateUserTestCases))]
+    [Test, TestCaseSource(nameof(_updateUserTestCases))]
     public async Task UpdateUserTest(string guidString, UpdateUserRequest request, int expectedStatusCode, UserResult expectedResult)
     {
         await ActualUpdateUserTest(StandardPersistenceInfra, guidString, request, expectedStatusCode, expectedResult);
@@ -184,6 +182,98 @@ public class UserControllerTests
             }
         });
     }
+
+    [Test, TestCaseSource(nameof(_deleteUserTestCases))]
+    public async Task DeleteUserTest(string guidString, List<string> expectedExistingGuids, int expectedStatusCode,
+        UserResult expectedResult)
+    {
+        // Use new infra here so that it doesn't break other tests as these are destructive operations
+        var standardPersistenceInfra = await new PersistenceInfraBuilder()
+            .AddPostgresDatabase()
+            .AddUnleashFeatureToggles()
+            .AddValkeyCaching()
+            .Build();
+        var nullPersistenceInfra = await new PersistenceInfraBuilder()
+            .AddPostgresDatabase()
+            .Build();
+
+        await ActualDeleteUserTest(standardPersistenceInfra, guidString, expectedExistingGuids, expectedStatusCode, expectedResult);
+        await ActualDeleteUserTest(nullPersistenceInfra, guidString, expectedExistingGuids, expectedStatusCode, expectedResult);
+
+        await standardPersistenceInfra.Dispose();
+        await nullPersistenceInfra.Dispose();
+    }
+
+    public async Task ActualDeleteUserTest(PersistenceInfra infra, string guidString, List<string> expectedExistingGuids,
+        int expectedStatusCode, UserResult expectedResult)
+    {
+        var claims = new[] { new Claim("userId", guidString) };
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(claims))
+        };
+        var userController = GetUserController(infra, httpContext);
+
+        var actual = await userController.Delete();
+        var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
+        var actualResult = (actual.Result as ObjectResult)?.Value as UserResult;
+
+        await Assert.MultipleAsync(async () =>
+        {
+            Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
+            if ((expectedResult.User == null && actualResult?.User != null) ||
+                (expectedResult.User != null && actualResult?.User == null))
+                Assert.Fail("expectedResult.User and actualUserResult.User does not match");
+
+            CancellationTokenSource cancellationTokenSource;
+
+            foreach (var expectedGuid in expectedExistingGuids)
+            {
+                var guid = new Guid(expectedGuid);
+                cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(2));
+                Debug.Assert(infra.UserRepository != null);
+                var expectedExistingUser = await infra.UserRepository.Get(guid, cancellationTokenSource.Token);
+
+                Assert.That(expectedExistingUser, Is.Not.Null);
+            }
+
+            var expectedDeletedGuid = new Guid(guidString);
+            cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(2));
+            Debug.Assert(infra.UserRepository != null);
+            var expectedDeletedUser = await infra.UserRepository.Get(expectedDeletedGuid, cancellationTokenSource.Token);
+
+            Assert.That(expectedDeletedUser, Is.Null);
+        });
+    }
+
+    private static object[] _deleteUserTestCases =
+    [
+        new object[]
+        {
+            "3e098063-d9a4-4b24-9088-123412312345",
+            new List<string>
+            {
+                "3e098063-d9a4-4b24-9088-7a548b92796a",
+                "719b57e8-0a85-403e-9742-43ace59fe88d",
+                "3e098063-d9a4-4b24-9088-7a548b92796a"
+            },
+            StatusCodes.Status404NotFound,
+            new UserResult(ResultStatusTypes.NotFound)
+        },
+        new object[]
+        {
+            "3e098063-d9a4-4b24-9088-7a548b92796a",
+            new List<string>
+            {
+                "719b57e8-0a85-403e-9742-43ace59fe88d",
+                "571fac2e-317c-417e-982d-be2943edb07e"
+            },
+            StatusCodes.Status200OK,
+            new UserResult(ResultStatusTypes.Ok)
+        }
+    ];
 
     private static object[] _updateUserTestCases =
     [

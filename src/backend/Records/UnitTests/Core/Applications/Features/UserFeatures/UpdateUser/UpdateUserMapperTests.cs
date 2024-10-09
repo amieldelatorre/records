@@ -5,8 +5,7 @@ namespace UnitTests.Core.Applications.Features.UserFeatures.UpdateUser;
 
 public class UpdateUserMapperTests
 {
-    [Test]
-    [TestCaseSource(nameof(_updateUserMapperTestCases))]
+    [Test, TestCaseSource(nameof(_updateUserMapperTestCases))]
     public void MapTest(UpdateUserRequest request, User oldUser, User expected)
     {
         var now = DateTime.Now;
