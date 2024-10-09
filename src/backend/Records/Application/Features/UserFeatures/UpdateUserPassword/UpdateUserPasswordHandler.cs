@@ -1,6 +1,5 @@
 using Application.Common;
 using Application.Features.Password;
-using Application.Features.UserFeatures.UpdateUser;
 using Application.Repositories.DatabaseCache;
 
 namespace Application.Features.UserFeatures.UpdateUserPassword;
@@ -41,6 +40,7 @@ public class UpdateUserPasswordHandler(
         if (!validationResult.IsValid)
             return new UserResult(ResultStatusTypes.ValidationError, validationResult.ToDictionary());
 
+        UpdateUserPasswordMapper.Map(request, user);
         await cachedUserRepository.Update(user, cancellationTokenSource.Token);
         return new UserResult(ResultStatusTypes.Ok, UserResponse.MapFrom(user));
     }

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Security.Claims;
 using Application.Common;
+using Application.Features.Password;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
 using Application.Features.UserFeatures.DeleteUser;
@@ -257,7 +258,8 @@ public class UserControllerTests
     public async Task UpdateUserPasswordTest(string claimsGuidString, string parameterGuidString,
         UpdateUserPasswordRequest request, int expectedStatusCode, UserResult expectedResult)
     {
-        // await ActualUpdateUserPasswordTest(StandardPersistenceInfra, claimsGuidString, parameterGuidString, oldPassword, newPassword, expectedStatusCode);
+        await ActualUpdateUserPasswordTest(StandardPersistenceInfra, claimsGuidString, parameterGuidString, request,
+            expectedStatusCode, expectedResult);
         await ActualUpdateUserPasswordTest(NullPersistenceInfra, claimsGuidString, parameterGuidString, request,
             expectedStatusCode, expectedResult);
     }
@@ -278,10 +280,24 @@ public class UserControllerTests
         var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
         var actualResult = (actual.Result as ObjectResult)?.Value as UserResult;
 
-        Assert.Multiple(() =>
+        await Assert.MultipleAsync(async () =>
         {
             Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
             Assert.That(actualResult?.Errors, Is.EqualTo(expectedResult.Errors));
+
+            if (expectedStatusCode == StatusCodes.Status200OK)
+            {
+                Debug.Assert(infra.UserRepository != null);
+                var user = await infra.UserRepository.Get(new Guid(claimsGuidString), new CancellationTokenSource().Token);
+                Debug.Assert(user != null);
+                var validNewPasswordLogin =
+                    new Pbkdf2PasswordHasher().Verify(request.NewPassword, user.PasswordHash, user.PasswordSalt);
+                var invalidOldPasswordLogin =
+                    new Pbkdf2PasswordHasher().Verify(request.CurrentPassword, user.PasswordHash, user.PasswordSalt);
+
+                Assert.That(validNewPasswordLogin, Is.True);
+                Assert.That(invalidOldPasswordLogin, Is.False);
+            }
         });
     }
 
