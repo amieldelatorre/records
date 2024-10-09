@@ -13,5 +13,6 @@ public class UpdateUserPasswordMapper
 
         originalUser.PasswordHash = passwordHashResponse.HashedPassword;
         originalUser.PasswordSalt = passwordHashResponse.Salt;
+        originalUser.DateUpdated = now;
     }
 }

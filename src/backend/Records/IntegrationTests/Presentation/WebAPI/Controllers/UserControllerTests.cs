@@ -329,6 +329,18 @@ public class UserControllerTests
                 { "CurrentPassword", ["'Current Password' is incorrect."] }
             })
         },
+        new object[]
+        {
+            "571fac2e-317c-417e-982d-be2943edb07e",
+            "571fac2e-317c-417e-982d-be2943edb07e",
+            new UpdateUserPasswordRequest
+            {
+                CurrentPassword = "password1",
+                NewPassword = "newPassword",
+            },
+            StatusCodes.Status200OK,
+            new UserResult(ResultStatusTypes.Ok)
+        },
     ];
 
     private static object[] _deleteUserTestCases =
