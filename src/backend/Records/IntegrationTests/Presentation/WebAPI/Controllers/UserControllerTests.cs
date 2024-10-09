@@ -8,11 +8,9 @@ using Application.Features.UserFeatures.DeleteUser;
 using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
 using Application.Features.UserFeatures.UpdateUserPassword;
-using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using WebAPI.Controllers;
 using WebAPI.Controllers.ControllerExtensions;
 
@@ -347,11 +345,11 @@ public class UserControllerTests
         },
         new object[]
         {
-            "571fac2e-317c-417e-982d-be2943edb07e",
-            "571fac2e-317c-417e-982d-be2943edb07e",
+            "719b57e8-0a85-403e-9742-43ace59fe88d",
+            "719b57e8-0a85-403e-9742-43ace59fe88d",
             new UpdateUserPasswordRequest
             {
-                CurrentPassword = "password1",
+                CurrentPassword = "password123214",
                 NewPassword = "newPassword",
             },
             StatusCodes.Status200OK,
