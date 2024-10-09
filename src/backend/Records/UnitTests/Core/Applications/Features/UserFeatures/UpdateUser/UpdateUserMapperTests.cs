@@ -21,6 +21,7 @@ public class UpdateUserMapperTests
             Assert.That(oldUser.LastName, Is.EqualTo(expected.LastName));
             Assert.That(oldUser.Email, Is.EqualTo(expected.Email));
             Assert.That(oldUser.DateUpdated, Is.Not.EqualTo(oldUser.DateCreated));
+            Assert.That(oldUser.DateCreated, Is.EqualTo(now));
         });
     }
 

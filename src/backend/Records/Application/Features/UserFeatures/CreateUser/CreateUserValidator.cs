@@ -4,7 +4,7 @@ namespace Application.Features.UserFeatures.CreateUser;
 
 public class CreateUserValidator : AbstractValidator<CreateUserRequest>
 {
-    private const int PasswordMinLength = 8;
+    public static int PasswordMinLength = 8;
 
     public CreateUserValidator()
     {

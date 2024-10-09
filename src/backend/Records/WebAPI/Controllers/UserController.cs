@@ -1,8 +1,10 @@
+using Application.Common;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
 using Application.Features.UserFeatures.DeleteUser;
 using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
+using Application.Features.UserFeatures.UpdateUserPassword;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Controllers.ControllerExtensions;
@@ -24,6 +26,7 @@ public class UserController(
    CreateUserHandler createUserHandler,
    GetUserHandler getUserHandler,
    UpdateUserHandler updateUserHandler,
+   UpdateUserPasswordHandler updateUserPasswordHandler,
    DeleteUserHandler deleteUserHandler) : ControllerBase
 {
    [HttpPost]
@@ -51,6 +54,20 @@ public class UserController(
       logger.Debug("new request to update user");
       var userId = claimsInformation.UserId();
       var result = await updateUserHandler.Handle(userId, updateUserRequest);
+      return HttpResponseFromResult<UserResult>.Map(result);
+   }
+
+   [HttpPut("{userId}/password")]
+   [Authorize]
+   public async Task<ActionResult<UserResult>> PutPassword(string userId, [FromBody] UpdateUserPasswordRequest updateUserPasswordRequest)
+   {
+      logger.Debug("new request to update user password");
+      var claimsUserId = claimsInformation.UserId();
+      var paramUserId = new Guid(userId);
+      if (claimsUserId != paramUserId)
+         return HttpResponseFromResult<UserResult>.Map(new UserResult(ResultStatusTypes.NotFound));
+
+      var result = await updateUserPasswordHandler.Handle(claimsUserId, updateUserPasswordRequest);
       return HttpResponseFromResult<UserResult>.Map(result);
    }
 
