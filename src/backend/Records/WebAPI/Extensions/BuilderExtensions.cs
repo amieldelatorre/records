@@ -1,4 +1,8 @@
 using Application.Configuration.EnvironmentVariables;
+using Npgsql;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Json;
@@ -7,7 +11,7 @@ namespace WebAPI.Extensions;
 
 public static class BuilderExtensions
 {
-    private static StringEnvironmentVariable _logLevel = new("LOG_LEVEL", false, "INFO");
+    private static readonly StringEnvironmentVariable LogLevel = new("LOG_LEVEL", false, "INFO");
 
     public static void ConfigureLogging(this WebApplicationBuilder builder)
     {
@@ -16,8 +20,8 @@ public static class BuilderExtensions
         var logConfiguration = new LoggerConfiguration()
             .WriteTo.Console(new JsonFormatter())
             .MinimumLevel.ControlledBy(new Serilog.Core.LoggingLevelSwitch(logLevel))
-            .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
-            .MinimumLevel.Override("Unleash", Serilog.Events.LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft",LogEventLevel.Warning)
+            .MinimumLevel.Override("Unleash", LogEventLevel.Warning)
             .Enrich.WithThreadId()
             .Enrich.FromLogContext()
             .Enrich.WithMachineName();
@@ -27,13 +31,14 @@ public static class BuilderExtensions
         builder.Host.UseSerilog();
     }
 
-    private static Serilog.Events.LogEventLevel GetLogLevel()
+    private static LogEventLevel GetLogLevel()
     {
-        _logLevel.GetEnvironmentVariable();
-        Serilog.Events.LogEventLevel logLevel;
-        if (!Enum.TryParse<LogEventLevel>(_logLevel.Value, true, out logLevel))
-            logLevel = Serilog.Events.LogEventLevel.Information;
+        LogLevel.GetEnvironmentVariable();
+        if (!Enum.TryParse<LogEventLevel>(BuilderExtensions.LogLevel.Value, true, out var level))
+            level = LogEventLevel.Information;
 
-        return logLevel;
+        return level;
     }
+
+    
 }

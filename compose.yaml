@@ -1,3 +1,5 @@
+# NOT FOR PRODUCTION USE
+
 services:
   unleash-postgres-db:
     image: postgres:17.0
@@ -93,3 +95,28 @@ services:
       timeout: 3s
       retries: 5
       start_period: 10s
+      
+  grafana:
+    image: grafana/grafana:11.5.2
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+      - ./container_configs/grafana_datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+#       - ./.docker_data/grafana:/var/lib/grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+
+  tempo:
+    image: grafana/tempo:2.7.1
+    container_name: tempo
+    restart: unless-stopped
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    ports:
+      - 4317:4317
+    volumes:
+      - ./container_configs/tempo.yaml:/etc/tempo.yaml
+#      - ./.docker_data/tempo:/var/tempo

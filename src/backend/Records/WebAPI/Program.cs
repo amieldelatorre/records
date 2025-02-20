@@ -2,6 +2,7 @@ using Application;
 using Application.Features.AuthFeatures.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Logs;
 using Persistence;
 using Serilog;
 using WebAPI.Extensions;
@@ -54,6 +55,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureApiExtensions();
+builder.Services.ConfigureOpenTelemetry();
 
 var app = builder.Build();
 
