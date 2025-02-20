@@ -2,11 +2,11 @@ using Application;
 using Application.Features.AuthFeatures.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using OpenTelemetry.Logs;
 using Persistence;
 using Serilog;
 using WebAPI.Extensions;
 using WebAPI;
+using ServiceExtensions = WebAPI.Extensions.ServiceExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +67,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
+if (ServiceExtensions.EnableOpenTelemetryEnv.Value)
+    app.UseOpenTelemetryPrometheusScrapingEndpoint(context => context.Request.Path == "/metrics" && context.Connection.LocalPort == ServiceExtensions.PrometheusScrapePortEnv.Value);
+
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -14,8 +14,8 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
+        "ASPNETCORE_HTTP_PORTS": "8080;8081",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "RECORDS__POSTGRES_HOST": "localhost",
         "RECORDS__POSTGRES_PORT": "5432",
@@ -30,6 +30,7 @@
         "UNLEASH__APP_NAME": "records",
         "RECORDS__JWT_ECDSA_384_PRIVATE_KEY": "-----BEGIN EC PRIVATE KEY-----\nMIGkAgEBBDA7BMwW8Yz2zbTi9GJfyPZBKjiALmLjNmNZ+4ga/6AV3UqDV0aLnTum\nVqATSX9YfDWgBwYFK4EEACKhZANiAATLn8hZCaSub4Vl4f7L7Xc4I0haPz9vL8ue\no3vL6zEdmaOf8zRWY7wYXKcFMVwuAs6noLldgswOfoh9clQZTqXfJNYRPQ8KjPNs\nCULqAn3AdHSlMgteG8fa/408rZWKo+Y=\n-----END EC PRIVATE KEY-----\n",
         "RECORDS__ENABLE_OPENTELEMETRY": "true",
+        "RECORDS__PROMETHEUS_SCRAPE_PORT": "8081",
         "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4317"
       }
     },

@@ -10,9 +10,11 @@ namespace WebAPI.Extensions;
 
 public static class ServiceExtensions
 {
-    private static readonly BoolEnvironmentVariable EnableOpenTelemetryEnv = new("RECORDS__ENABLE_OPENTELEMETRY", false, false);
+    public static readonly BoolEnvironmentVariable EnableOpenTelemetryEnv = new("RECORDS__ENABLE_OPENTELEMETRY", false, false);
     private static readonly StringEnvironmentVariable OpenTelemetryUrlEnv = new("OTEL_EXPORTER_OTLP_ENDPOINT", false);
-    
+
+    public static readonly IntEnvironmentVariable PrometheusScrapePortEnv =
+        new("RECORDS__PROMETHEUS_SCRAPE_PORT", false, 8081); 
     public static void ConfigureApiExtensions(this IServiceCollection services)
     {
         services.AddCors(options =>
@@ -27,43 +29,56 @@ public static class ServiceExtensions
     }
     
     public static void ConfigureOpenTelemetry(this IServiceCollection services)
-         {
-             EnableOpenTelemetryEnv.GetEnvironmentVariable();
-             OpenTelemetryUrlEnv.GetEnvironmentVariable();
+    {
+        var errors = new List<EnvironmentVariable>();
+        EnableOpenTelemetryEnv.GetEnvironmentVariable();
+        if (!EnableOpenTelemetryEnv.IsValid)
+            EnvironmentVariable.PrintMissingEnvironmentVariablesAndExit([EnableOpenTelemetryEnv]);
      
-             if (!EnableOpenTelemetryEnv.Value)
-             {
-                 Log.Logger.Information("OpenTelemetry is disabled");
-                 return;
-             }
-             else if (EnableOpenTelemetryEnv.Value && OpenTelemetryUrlEnv.Value is null)
-             {
-                 Console.WriteLine(
-                     "environment variable 'APP__ENABLE_OPENTELEMETRY' is true but environment variable 'OTEL_EXPORTER_OTLP_ENDPOINT' is missing.");
-                 Environment.Exit(0);
-             }
-             
-             Log.Logger.Information("OpenTelemetry is enabled");
+        if (!EnableOpenTelemetryEnv.Value)
+        {
+            Log.Logger.Information("OpenTelemetry is disabled"); 
+            return;
+        }
      
-             services.AddOpenTelemetry()
-                 .ConfigureResource(resource => resource.AddService("Records"))
-                 .WithMetrics(metrics =>
-                 {
-                     metrics
-                         .AddAspNetCoreInstrumentation()
-                         .AddHttpClientInstrumentation()
-                         .AddNpgsqlInstrumentation()
-                         .AddOtlpExporter();
-                 })
-                 .WithTracing(tracing =>
-                 {
-                     tracing
-                         .AddAspNetCoreInstrumentation()
-                         .AddHttpClientInstrumentation()
-                         .AddEntityFrameworkCoreInstrumentation()
-                         .AddRedisInstrumentation()
-                         .AddNpgsql()
-                         .AddOtlpExporter();
-                 });
-         }
+        OpenTelemetryUrlEnv.GetEnvironmentVariable();
+        if (!OpenTelemetryUrlEnv.IsValid)
+            errors.Add(OpenTelemetryUrlEnv);
+        
+        PrometheusScrapePortEnv.GetEnvironmentVariable();
+        if (!PrometheusScrapePortEnv.IsValid)
+            errors.Add(PrometheusScrapePortEnv);
+        
+        if (errors.Any())
+            EnvironmentVariable.PrintMissingEnvironmentVariablesAndExit(errors);
+     
+        if (EnableOpenTelemetryEnv.Value && OpenTelemetryUrlEnv.Value is null)
+        {
+            Console.WriteLine("environment variable 'APP__ENABLE_OPENTELEMETRY' is true but environment variable 'OTEL_EXPORTER_OTLP_ENDPOINT' is missing.");
+            Environment.Exit(1);
+        }
+     
+        Log.Logger.Information("OpenTelemetry is enabled");
+
+        services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService("Records"))
+            .WithMetrics(metrics =>
+            { 
+                metrics
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddNpgsqlInstrumentation()
+                    .AddPrometheusExporter();
+            })
+            .WithTracing(tracing =>
+            {
+                tracing
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation()
+                    .AddRedisInstrumentation()
+                    .AddNpgsql()
+                    .AddOtlpExporter();
+            });
+    }
 }

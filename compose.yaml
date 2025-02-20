@@ -120,3 +120,53 @@ services:
     volumes:
       - ./container_configs/tempo.yaml:/etc/tempo.yaml
 #      - ./.docker_data/tempo:/var/tempo
+
+  prometheus:
+    image: prom/prometheus:v3.2.0
+    container_name: prometheus
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+      - --enable-feature=native-histograms
+    ports:
+      - 9090:9090
+    volumes:
+      - ./container_configs/prometheus.yaml:/etc/prometheus.yaml
+#      - ./.docker_data/prometheus:/prometheus
+
+
+  records-backend:
+    build:
+      context: src/backend/Records
+      dockerfile: WebAPI/Dockerfile
+    container_name: records-backend
+    ports:
+      - 8080:8080
+      - 8081:8081
+    environment:
+      ASPNETCORE_HTTP_PORTS: "8080;8081"
+      ASPNETCORE_ENVIRONMENT: Development
+      RECORDS__POSTGRES_HOST: records-postgres-db
+      RECORDS__POSTGRES_PORT: 5432
+      RECORDS__POSTGRES_DB: ${RECORDS__POSTGRES_DB:-records}
+      RECORDS__POSTGRES_USER: ${RECORDS__POSTGRES_USER:-root}
+      RECORDS__POSTGRES_PASSWORD: ${RECORDS__POSTGRES_PASSWORD:-password}
+      RECORDS__MIGRATE_DATABASE: "true"
+      RECORDS__VALKEY_HOST: records-valkey
+      RECORDS__VALKEY_PORT: 6379
+      UNLEASH__API_URL: http://unleash-web:4242/api
+      UNLEASH__API_KEY: default:production.30d020981e4026e09c4bb07039a58a4abc51a54cd1297e0554e9bffe
+      UNLEASH__APP_NAME: records
+      RECORDS__JWT_ECDSA_384_PRIVATE_KEY: "-----BEGIN EC PRIVATE KEY-----\nMIGkAgEBBDA7BMwW8Yz2zbTi9GJfyPZBKjiALmLjNmNZ+4ga/6AV3UqDV0aLnTum\nVqATSX9YfDWgBwYFK4EEACKhZANiAATLn8hZCaSub4Vl4f7L7Xc4I0haPz9vL8ue\no3vL6zEdmaOf8zRWY7wYXKcFMVwuAs6noLldgswOfoh9clQZTqXfJNYRPQ8KjPNs\nCULqAn3AdHSlMgteG8fa/408rZWKo+Y=\n-----END EC PRIVATE KEY-----\n"
+      RECORDS__ENABLE_OPENTELEMETRY: "true"
+      RECORDS__PROMETHEUS_SCRAPE_PORT: "8081"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4317"
+      
+    depends_on:
+      - records-postgres-db
+      - records-valkey
+      - tempo
+
+  

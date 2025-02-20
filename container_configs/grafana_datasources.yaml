@@ -7,3 +7,8 @@ datasources:
     url: http://tempo:3200
     access: proxy
     basicAuth: false
+  - name: Prometheus
+    type: prometheus
+    uid: EbPG8fYoy
+    url: http://prometheus:9090
+    
