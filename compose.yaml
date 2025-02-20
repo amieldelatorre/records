@@ -141,6 +141,7 @@ services:
     build:
       context: src/backend/Records
       dockerfile: WebAPI/Dockerfile
+      no_cache: true
     container_name: records-backend
     ports:
       - 8080:8080

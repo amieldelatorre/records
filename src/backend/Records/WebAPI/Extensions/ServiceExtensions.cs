@@ -68,6 +68,7 @@ public static class ServiceExtensions
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddNpgsqlInstrumentation()
+                    .AddRuntimeInstrumentation()
                     .AddPrometheusExporter();
             })
             .WithTracing(tracing =>
