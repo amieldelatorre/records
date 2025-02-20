@@ -6,6 +6,7 @@ using Persistence;
 using Serilog;
 using WebAPI.Extensions;
 using WebAPI;
+using ServiceExtensions = WebAPI.Extensions.ServiceExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +55,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureApiExtensions();
+builder.Services.ConfigureOpenTelemetry();
 
 var app = builder.Build();
 
@@ -65,6 +67,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
+if (ServiceExtensions.EnableOpenTelemetryEnv.Value)
+    app.UseOpenTelemetryPrometheusScrapingEndpoint(context => context.Request.Path == "/metrics" && context.Connection.LocalPort == ServiceExtensions.PrometheusScrapePortEnv.Value);
+
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
