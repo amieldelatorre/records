@@ -1,0 +1,38 @@
+# Development compose file
+networks:
+  app-backend:
+    driver: bridge
+    
+services:
+  app-db:
+    image: postgres:17.5
+    restart: unless-stopped
+    container_name: app-db
+    networks:
+      - app-backend
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.docker_data/app-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${APP__POSTGRES_DB:?}
+      POSTGRES_USER: ${APP__POSTGRES_USER:?}
+      POSTGRES_PASSWORD: ${APP__POSTGRES_PASSWORD:?}
+      TZ: ${TIMEZONE:-Pacific/Auckland}
+    security_opt:
+      - "no-new-privileges:true"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "--username=${APP__POSTGRES_USER:?}",
+          "--host=127.0.0.1",
+          "--port=5432",
+          "-d${APP__POSTGRES_DB:?}"
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+      
