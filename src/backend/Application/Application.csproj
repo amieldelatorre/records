@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Features\AuthFeatures\" />
       <Folder Include="Features\UserFeatures\DeleteUser\" />
       <Folder Include="Features\UserFeatures\GetUser\" />
       <Folder Include="Features\UserFeatures\UpdateUserPassword\" />

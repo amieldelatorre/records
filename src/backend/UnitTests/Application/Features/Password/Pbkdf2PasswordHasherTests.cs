@@ -1,4 +1,4 @@
-using Application.Features.Password;
+using Application.Features.PasswordFeatures;
 
 namespace UnitTests.Application.Features.Password;
 

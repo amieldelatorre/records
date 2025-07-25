@@ -1,4 +1,4 @@
-using Application.Features.Password;
+using Application.Features.PasswordFeatures;
 using Domain.Entities;
 
 namespace Application.Features.UserFeatures.CreateUser;

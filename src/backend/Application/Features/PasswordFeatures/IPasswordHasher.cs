@@ -1,4 +1,4 @@
-namespace Application.Features.Password;
+namespace Application.Features.PasswordFeatures;
 
 public struct PasswordHashResponse
 {

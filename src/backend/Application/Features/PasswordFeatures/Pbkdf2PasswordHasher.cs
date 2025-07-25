@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace Application.Features.Password;
+namespace Application.Features.PasswordFeatures;
 
 public class Pbkdf2PasswordHasher : IPasswordHasher
 {
