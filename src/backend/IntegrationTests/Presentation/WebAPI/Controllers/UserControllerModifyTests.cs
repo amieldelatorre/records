@@ -1,0 +1,226 @@
+using System.Diagnostics;
+using Application.Common;
+using Application.Features.UserFeatures;
+using Application.Features.UserFeatures.CreateUser;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using WebAPI.Controllers;
+using WebAPI.Controllers.ControllerExtensions;
+
+namespace IntegrationTests.Presentation.WebAPI.Controllers;
+
+public class UserControllerModifyTests
+{
+    private static PersistenceInfra StandardPersistenceInfra;
+    
+    [OneTimeSetUp]
+    public async Task Before()
+    {
+        StandardPersistenceInfra = await new PersistenceInfraBuilder()
+            .AddPostgresDatabase()
+            .Build();
+    }
+    
+    [OneTimeTearDown]
+    public async Task After()
+    {
+        await StandardPersistenceInfra.Dispose();
+    }
+
+    [SetUp]
+    public void SetUp()
+    {
+        StandardPersistenceInfra.RenewDbContext();
+    }
+    
+    private static UserController GetUserController(PersistenceInfra persistenceInfra, HttpContext? httpContext = null)
+    {
+        Debug.Assert(persistenceInfra.UserRepository != null);
+
+        var httpContextAccessor = new HttpContextAccessor();
+        if (httpContext != null)
+            httpContextAccessor.HttpContext = httpContext;
+
+        var claimsInformation = new ClaimsInformation(httpContextAccessor);
+        var createUserHandler = new CreateUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
+        // var getUserHandler = new GetUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
+        // var updateUserHandler = new UpdateUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
+        // var updateUserPasswordHandler = new UpdateUserPasswordHandler(persistenceInfra.UserRepository, 
+        //     persistenceInfra.Logger);
+        // var deleteUserHandler = new DeleteUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
+
+        var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler);
+            // getUserHandler, updateUserHandler, updateUserPasswordHandler, deleteUserHandler);
+        return userController;
+    }
+
+    [Test, TestCaseSource(nameof(_postUserTestCases))]
+    public async Task PostUserTests(int num, CreateUserRequest request,
+        int expectedStatusCode, UserResult expectedResult)
+    {
+        var userController = GetUserController(StandardPersistenceInfra);
+        var actual = await userController.Post(request);
+
+        var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
+        var actualUserResult = (actual.Result as ObjectResult)?.Value as UserResult;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
+            Assert.That(actualUserResult?.Errors, Is.EqualTo(expectedResult.Errors));
+
+            if ((expectedResult.User == null && actualUserResult?.User != null) ||
+                (expectedResult.User != null && actualUserResult?.User == null))
+                Assert.Fail("expectedResult.User and actualUserResult.User does not match");
+
+            if (expectedResult.User != null)
+            {
+                Assert.That(actualUserResult?.User?.Username, Is.EqualTo(expectedResult.User.Username));
+                Assert.That(actualUserResult?.User?.Email, Is.EqualTo(expectedResult.User.Email));
+            }
+
+            if (expectedResult.Errors.Count > 0)
+            {
+                Assert.That(actualUserResult?.Errors, Is.EqualTo(expectedResult.Errors));
+            }
+        });
+    }
+    
+    
+     private static object[] _postUserTestCases =
+    {
+        new object[]
+        {
+            1,
+            new CreateUserRequest
+            {
+                Username = "isaacnewton",
+                Email = "       isaac.newton@example.invalid ",
+                Password = "testPassword"
+            },
+            StatusCodes.Status201Created,
+            new UserResult(ResultStatusTypes.Created, new UserResponse
+            {
+                Username = "isaacnewton",
+                Email = "isaac.newton@example.invalid",
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
+            })
+        },
+        new object[]
+        {
+            2,
+            new CreateUserRequest
+            {
+                Username = "pythagorasofsamos",
+                Email = "pythagoras.of.samos@example.invalid",
+                Password = "testPassword"
+            },
+            StatusCodes.Status201Created,
+            new UserResult(ResultStatusTypes.Created, new UserResponse
+            {
+                Username = "pythagorasofsamos",
+                Email = "pythagoras.of.samos@example.invalid",
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
+            })
+        },
+        new object[]
+        {
+            3,
+            new CreateUserRequest
+            {
+                Username = null,
+                Email = "albert.einstein@example.invalid",
+                Password = "test Pa"
+            },
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"Username", ["'Username' must not be empty."]},
+                {"Email", ["'Email' provided is already in use."]},
+                {"Password", ["The length of 'Password' must be at least 8 characters. You entered 7 characters.", "The 'Password' must not contain whitespace."]},
+            })
+        },
+        new object[]
+        {
+            4,
+            new CreateUserRequest
+            {
+                Username = "alberteinstein",
+                Email = "albert.einstein@example.invalid",
+                Password = "testPassword"
+            },
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"Username", ["'Username' provided is already in use."]},
+                {"Email", ["'Email' provided is already in use."]},
+            })
+        },
+        new object[]
+        {
+            5,
+            new CreateUserRequest
+            {
+                Username = "  x  ",
+                Email = "albert2.einstein@example.invalid",
+                Password = "testPassword"
+            },
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            { 
+                {"Username", ["'Username' can only contain lowercase letters and numbers."]},
+            })
+        },
+        new object[]
+        {
+            6,
+            new CreateUserRequest
+            {
+                Username = "abc",
+                Email = "albert2.einstein@example.invalid",
+                Password = "testPassword"
+            },
+            StatusCodes.Status201Created,
+            new UserResult(ResultStatusTypes.Created, new UserResponse
+            {
+                Username = "abc",
+                Email = "albert2.einstein@example.invalid",
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
+            })
+        },
+        new object[]
+        {
+            7,
+            new CreateUserRequest
+            {
+                Username = "aa",
+                Email = "albert3.einstein@example.invalid",
+                Password = "testPassword"
+            },
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            { 
+                {"Username", ["The length of 'Username' must be at least 3 characters. You entered 2 characters."]},
+            })
+        },
+        new object[]
+        {
+            8,
+            new CreateUserRequest
+            {
+                Username = "aa!",
+                Email = "albert3.einstein@example.invalid",
+                Password = "testPassword"
+            },
+            StatusCodes.Status400BadRequest,
+            new UserResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            { 
+                {"Username", ["'Username' can only contain lowercase letters and numbers."]},
+            })
+        }
+    };
+}

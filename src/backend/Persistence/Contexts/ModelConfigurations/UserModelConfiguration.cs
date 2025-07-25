@@ -14,13 +14,13 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(u => u.Email)
             .IsUnique()
             .HasDatabaseName("IX_User_Email_UNIQUE");
+        builder.Property(x => x.Username)
+            .IsRequired()
+            .HasColumnType("text");
+        builder.HasIndex(x => x.Username)
+            .IsUnique()
+            .HasDatabaseName("IX_User_Username_UNIQUE");
         
-        builder.Property(u => u.FirstName)
-            .IsRequired()
-            .HasColumnType("text");
-        builder.Property(u => u.LastName)
-            .IsRequired()
-            .HasColumnType("text");
         builder.Property(u => u.PasswordHash)
             .IsRequired()
             .HasColumnType("text");

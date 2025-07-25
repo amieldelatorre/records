@@ -42,4 +42,16 @@ public class PostgreSqlUserRepository(DataContext dbContext) : IUserRepository
         var user = await GetByEmail(email, cancellationToken);
         return user != null;
     }
+    
+    public async Task<User?> GetByUsername(string username, CancellationToken cancellationToken)
+    {
+        var user  = await dbContext.Users.SingleOrDefaultAsync(u => u.Username == username, cancellationToken);
+        return user;
+    }
+
+    public async Task<bool> UsernameExists(string username, CancellationToken cancellationToken)
+    {
+        var user = await GetByUsername(username, cancellationToken);
+        return user != null;
+    }
 }

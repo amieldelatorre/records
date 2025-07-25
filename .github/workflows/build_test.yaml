@@ -1,0 +1,47 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - '**' # Run on all branches
+    tags-ignore:
+      - '**' # Ignore all tags, they get their own workflow
+    paths:
+      - 'src/backend/**'
+  workflow_call:
+
+jobs:
+  build_and_test_backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        dotnet-version: ['9.0.x']
+    env:
+      backend-directory: ./src/backend
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Install dependencies
+        run: dotnet restore
+        working-directory: ${{ env.backend-directory }}
+
+      - name: Build backend
+        run: dotnet build --configuration Release --no-restore
+        working-directory: ${{ env.backend-directory }}
+
+      - name: Run unit tests
+        run: dotnet test UnitTests --no-restore --verbosity normal
+        working-directory: ${{ env.backend-directory }}
+
+      - name: Run integration tests
+        run: dotnet test IntegrationTests --no-restore --verbosity normal
+        working-directory: ${{ env.backend-directory }}
+      
