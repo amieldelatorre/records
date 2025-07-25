@@ -1,5 +1,8 @@
 using Application.Extensions;
 using Application.Features;
+using Application.Features.AuthFeatures.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using WebAPI;
 using WebAPI.Extensions;
@@ -25,6 +28,31 @@ builder.Services.AddPersistenceServices();
 
 // Add core application logic services
 builder.Services.AddFeatureServices();
+
+// Add authentication
+var jwtConfig = JwtConfiguration.GetConfiguration();
+builder.Services.AddSingleton(jwtConfig);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.IncludeErrorDetails = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = jwtConfig.JwtIssuer.Value,
+        ValidAudience = jwtConfig.JwtAudience.Value,
+        IssuerSigningKey = jwtConfig.JwtEcdsa384SecurityKey,
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+    };
+});
+builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureApiExtensions();

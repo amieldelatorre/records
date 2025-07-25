@@ -23,7 +23,8 @@ public class CreateUserHandler(
 
         // Recreate cancellation token
         cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(2));
+        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
+            Application.Features.SharedConfiguration.DefaultRequestTimeout));
 
         var user = CreateUserMapper.Map(request);
         await userRepository.Create(user, cancellationTokenSource.Token);

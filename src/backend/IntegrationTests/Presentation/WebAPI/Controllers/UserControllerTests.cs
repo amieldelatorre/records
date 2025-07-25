@@ -10,7 +10,7 @@ using WebAPI.Controllers.ControllerExtensions;
 
 namespace IntegrationTests.Presentation.WebAPI.Controllers;
 
-public class UserControllerModifyTests
+public class UserControllerTests
 {
     private static PersistenceInfra StandardPersistenceInfra;
     
