@@ -4,6 +4,7 @@ using Application.Features.AuthFeatures.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
+using Serilog;
 using WebAPI;
 using WebAPI.Extensions;
 
@@ -67,8 +68,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+Log.Logger.Information("startup configuration successful, starting application...");
 
 app.Run();
