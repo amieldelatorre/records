@@ -1,0 +1,8 @@
+@base_api_address = http://localhost:8080
+@user_v1_api_address = {{base_api_address}}/api/v1/user
+
+GET {{user_v1_api_address}}
+Accept: application/json
+// Token might be expired, generate a new one with a POST request to the JWT endpoint in the Auth.http file
+Authorization: Bearer eyJhbGciOiJFUzM4NCIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcHAiLCJpc3MiOiJhcHAiLCJleHAiOjE3NTQwNTQ4MDksImlhdCI6MTc1MzQ1MDAwOSwibmJmIjoxNzUzNDUwMDA5LCJ1c2VySWQiOiJiMzc4ZWUxMi1lMjYxLTQ3ZmYtOGE4ZC1iMjAyNzg3YmM2MzEifQ.PifH-Z4KwDg8prPPrV-rpeTnIAiu0rngyh5NN6d9dtQ1epgkPtkh7ZBJ42fuYh_6EobSvLoCqkQ4I3m4iN6Kwtz2rxXtoKI4Wxx3da0EMZVgjYWD0RX9wBsDkkBNl4wM
+
