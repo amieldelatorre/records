@@ -1,6 +1,7 @@
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
 using Application.Features.UserFeatures.GetUser;
+using Application.Features.UserFeatures.UpdateUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Controllers.ControllerExtensions;
@@ -22,18 +23,21 @@ public class UserController : Controller
     private readonly ClaimsInformation _claimsInformation;
     private readonly CreateUserHandler _createUserHandler;
     private readonly GetUserHandler _getUserHandler;
+    private readonly UpdateUserHandler _updateUserHandler;
     
     public UserController(
         Serilog.ILogger logger,
         ClaimsInformation claimsInformation,
         CreateUserHandler createUserHandler,
-        GetUserHandler getUserHandler
+        GetUserHandler getUserHandler,
+        UpdateUserHandler updateUserHandler
         )
     {
         _logger = logger;
         _claimsInformation = claimsInformation;
         _createUserHandler = createUserHandler;
         _getUserHandler = getUserHandler;
+        _updateUserHandler = updateUserHandler;
     }
     
     [HttpPost]
@@ -51,6 +55,16 @@ public class UserController : Controller
         _logger.Debug("new request to get user");
         var userId = _claimsInformation.UserId();
         var result = await _getUserHandler.Handle(userId);
+        return HttpResponseFromResult<UserResult>.Map(result);
+    }
+    
+    [HttpPut]
+    [Authorize]
+    public async Task<ActionResult<UserResult>> Put([FromBody] UpdateUserRequest updateUserRequest)
+    {
+        _logger.Debug("new request to update user");
+        var userId = _claimsInformation.UserId();
+        var result = await _updateUserHandler.Handle(userId, updateUserRequest);
         return HttpResponseFromResult<UserResult>.Map(result);
     }
 }

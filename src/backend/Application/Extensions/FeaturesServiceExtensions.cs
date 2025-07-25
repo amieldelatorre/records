@@ -2,6 +2,7 @@ using Application.Features.AuthFeatures.Jwt.JwtCreate;
 using Application.Features.AuthFeatures.Login;
 using Application.Features.UserFeatures.CreateUser;
 using Application.Features.UserFeatures.GetUser;
+using Application.Features.UserFeatures.UpdateUser;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions;
@@ -12,6 +13,7 @@ public static class FeaturesServiceExtensions
     {
         services.AddScoped<CreateUserHandler>();
         services.AddScoped<GetUserHandler>();
+        services.AddScoped<UpdateUserHandler>();
         
         services.AddScoped<LoginHandler>();
         services.AddScoped<JwtCreateHandler>();
