@@ -31,4 +31,17 @@ Authorization: Bearer {{auth_token}}
   "Email": "stephen2.hawking@example.invalid"
 }
 
+###
+
+PUT {{user_v1_api_address}}/b378ee12-e261-47ff-8a8d-b202787bc631/password
+Accept: application/json
+Content-Type: application/json
+// Token might be expired, generate a new one with a POST request to the JWT endpoint in the Auth.http file
+Authorization: Bearer {{auth_token}}
+
+{
+  "CurrentPassword": "password",
+  "NewPassword": "newPassword"
+}
+
 
