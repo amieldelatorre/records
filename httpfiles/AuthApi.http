@@ -1,0 +1,11 @@
+@base_api_address = http://localhost:8080
+@auth_v1_api_address = {{base_api_address}}/api/v1/auth
+
+POST {{auth_v1_api_address}}/jwt
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Username": "stephenhawking",
+  "Password": "password"
+}

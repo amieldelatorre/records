@@ -1,3 +1,4 @@
 .DS_STORE
-docker_data/
+.docker_data/
 .idea
+.env
