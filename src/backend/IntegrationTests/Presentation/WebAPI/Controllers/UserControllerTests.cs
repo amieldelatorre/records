@@ -4,6 +4,7 @@ using Application.Common;
 using Application.Features.PasswordFeatures;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
+using Application.Features.UserFeatures.DeleteUser;
 using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
 using Application.Features.UserFeatures.UpdateUserPassword;
@@ -53,10 +54,10 @@ public class UserControllerTests
         var updateUserHandler = new UpdateUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
         var updateUserPasswordHandler = new UpdateUserPasswordHandler(persistenceInfra.UserRepository, 
             persistenceInfra.Logger);
-        // var deleteUserHandler = new DeleteUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
+        var deleteUserHandler = new DeleteUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
 
         var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler,
-            getUserHandler, updateUserHandler, updateUserPasswordHandler); //, deleteUserHandler);
+            getUserHandler, updateUserHandler, updateUserPasswordHandler, deleteUserHandler);
         return userController;
     }
 
@@ -196,6 +197,58 @@ public class UserControllerTests
                 Assert.That(invalidOldPasswordLogin, Is.False);
             }
         });
+    }
+    
+    [Test, TestCaseSource(nameof(_deleteUserTestCases))]
+    public async Task DeleteUserTest(string guidString, List<string> expectedExistingGuids, int expectedStatusCode,
+        UserResult expectedResult)
+    {
+        // Use new infra here so that it doesn't break other tests as these are destructive operations
+        var infra = await new PersistenceInfraBuilder()
+            .AddPostgresDatabase()
+            .Build();
+        
+        var claims = new[] { new Claim("userId", guidString) };
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(claims))
+        };
+        var userController = GetUserController(infra, httpContext);
+
+        var actual = await userController.Delete();
+        var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
+        var actualResult = (actual.Result as ObjectResult)?.Value as UserResult;
+
+        await Assert.MultipleAsync(async () =>
+        {
+            Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
+            if ((expectedResult.User == null && actualResult?.User != null) ||
+                (expectedResult.User != null && actualResult?.User == null))
+                Assert.Fail("expectedResult.User and actualUserResult.User does not match");
+
+            CancellationTokenSource cancellationTokenSource;
+
+            foreach (var expectedGuid in expectedExistingGuids)
+            {
+                var guid = new Guid(expectedGuid);
+                cancellationTokenSource = new CancellationTokenSource();
+                cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(2));
+                Debug.Assert(infra.UserRepository != null);
+                var expectedExistingUser = await infra.UserRepository.Get(guid, cancellationTokenSource.Token);
+
+                Assert.That(expectedExistingUser, Is.Not.Null);
+            }
+
+            var expectedDeletedGuid = new Guid(guidString);
+            cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(2));
+            Debug.Assert(infra.UserRepository != null);
+            var expectedDeletedUser = await infra.UserRepository.Get(expectedDeletedGuid, cancellationTokenSource.Token);
+
+            Assert.That(expectedDeletedUser, Is.Null);
+        });
+        
+        await infra.Dispose();
     }
     
      private static object[] _postUserTestCases =
@@ -548,5 +601,32 @@ public class UserControllerTests
             StatusCodes.Status200OK,
             new UserResult(ResultStatusTypes.Ok)
         },
+    ];
+
+    private static object[] _deleteUserTestCases =
+    [
+        new object[]
+        {
+            "3e098063-d9a4-4b24-9088-123412312345",
+            new List<string>
+            {
+                "b378ee12-e261-47ff-8a8d-b202787bc631",
+                "362c8551-0fff-47fb-9ed3-9fb39828308c",
+                "b378ee12-e261-47ff-8a8d-b202787bc631"
+            },
+            StatusCodes.Status404NotFound,
+            new UserResult(ResultStatusTypes.NotFound)
+        },
+        new object[]
+        {
+            "b378ee12-e261-47ff-8a8d-b202787bc631",
+            new List<string>
+            {
+                "362c8551-0fff-47fb-9ed3-9fb39828308c",
+                "f7fdef01-1e73-4a83-a770-4a5148a919f3"
+            },
+            StatusCodes.Status200OK,
+            new UserResult(ResultStatusTypes.Ok)
+        }
     ];
 }

@@ -44,4 +44,10 @@ Authorization: Bearer {{auth_token}}
   "NewPassword": "newPassword"
 }
 
+###
 
+DELETE {{user_v1_api_address}}
+Accept: application/json
+Content-Type: application/json
+// Token might be expired, generate a new one with a POST request to the JWT endpoint in the Auth.http file
+Authorization: Bearer {{auth_token}}

@@ -1,6 +1,7 @@
 using Application.Common;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
+using Application.Features.UserFeatures.DeleteUser;
 using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
 using Application.Features.UserFeatures.UpdateUserPassword;
@@ -27,6 +28,7 @@ public class UserController : Controller
     private readonly GetUserHandler _getUserHandler;
     private readonly UpdateUserHandler _updateUserHandler;
     private readonly UpdateUserPasswordHandler _updateUserPasswordHandler;
+    private readonly DeleteUserHandler _deleteUserHandler;
     
     public UserController(
         Serilog.ILogger logger,
@@ -34,7 +36,8 @@ public class UserController : Controller
         CreateUserHandler createUserHandler,
         GetUserHandler getUserHandler,
         UpdateUserHandler updateUserHandler,
-        UpdateUserPasswordHandler updateUserPasswordHandler
+        UpdateUserPasswordHandler updateUserPasswordHandler,
+        DeleteUserHandler deleteUserHandler
         )
     {
         _logger = logger;
@@ -43,6 +46,7 @@ public class UserController : Controller
         _getUserHandler = getUserHandler;
         _updateUserHandler = updateUserHandler;
         _updateUserPasswordHandler = updateUserPasswordHandler;
+        _deleteUserHandler = deleteUserHandler;
     }
     
     [HttpPost]
@@ -84,6 +88,16 @@ public class UserController : Controller
             return HttpResponseFromResult<UserResult>.Map(new UserResult(ResultStatusTypes.NotFound));
 
         var result = await _updateUserPasswordHandler.Handle(claimsUserId, updateUserPasswordRequest);
+        return HttpResponseFromResult<UserResult>.Map(result);
+    }
+    
+    [HttpDelete]
+    [Authorize]
+    public async Task<ActionResult<UserResult>> Delete()
+    {
+        _logger.Debug("new request to delete user");
+        var userId = _claimsInformation.UserId();
+        var result = await _deleteUserHandler.Handle(userId);
         return HttpResponseFromResult<UserResult>.Map(result);
     }
 }

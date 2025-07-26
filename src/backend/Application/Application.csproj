@@ -19,8 +19,4 @@
       <PackageReference Include="Serilog" Version="4.3.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Features\UserFeatures\DeleteUser\" />
-    </ItemGroup>
-
 </Project>
