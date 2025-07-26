@@ -31,7 +31,7 @@ Needs environment variables to be set.
 
 ### Performing Migrations Through the Terminal
 ```bash
-cd ./src/backend/Records/Persistence
+cd ./src/backend/Persistence
 dotnet ef migrations add InitialMigration --project Persistence.csproj --startup-project ../WebAPI/WebAPI.csproj 
 dotnet ef database update --project ./Persistence.csproj --startup-project ../WebAPI/WebAPI.csproj 
 ```
