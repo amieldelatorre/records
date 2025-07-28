@@ -1,6 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/src/Records" # Location of package manifests
+    directory: "/src/backend" # Location of package manifests
     schedule:
       interval: "weekly"
