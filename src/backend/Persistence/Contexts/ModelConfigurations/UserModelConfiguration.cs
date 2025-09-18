@@ -8,6 +8,7 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        new CommonModelConfigurations<User>().Configure(builder);
         builder.Property(u => u.Email)
             .IsRequired()
             .HasColumnType("text");
@@ -27,5 +28,11 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.PasswordSalt)
             .IsRequired()
             .HasColumnType("text");
+        
+        builder.HasMany(u => u.WeightEntries)
+            .WithOne(w => w.OwningUser)
+            .HasForeignKey(w => w.Id)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);;
     }
 }
