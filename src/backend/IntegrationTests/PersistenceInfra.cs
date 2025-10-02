@@ -1,8 +1,11 @@
 using System.Diagnostics;
+using System.Text;
 using Application.Repositories.Database;
 using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Networks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Npgsql;
 using Persistence.Contexts;
 using Persistence.Repositories.Database;
@@ -17,7 +20,8 @@ public class PersistenceInfra
     public required INetwork Network;
     public required Serilog.ILogger Logger { get; set; }
     // Database
-    public  PostgreSqlContainer? AppPostgresContainer { get; set; }
+    public PostgreSqlContainer? AppPostgresContainer { get; set; }
+    public string? AppPostgresContainerUsername { get; set; } 
     // Repositories
     public IUserRepository? UserRepository { get; set; }
 
@@ -65,11 +69,12 @@ public class PersistenceInfraBuilder
         var container = GetPostgreSqlContainer(_persistenceInfra.Network, databaseName, username, password);
 
         _persistenceInfra.AppPostgresContainer = container;
+        _persistenceInfra.AppPostgresContainerUsername = username;
 
         return this;
     }
 
-    private async Task ConfigurePostgresDatabase(string filepath)
+    private async Task ConfigurePostgresDatabase(string sourcePath)
     {
         Debug.Assert(_persistenceInfra.AppPostgresContainer != null);
 
@@ -78,12 +83,28 @@ public class PersistenceInfraBuilder
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<DataContext>().UseNpgsql(appPostgresConnectionString);
         var dbContext = new DataContext(dbContextOptionsBuilder.Options);
 
-        NpgsqlConnection dbConnection = new(appPostgresConnectionString);
-        await dbConnection.OpenAsync();
-        var sqlScript = await File.ReadAllTextAsync(filepath);
-        var pgCommand = new NpgsqlCommand(sqlScript, dbConnection);
-        await pgCommand.ExecuteNonQueryAsync();
-        await dbConnection.CloseAsync();
+        var cancellationTokenSource =  new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(60));
+        var dumpScriptString = await File.ReadAllTextAsync(sourcePath, cancellationTokenSource.Token);
+        byte[] dumpScriptBytes = Encoding.UTF8.GetBytes(dumpScriptString);
+        
+        const string destPath = "/tmp/dump.sql";
+        await _persistenceInfra.AppPostgresContainer.CopyAsync(
+            dumpScriptBytes, 
+            destPath,
+            UnixFileModes.UserRead |  UnixFileModes.GroupRead | UnixFileModes.OtherRead,
+            cancellationTokenSource.Token);
+        
+        var execResult = await _persistenceInfra.AppPostgresContainer.ExecAsync(
+            [
+                "psql", 
+                "-U", 
+                _persistenceInfra.AppPostgresContainerUsername,
+                "-f",
+                destPath,
+            ], cancellationTokenSource.Token);
+        if  (execResult.ExitCode != 0)
+            Debug.Fail("Restoring database failure");
 
         var userRepository = new PostgreSqlUserRepository(dbContext);
         _persistenceInfra.UserRepository = userRepository;

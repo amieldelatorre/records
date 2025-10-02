@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict AlQ6BNhQPcWM851o6bu0gKuS5c9MmWsxBngFSiMi9YcCGvyOtXq8Z5whWV8Lvea
+\restrict TR6889H3od604I7RLaKKs7aCjPpisP3oyfLejEhDBG6tcKVHbgVeCxV5NedAiFI
 
 -- Dumped from database version 18.0 (Debian 18.0-1.pgdg13+3)
 -- Dumped by pg_dump version 18.0 (Debian 18.0-1.pgdg13+3)
@@ -73,24 +73,30 @@ ALTER TABLE public."__EFMigrationsHistory" OWNER TO records;
 -- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: records
 --
 
-INSERT INTO public."Users" VALUES ('f7fdef01-1e73-4a83-a770-4a5148a919f3', 'alberteinstein', 'albert.einstein@example.invalid', 'EE0E3D3529133F9096ED2CAEC72BD07849D43F035DC3A2E9A2F30063E96DA482', '0C25358BD4BCDCCDDEB96E0EB918BF0A', '2025-02-19 17:21:32.782144+13', '2025-02-19 17:21:32.782144+13');
-INSERT INTO public."Users" VALUES ('b378ee12-e261-47ff-8a8d-b202787bc631', 'stephenhawking', 'stephen.hawking@example.invalid', 'D9301F85F4F2F5400A8511499FA7E8F8AE82B38009138D64B944A8C22D8426A2', '4EE5B8A01B3E975AA35303F8F3529047', '2025-02-19 17:32:36.01753+13', '2025-02-19 17:32:36.01753+13');
-INSERT INTO public."Users" VALUES ('362c8551-0fff-47fb-9ed3-9fb39828308c', 'mariecurie', 'marie.curie@example.invalid', 'C2F52C4390B3FA9DC11A3435A5025543D4830331CECB7F28516DAB733C4445F3', 'FC41FDB949D35BABD2B9DAD64BBB6AE4', '2025-02-19 17:32:29.592922+13', '2025-02-19 17:32:29.592922+13');
+COPY public."Users" ("Id", "Username", "Email", "PasswordHash", "PasswordSalt", "DateCreated", "DateUpdated") FROM stdin;
+f7fdef01-1e73-4a83-a770-4a5148a919f3	alberteinstein	albert.einstein@example.invalid	EE0E3D3529133F9096ED2CAEC72BD07849D43F035DC3A2E9A2F30063E96DA482	0C25358BD4BCDCCDDEB96E0EB918BF0A	2025-02-19 17:21:32.782144+13	2025-02-19 17:21:32.782144+13
+b378ee12-e261-47ff-8a8d-b202787bc631	stephenhawking	stephen.hawking@example.invalid	D9301F85F4F2F5400A8511499FA7E8F8AE82B38009138D64B944A8C22D8426A2	4EE5B8A01B3E975AA35303F8F3529047	2025-02-19 17:32:36.01753+13	2025-02-19 17:32:36.01753+13
+362c8551-0fff-47fb-9ed3-9fb39828308c	mariecurie	marie.curie@example.invalid	C2F52C4390B3FA9DC11A3435A5025543D4830331CECB7F28516DAB733C4445F3	FC41FDB949D35BABD2B9DAD64BBB6AE4	2025-02-19 17:32:29.592922+13	2025-02-19 17:32:29.592922+13
+\.
 
 
 --
 -- Data for Name: WeightEntries; Type: TABLE DATA; Schema: public; Owner: records
 --
 
+COPY public."WeightEntries" ("Id", "Value", "Comment", "EntryDate", "UserId", "DateCreated", "DateUpdated") FROM stdin;
+\.
 
 
 --
 -- Data for Name: __EFMigrationsHistory; Type: TABLE DATA; Schema: public; Owner: records
 --
 
-INSERT INTO public."__EFMigrationsHistory" VALUES ('20250724214309_InitialMigration', '9.0.7');
-INSERT INTO public."__EFMigrationsHistory" VALUES ('20250726070422_AddWeightEntryTable', '9.0.9');
-INSERT INTO public."__EFMigrationsHistory" VALUES ('20251002073505_AddWeightEntryDateAndUserIdINdex', '9.0.9');
+COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin;
+20250724214309_InitialMigration	9.0.7
+20250726070422_AddWeightEntryTable	9.0.9
+20251002073505_AddWeightEntryDateAndUserIdINdex	9.0.9
+\.
 
 
 --
@@ -157,5 +163,5 @@ ALTER TABLE ONLY public."WeightEntries"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict AlQ6BNhQPcWM851o6bu0gKuS5c9MmWsxBngFSiMi9YcCGvyOtXq8Z5whWV8Lvea
+\unrestrict TR6889H3od604I7RLaKKs7aCjPpisP3oyfLejEhDBG6tcKVHbgVeCxV5NedAiFI
 
