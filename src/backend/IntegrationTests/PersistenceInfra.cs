@@ -101,7 +101,7 @@ public class PersistenceInfraBuilder
         string username, string password)
     {
         var container = new PostgreSqlBuilder()
-            .WithImage("postgres:17")
+            .WithImage("postgres:18.0")
             .WithDatabase(databaseName)
             .WithUsername(username)
             .WithPassword(password)
