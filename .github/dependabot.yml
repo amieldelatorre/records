@@ -4,6 +4,10 @@ updates:
     directory: "/src/backend" # Location of package manifests
     schedule:
       interval: "weekly"
+    groups:
+      nuget-all:
+        patterns:
+          - "*" # Match all NuGet packages
       
   - package-ecosystem: "docker"
     directories:
