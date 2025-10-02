@@ -2,8 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.5 (Debian 17.5-1.pgdg120+1)
--- Dumped by pg_dump version 17.5 (Debian 17.5-1.pgdg120+1)
+\restrict AlQ6BNhQPcWM851o6bu0gKuS5c9MmWsxBngFSiMi9YcCGvyOtXq8Z5whWV8Lvea
+
+-- Dumped from database version 18.0 (Debian 18.0-1.pgdg13+3)
+-- Dumped by pg_dump version 18.0 (Debian 18.0-1.pgdg13+3)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -39,6 +41,23 @@ CREATE TABLE public."Users" (
 ALTER TABLE public."Users" OWNER TO records;
 
 --
+-- Name: WeightEntries; Type: TABLE; Schema: public; Owner: records
+--
+
+CREATE TABLE public."WeightEntries" (
+    "Id" uuid NOT NULL,
+    "Value" real NOT NULL,
+    "Comment" text,
+    "EntryDate" date NOT NULL,
+    "UserId" uuid NOT NULL,
+    "DateCreated" timestamp with time zone NOT NULL,
+    "DateUpdated" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."WeightEntries" OWNER TO records;
+
+--
 -- Name: __EFMigrationsHistory; Type: TABLE; Schema: public; Owner: records
 --
 
@@ -60,10 +79,18 @@ INSERT INTO public."Users" VALUES ('362c8551-0fff-47fb-9ed3-9fb39828308c', 'mari
 
 
 --
+-- Data for Name: WeightEntries; Type: TABLE DATA; Schema: public; Owner: records
+--
+
+
+
+--
 -- Data for Name: __EFMigrationsHistory; Type: TABLE DATA; Schema: public; Owner: records
 --
 
 INSERT INTO public."__EFMigrationsHistory" VALUES ('20250724214309_InitialMigration', '9.0.7');
+INSERT INTO public."__EFMigrationsHistory" VALUES ('20250726070422_AddWeightEntryTable', '9.0.9');
+INSERT INTO public."__EFMigrationsHistory" VALUES ('20251002073505_AddWeightEntryDateAndUserIdINdex', '9.0.9');
 
 
 --
@@ -72,6 +99,14 @@ INSERT INTO public."__EFMigrationsHistory" VALUES ('20250724214309_InitialMigrat
 
 ALTER TABLE ONLY public."Users"
     ADD CONSTRAINT "PK_Users" PRIMARY KEY ("Id");
+
+
+--
+-- Name: WeightEntries PK_WeightEntries; Type: CONSTRAINT; Schema: public; Owner: records
+--
+
+ALTER TABLE ONLY public."WeightEntries"
+    ADD CONSTRAINT "PK_WeightEntries" PRIMARY KEY ("Id");
 
 
 --
@@ -97,6 +132,30 @@ CREATE UNIQUE INDEX "IX_User_Username_UNIQUE" ON public."Users" USING btree ("Us
 
 
 --
+-- Name: IX_WeightEntries_UserId; Type: INDEX; Schema: public; Owner: records
+--
+
+CREATE INDEX "IX_WeightEntries_UserId" ON public."WeightEntries" USING btree ("UserId");
+
+
+--
+-- Name: IX_WeightEntryDate_UserId_UNIQUE; Type: INDEX; Schema: public; Owner: records
+--
+
+CREATE UNIQUE INDEX "IX_WeightEntryDate_UserId_UNIQUE" ON public."WeightEntries" USING btree ("EntryDate", "UserId");
+
+
+--
+-- Name: WeightEntries FK_WeightEntries_Users_UserId; Type: FK CONSTRAINT; Schema: public; Owner: records
+--
+
+ALTER TABLE ONLY public."WeightEntries"
+    ADD CONSTRAINT "FK_WeightEntries_Users_UserId" FOREIGN KEY ("UserId") REFERENCES public."Users"("Id") ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
+
+\unrestrict AlQ6BNhQPcWM851o6bu0gKuS5c9MmWsxBngFSiMi9YcCGvyOtXq8Z5whWV8Lvea
 
