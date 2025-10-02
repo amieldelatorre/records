@@ -5,8 +5,6 @@ using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Networks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Npgsql;
 using Persistence.Contexts;
 using Persistence.Repositories.Database;
 using Testcontainers.PostgreSql;
@@ -18,7 +16,7 @@ public class PersistenceInfra
 {
     // Required
     public required INetwork Network;
-    public required Serilog.ILogger Logger { get; set; }
+    public required Serilog.ILogger Logger { get; init; }
     // Database
     public PostgreSqlContainer? AppPostgresContainer { get; set; }
     public string? AppPostgresContainerUsername { get; set; } 
