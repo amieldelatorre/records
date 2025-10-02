@@ -1,5 +1,6 @@
 using Application.Repositories.Database;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 
 namespace Persistence.Repositories.Database;
@@ -16,7 +17,20 @@ public class PostgreSqlWeightEntryRepository(DataContext dbContext) : IWeightEnt
     {
         throw new NotImplementedException();
     }
-    
+
+    public async Task<WeightEntry?> GetWeightEntryByDateAndUserId(Guid userId, DateOnly entryDate, CancellationToken cancellationToken)
+    {
+        var weightEntry = await dbContext.WeightEntries.FirstOrDefaultAsync(
+            w => w.UserId == userId && w.EntryDate == entryDate, cancellationToken);
+        return weightEntry;
+    }
+
+    public async Task<bool> WeightEntryExistsForDate(Guid userId, DateOnly date, CancellationToken cancellationToken)
+    {
+        var weightEntry = await GetWeightEntryByDateAndUserId(userId, date, cancellationToken);
+        return weightEntry != null;
+    }
+
     public Task<WeightEntry?> Get(Guid guid, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
