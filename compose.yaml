@@ -2,7 +2,7 @@
 networks:
   app-backend:
     driver: bridge
-    
+
 services:
   app-db:
     image: postgres:18.0
@@ -13,7 +13,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./.docker_data/app-db:/var/lib/postgresql/data
+      - ./.docker_data/app-db:/var/lib/postgresql
     environment:
       POSTGRES_DB: ${APP__POSTGRES_DB:?}
       POSTGRES_USER: ${APP__POSTGRES_USER:?}
@@ -35,4 +35,3 @@ services:
       timeout: 3s
       retries: 5
       start_period: 10s
-      

@@ -5,6 +5,7 @@ using Application.Features.UserFeatures.DeleteUser;
 using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
 using Application.Features.UserFeatures.UpdateUserPassword;
+using Application.Features.WeightEntryFeatures.CreateWeightEntry;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions;
@@ -21,5 +22,7 @@ public static class FeaturesServiceExtensions
         
         services.AddScoped<LoginHandler>();
         services.AddScoped<JwtCreateHandler>();
+
+        services.AddScoped<CreateWeightEntryHandler>();
     }
 }

@@ -12,15 +12,15 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250724214309_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20251003085907_NewInitialMigration")]
+    partial class NewInitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -64,6 +64,57 @@ namespace Persistence.Migrations
                         .HasDatabaseName("IX_User_Username_UNIQUE");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.WeightEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly>("EntryDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("EntryDate", "UserId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_WeightEntryDate_UserId_UNIQUE");
+
+                    b.ToTable("WeightEntries");
+                });
+
+            modelBuilder.Entity("Domain.Entities.WeightEntry", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "OwningUser")
+                        .WithMany("WeightEntries")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OwningUser");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("WeightEntries");
                 });
 #pragma warning restore 612, 618
         }

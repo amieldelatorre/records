@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -eou pipefail
+set -x
 
 SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")
 PROJECT_ROOT="${SCRIPT_ROOT}/.."

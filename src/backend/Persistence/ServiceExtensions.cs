@@ -17,5 +17,6 @@ public static class ServiceExtensions
         services.AddDbContext<DataContext>(options => options.UseNpgsql(postgreSqlConnectionString));
         
         services.AddScoped<IUserRepository, PostgreSqlUserRepository>();
+        services.AddScoped<IWeightEntryRepository, PostgreSqlWeightEntryRepository>();
     }
 }

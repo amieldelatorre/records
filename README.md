@@ -35,3 +35,10 @@ cd ./src/backend/Persistence
 dotnet ef migrations add InitialMigration --project Persistence.csproj --startup-project ../WebAPI/WebAPI.csproj 
 dotnet ef database update --project ./Persistence.csproj --startup-project ../WebAPI/WebAPI.csproj 
 ```
+
+### Creating a SQL Migrations Script
+```bash
+cd ./src/backend/Persistence
+dotnet ef migrations script --project ./Persistence.csproj --startup-project ../WebAPI/WebAPI.csproj --idempotent --output migrations.sql
+
+```
