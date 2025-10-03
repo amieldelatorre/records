@@ -156,7 +156,7 @@ public class WeightEntryTests
         },
         new object[]
         {
-            4,
+            5,
             "362c8551-0fff-47fb-9ed3-9fb39828308c",
             new CreateWeightEntryRequest
             {
