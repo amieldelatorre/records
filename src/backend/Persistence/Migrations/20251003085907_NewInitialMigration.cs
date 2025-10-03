@@ -6,11 +6,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddWeightEntryTable : Migration
+    public partial class NewInitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    PasswordSalt = table.Column<string>(type: "text", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "WeightEntries",
                 columns: table => new
@@ -35,9 +52,27 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_User_Email_UNIQUE",
+                table: "Users",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Username_UNIQUE",
+                table: "Users",
+                column: "Username",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_WeightEntries_UserId",
                 table: "WeightEntries",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeightEntryDate_UserId_UNIQUE",
+                table: "WeightEntries",
+                columns: new[] { "EntryDate", "UserId" },
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -45,6 +80,9 @@ namespace Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "WeightEntries");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

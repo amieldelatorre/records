@@ -27,6 +27,6 @@ public class WeightEntryModelConfiguration : IEntityTypeConfiguration<WeightEntr
             .WithMany(u => u.WeightEntries)
             .HasForeignKey(w => w.UserId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);;
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -15,7 +15,7 @@ public class CreateWeightEntryValidator : AbstractValidator<CreateWeightEntryReq
         var maxEntryDate = DateOnly.FromDateTime(maxEntryDateTime);
         
         RuleFor(x => x.EntryDate)
-            .LessThanOrEqualTo(maxEntryDate).WithMessage("'EntryDate' cannot be greater than today in UTC+14")
+            .LessThanOrEqualTo(maxEntryDate).WithMessage("'EntryDate' cannot be greater than the current date in UTC+14")
             .MustAsync(async (entryDate, cancellation) =>
             {
                 var exists = await weightEntryRepository.WeightEntryExistsForDate(userId, entryDate, cancellation);

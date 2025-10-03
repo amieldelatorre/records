@@ -22,6 +22,7 @@ public class PersistenceInfra
     public string? AppPostgresContainerUsername { get; set; } 
     // Repositories
     public IUserRepository? UserRepository { get; set; }
+    public IWeightEntryRepository? WeightEntryRepository { get; set; }
 
     public async Task Dispose()
     {
@@ -38,6 +39,8 @@ public class PersistenceInfra
          
          var userRepository = new PostgreSqlUserRepository(dbContext);
          UserRepository = userRepository;
+         var weightEntryRepository = new PostgreSqlWeightEntryRepository(dbContext);
+         WeightEntryRepository = weightEntryRepository;
      }
 }
 
@@ -106,6 +109,8 @@ public class PersistenceInfraBuilder
 
         var userRepository = new PostgreSqlUserRepository(dbContext);
         _persistenceInfra.UserRepository = userRepository;
+        var weightEntryRepository = new PostgreSqlWeightEntryRepository(dbContext);
+        _persistenceInfra.WeightEntryRepository = weightEntryRepository;
     }
 
     public async Task<PersistenceInfra> Build()

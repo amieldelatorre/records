@@ -31,8 +31,8 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
         
         builder.HasMany(u => u.WeightEntries)
             .WithOne(w => w.OwningUser)
-            .HasForeignKey(w => w.Id)
+            .HasForeignKey(w => w.UserId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);;
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

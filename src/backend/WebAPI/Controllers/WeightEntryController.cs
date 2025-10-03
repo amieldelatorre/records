@@ -21,19 +21,16 @@ public class WeightEntryController : Controller
 {
     private readonly Serilog.ILogger _logger;
     private readonly ClaimsInformation _claimsInformation;
-    private readonly IWeightEntryRepository _weightEntryRepository;
     private readonly CreateWeightEntryHandler _createWeightEntryHandler;
 
     public WeightEntryController(
         Serilog.ILogger logger,
         ClaimsInformation claimsInformation,
-        IWeightEntryRepository weightEntryRepository,
         CreateWeightEntryHandler createWeightEntryHandler
     )
     {
         _logger = logger;
         _claimsInformation = claimsInformation;
-        _weightEntryRepository = weightEntryRepository;
         _createWeightEntryHandler = createWeightEntryHandler;
     }
 
