@@ -10,11 +10,18 @@ public class CreateWeightEntryValidator : AbstractValidator<CreateWeightEntryReq
         RuleFor(x => x.Value)
             .GreaterThan(0);
         
+        var utc14 = TimeZoneInfo.FindSystemTimeZoneById("Pacific/Kiritimati");
+        var maxEntryDateTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.Utc, utc14).Date;
+        var maxEntryDate = DateOnly.FromDateTime(maxEntryDateTime);
+        
         RuleFor(x => x.EntryDate)
+            .LessThanOrEqualTo(maxEntryDate).WithMessage("'EntryDate' cannot be greater than today in UTC+14")
             .MustAsync(async (entryDate, cancellation) =>
             {
                 var exists = await weightEntryRepository.WeightEntryExistsForDate(userId, entryDate, cancellation);
                 return !exists;
-            }).WithMessage("'EntryDate' contains duplicate entry, an entry for the date already exists.");
+            }).WithMessage("'EntryDate' caught creating duplicate entry, an entry for the date already exists. " +
+                           "Only one entry per date is allowed.");
+        
     }
 }
