@@ -1,5 +1,4 @@
 using Application.Extensions;
-using Application.Features;
 using Application.Features.AuthFeatures.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add logging
 builder.ConfigureLogging();
+// Configure Traces and Metrics
+builder.ConfigureOpenTelemetry();
 
 // Add services to the container.
 builder.Services.AddControllers()

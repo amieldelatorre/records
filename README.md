@@ -9,6 +9,16 @@ Following [https://www.rfc-editor.org/rfc/rfc7518#section-3](https://www.rfc-edi
 openssl ecparam -name secp384r1 -genkey -noout -out jwt_private_key.pem
 ```
 
+## OpenTelemetry Setup
+Useful environment variables
+```bash
+OTEL_EXPORTER_OTLP_ENDPOINT
+OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+OTEL_BSP_SCHEDULE_DELAY
+OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+OTEL_METRIC_EXPORT_INTERVAL
+```
+
 ## Development Environment Setup
 
 ### JetBrains Rider Docker Configuration
