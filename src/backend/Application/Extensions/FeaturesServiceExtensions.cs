@@ -6,6 +6,7 @@ using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
 using Application.Features.UserFeatures.UpdateUserPassword;
 using Application.Features.WeightEntryFeatures.CreateWeightEntry;
+using Application.Features.WeightEntryFeatures.GetWeightEntry;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions;
@@ -24,5 +25,6 @@ public static class FeaturesServiceExtensions
         services.AddScoped<JwtCreateHandler>();
 
         services.AddScoped<CreateWeightEntryHandler>();
+        services.AddScoped<GetWeightEntryHandler>();
     }
 }
