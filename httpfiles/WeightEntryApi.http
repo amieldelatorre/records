@@ -3,7 +3,7 @@
 // Token might be expired, generate a new one with a POST request to the JWT endpoint in the Auth.http file
 @auth_token = eyJhbGciOiJFUzM4NCIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcHAiLCJpc3MiOiJhcHAiLCJleHAiOjE3NTk5OTg5NjIsImlhdCI6MTc1OTM5NDE2MiwibmJmIjoxNzU5Mzk0MTYyLCJ1c2VySWQiOiJiMzc4ZWUxMi1lMjYxLTQ3ZmYtOGE4ZC1iMjAyNzg3YmM2MzEifQ.xfUNl-mNopOf6m4NAk4XqvNCZwN6Bd9oS96VE4OwDWD8hKAiBNMIyCbat5TBR7KWp42gl2rDRDghUxTmD2HWrP-zOS6y8Afx5XiJk2gl0inmR5lmnj4M_wiEyEivTwXu
 
-GET {{weightentry_v1_api_address}}
+GET {{weightentry_v1_api_address}}/0199a94e-996b-7cf1-ad15-e2b3776d6f13
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 

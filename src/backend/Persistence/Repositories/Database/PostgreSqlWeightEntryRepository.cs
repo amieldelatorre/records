@@ -13,9 +13,11 @@ public class PostgreSqlWeightEntryRepository(DataContext dbContext) : IWeightEnt
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<WeightEntry?> GetByUserId(Guid weightEntryId, Guid userId, CancellationToken cancellationToken)
+    public async Task<WeightEntry?> Get(Guid weightEntryId, Guid userId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var weightEntry = await dbContext.WeightEntries.FirstOrDefaultAsync(
+            w => w.UserId == userId && w.Id == weightEntryId, cancellationToken);
+        return weightEntry;
     }
 
     public async Task<WeightEntry?> GetWeightEntryByDateAndUserId(Guid userId, DateOnly entryDate, CancellationToken cancellationToken)
