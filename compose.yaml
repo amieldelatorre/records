@@ -10,8 +10,8 @@ services:
     container_name: app-db
     networks:
       - app-backend
-    ports:
-      - 5432:5432
+    # ports:
+    #   - 5432:5432
     volumes:
       - ./.docker_data/app-db:/var/lib/postgresql
     environment:
@@ -29,9 +29,34 @@ services:
           "--username=${APP__POSTGRES_USER:?}",
           "--host=127.0.0.1",
           "--port=5432",
-          "-d${APP__POSTGRES_DB:?}"
+          "-d${APP__POSTGRES_DB:?}",
         ]
       interval: 30s
       timeout: 3s
       retries: 5
       start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+
+  app-db-pgbouncer:
+    image: edoburu/pgbouncer:v1.24.1-p0
+    restart: unless-stopped
+    container_name: app-db-pgbouncer
+    networks:
+      - app-backend
+    ports:
+      - 5432:5432
+    environment:
+      DB_USER: ${APP__POSTGRES_USER:?}
+      DB_PASSWORD: ${APP__POSTGRES_PASSWORD:?}
+      DB_NAME: ${APP__POSTGRES_DB:?}
+      DB_HOST: app-db
+      POOL_MODE: transaction
+      AUTH_TYPE: scram-sha-256
+      MAX_CLIENT_CONN: 1000
+    depends_on:
+      app-db:
+        condition: service_healthy
