@@ -53,7 +53,9 @@ public class UserController : Controller
     public async Task<ActionResult<UserResult>> Post([FromBody] CreateUserRequest createUserRequest)
     {
         _logger.Debug("new request to create user");
-        var result = await _createUserHandler.Handle(createUserRequest);
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _createUserHandler.Handle(createUserRequest, cancellationTokenSource.Token);
         return HttpResponseFromResult<UserResult>.Map(result);
     }   
     
@@ -63,7 +65,9 @@ public class UserController : Controller
     {
         _logger.Debug("new request to get user");
         var userId = _claimsInformation.UserId();
-        var result = await _getUserHandler.Handle(userId);
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _getUserHandler.Handle(userId, cancellationTokenSource.Token);
         return HttpResponseFromResult<UserResult>.Map(result);
     }
     
@@ -73,7 +77,9 @@ public class UserController : Controller
     {
         _logger.Debug("new request to update user");
         var userId = _claimsInformation.UserId();
-        var result = await _updateUserHandler.Handle(userId, updateUserRequest);
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _updateUserHandler.Handle(userId, updateUserRequest, cancellationTokenSource.Token);
         return HttpResponseFromResult<UserResult>.Map(result);
     }
     
@@ -86,8 +92,11 @@ public class UserController : Controller
         var paramUserId = new Guid(userId);
         if (claimsUserId != paramUserId)
             return HttpResponseFromResult<UserResult>.Map(new UserResult(ResultStatusTypes.NotFound));
-
-        var result = await _updateUserPasswordHandler.Handle(claimsUserId, updateUserPasswordRequest);
+        
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _updateUserPasswordHandler.Handle(claimsUserId, updateUserPasswordRequest, 
+            cancellationTokenSource.Token);
         return HttpResponseFromResult<UserResult>.Map(result);
     }
     
@@ -97,7 +106,9 @@ public class UserController : Controller
     {
         _logger.Debug("new request to delete user");
         var userId = _claimsInformation.UserId();
-        var result = await _deleteUserHandler.Handle(userId);
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _deleteUserHandler.Handle(userId, cancellationTokenSource.Token);
         return HttpResponseFromResult<UserResult>.Map(result);
     }
 }

@@ -9,32 +9,19 @@ public class UpdateUserHandler (
 {
     private const string FeatureName = "UserUpdate";
 
-    public async Task<UserResult> Handle(Guid userId, UpdateUserRequest request)
+    public async Task<UserResult> Handle(Guid userId, UpdateUserRequest request, CancellationToken cancellationToken)
     {
-        var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
-            Application.Features.SharedConfiguration.DefaultRequestTimeout));
-
-        var user = await userRepository.Get(userId, cancellationTokenSource.Token);
+        var user = await userRepository.Get(userId, cancellationToken);
         if (user == null)
             return new UserResult(ResultStatusTypes.NotFound);
 
-        // Recreate cancellation token
-        cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
-            Application.Features.SharedConfiguration.DefaultRequestTimeout));
         var validator = new UpdateUserValidator(userRepository);
-        var validationResult = await validator.ValidateAsync(request, cancellationTokenSource.Token);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             return new UserResult(ResultStatusTypes.ValidationError, validationResult.ToDictionary());
 
         UpdateUserMapper.Map(request, user);
-        // Recreate cancellation token
-        cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
-            Application.Features.SharedConfiguration.DefaultRequestTimeout));
-        
-        await userRepository.Update(user, cancellationTokenSource.Token);
+        await userRepository.Update(user, cancellationToken);
         return new UserResult(ResultStatusTypes.Ok, UserResponse.MapFrom(user));
     }
 }

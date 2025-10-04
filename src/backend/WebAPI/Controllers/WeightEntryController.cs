@@ -43,9 +43,12 @@ public class WeightEntryController : Controller
     [Authorize]
     public async Task<ActionResult<WeightEntryResult>> Post(
         [FromBody] CreateWeightEntryRequest createWeightEntryRequest) {
-        _logger.Information("new request to create weight entry");
+        _logger.Debug("new request to create weight entry");
         var userId = _claimsInformation.UserId();
-        var result = await _createWeightEntryHandler.Handle(userId, createWeightEntryRequest);
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _createWeightEntryHandler.Handle(userId, createWeightEntryRequest, 
+            cancellationTokenSource.Token);
         return HttpResponseFromResult<WeightEntryResult>.Map(result);
     }
 
@@ -53,7 +56,7 @@ public class WeightEntryController : Controller
     [Authorize]
     public async Task<ActionResult<WeightEntryResult>> Get(string weightEntryId)
     {
-        _logger.Information("new request to get weight entry");
+        _logger.Debug("new request to get weight entry");
         var userId = _claimsInformation.UserId();
 
         if (!ValidGuid.IsValidGuid(weightEntryId, out var weightEntryIdGuid)) 
@@ -61,7 +64,9 @@ public class WeightEntryController : Controller
                 new WeightEntryResult(
                     ResultStatusTypes.ValidationError, ValidGuid.CreateErrorMessage(nameof(weightEntryId))));
         
-        var result = await _getWeightEntryHandler.Handle(userId, weightEntryIdGuid);
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _getWeightEntryHandler.Handle(userId, weightEntryIdGuid, cancellationTokenSource.Token);
         return HttpResponseFromResult<WeightEntryResult>.Map(result);
     }
 }

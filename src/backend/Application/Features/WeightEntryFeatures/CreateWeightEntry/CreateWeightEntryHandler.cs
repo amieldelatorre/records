@@ -9,23 +9,15 @@ public class CreateWeightEntryHandler(
 {
     private const string FeatureName = "WeightEntryCreate";
 
-    public async Task<WeightEntryResult> Handle(Guid userId, CreateWeightEntryRequest request)
+    public async Task<WeightEntryResult> Handle(Guid userId, CreateWeightEntryRequest request, CancellationToken cancellationToken)
     {
-        var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(
-            TimeSpan.FromSeconds(Application.Features.SharedConfiguration.DefaultRequestTimeout));
-        
         var validator = new CreateWeightEntryValidator(weightEntryRepository, userId);
-        var validationResult = await validator.ValidateAsync(request, cancellationTokenSource.Token);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             return new WeightEntryResult(ResultStatusTypes.ValidationError, validationResult.ToDictionary());
         
-        // Recreate cancellation token
-        cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
-            Application.Features.SharedConfiguration.DefaultRequestTimeout));
         var weightEntry = CreateWeightEntryMapper.Map(userId, request);
-        await weightEntryRepository.Create(weightEntry, cancellationTokenSource.Token);
+        await weightEntryRepository.Create(weightEntry, cancellationToken);
         var result = new WeightEntryResult(ResultStatusTypes.Created, WeightEntryResponse.MapFrom(weightEntry));
         return result;
     }

@@ -9,25 +9,15 @@ public class CreateUserHandler(
 {
     private const string FeatureName = "UserCreate";
 
-    public async Task<UserResult> Handle(CreateUserRequest request)
+    public async Task<UserResult> Handle(CreateUserRequest request, CancellationToken cancellationToken)
     {
-        var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(
-            TimeSpan.FromSeconds(Application.Features.SharedConfiguration.DefaultRequestTimeout));
-        
         var validator = new CreateUserValidator(userRepository);
-        var validationResult = await validator.ValidateAsync(request, cancellationTokenSource.Token);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             return new UserResult(ResultStatusTypes.ValidationError, validationResult.ToDictionary());
 
-
-        // Recreate cancellation token
-        cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
-            Application.Features.SharedConfiguration.DefaultRequestTimeout));
-
         var user = CreateUserMapper.Map(request);
-        await userRepository.Create(user, cancellationTokenSource.Token);
+        await userRepository.Create(user, cancellationToken);
         var result = new UserResult(ResultStatusTypes.Created, UserResponse.MapFrom(user));
         return result;
     }

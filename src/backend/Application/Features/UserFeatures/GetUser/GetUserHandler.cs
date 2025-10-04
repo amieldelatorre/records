@@ -9,12 +9,9 @@ public class GetUserHandler(
 {
     private const string FeatureName = "UserGet";
 
-    public async Task<UserResult> Handle(Guid userId)
+    public async Task<UserResult> Handle(Guid userId, CancellationToken cancellationToken)
     {
-        var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
-            Application.Features.SharedConfiguration.DefaultRequestTimeout));
-        var user = await userRepository.Get(userId, cancellationTokenSource.Token);
+        var user = await userRepository.Get(userId, cancellationToken);
         
         if (user == null)
             return new UserResult(ResultStatusTypes.NotFound);

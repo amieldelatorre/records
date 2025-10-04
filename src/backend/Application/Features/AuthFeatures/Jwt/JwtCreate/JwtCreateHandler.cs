@@ -15,12 +15,9 @@ public class JwtCreateHandler(
 {
     private const string FeatureName = "JwtCreate";
 
-    public async Task<JwtCreateResult> Handle(LoginRequest request)
+    public async Task<JwtCreateResult> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
-        var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
-            Application.Features.SharedConfiguration.DefaultRequestTimeout));
-        var loginRequestIsValid = await loginHandler.Handle(request, cancellationTokenSource.Token);
+        var loginRequestIsValid = await loginHandler.Handle(request, cancellationToken);
         if (!loginRequestIsValid.Success)
             return new JwtCreateResult(ResultStatusTypes.InvalidCredentials, 
                 LoginHandler.GetInvalidCredentialsMessage());
