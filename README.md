@@ -42,3 +42,9 @@ cd ./src/backend/Persistence
 dotnet ef migrations script --project ./Persistence.csproj --startup-project ../WebAPI/WebAPI.csproj --idempotent --output migrations.sql
 
 ```
+
+## Performance/Load Testing
+```bash
+# docker network mode host when running the API in a container on the same host
+docker run --rm --network host -v ./scripts/k6/test_api_weightentry_get.js:/var/lib/test.js grafana/k6 run /var/lib/test.js # --env HOST=http://localhost:8080 --env URL_PATH=/api/v1/weightentry --env RPS_TARGET=1000
+```
