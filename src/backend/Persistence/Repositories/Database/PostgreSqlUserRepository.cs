@@ -39,8 +39,9 @@ public class PostgreSqlUserRepository(DataContext dbContext) : IUserRepository
 
     public async Task<bool> EmailExists(string email, CancellationToken cancellationToken)
     {
-        var user = await GetByEmail(email, cancellationToken);
-        return user != null;
+        // Use AnyAsync instead of SingleOrDefaultAsync because we don't need to load the whole entity
+        var exists = await dbContext.Users.AnyAsync(u => u.Email == email, cancellationToken);
+        return exists;
     }
     
     public async Task<User?> GetByUsername(string username, CancellationToken cancellationToken)
@@ -51,7 +52,8 @@ public class PostgreSqlUserRepository(DataContext dbContext) : IUserRepository
 
     public async Task<bool> UsernameExists(string username, CancellationToken cancellationToken)
     {
-        var user = await GetByUsername(username, cancellationToken);
-        return user != null;
+        // Use AnyAsync instead of SingleOrDefaultAsync because we don't need to load the whole entity
+        var exists = await dbContext.Users.AnyAsync(u => u.Username == username, cancellationToken);
+        return exists;
     }
 }

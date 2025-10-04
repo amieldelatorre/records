@@ -5,9 +5,15 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:5145",
+      "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "APP__POSTGRES_HOST": "localhost",
+        "APP__POSTGRES_PORT": "5432",
+        "APP__POSTGRES_DB": "records",
+        "APP__POSTGRES_USER": "records",
+        "APP__POSTGRES_PASSWORD": "password",
+        "APP__JWT_ECDSA_384_PRIVATE_KEY": "-----BEGIN EC PRIVATE KEY-----\nMIGkAgEBBDCAN3o0FYmw6Xeigxpe7aWP2QiwRhxEia6GvkZ+804v9GDy2psgcvHY\ntK52pYHRZf+gBwYFK4EEACKhZANiAAQGb5yCPf9bKcqJ9s0DMq8TBnqryKIkexAT\njYdex2B5KvskY3rnzip4rdG9IqKge7UgF2kCfoKPBjNGpYV+e6Dsjcapr+PPrQDc\nGdzqGG/FrzeaezsEvSmr4Nk2dVumwvg=\n-----END EC PRIVATE KEY-----"
       }
     }
   }

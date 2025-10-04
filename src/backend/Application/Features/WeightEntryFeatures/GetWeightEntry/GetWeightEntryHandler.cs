@@ -9,13 +9,9 @@ public class GetWeightEntryHandler(
 {
     private const string FeatureName  = "WeightEntryGet";
 
-    public async Task<WeightEntryResult> Handle(Guid userId, Guid weightEntryId)
+    public async Task<WeightEntryResult> Handle(Guid userId, Guid weightEntryId, CancellationToken cancellationToken)
     {
-        var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
-            Application.Features.SharedConfiguration.DefaultRequestTimeout));
-        
-        var weightEntry = await weightEntryRepository.Get(weightEntryId, userId, cancellationTokenSource.Token);
+        var weightEntry = await weightEntryRepository.Get(weightEntryId, userId, cancellationToken);
         if (weightEntry == null)
             return new WeightEntryResult(ResultStatusTypes.NotFound);
         return new WeightEntryResult(ResultStatusTypes.Ok, WeightEntryResponse.MapFrom(weightEntry));

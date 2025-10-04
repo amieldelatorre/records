@@ -10,13 +10,9 @@ public class UpdateUserPasswordHandler(
 {
     private const string FeatureName = "UserPasswordUpdate";
 
-    public async Task<UserResult> Handle(Guid userId, UpdateUserPasswordRequest request)
+    public async Task<UserResult> Handle(Guid userId, UpdateUserPasswordRequest request, CancellationToken cancellationToken)
     {
-        var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(
-            Application.Features.SharedConfiguration.DefaultRequestTimeout));
-
-        var user = await userRepository.Get(userId, cancellationTokenSource.Token);
+        var user = await userRepository.Get(userId, cancellationToken);
         if (user == null)
             return new UserResult(ResultStatusTypes.NotFound);
 
@@ -30,12 +26,12 @@ public class UpdateUserPasswordHandler(
             });
 
         var validator = new UpdateUserPasswordValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationTokenSource.Token);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             return new UserResult(ResultStatusTypes.ValidationError, validationResult.ToDictionary());
 
         UpdateUserPasswordMapper.Map(request, user);
-        await userRepository.Update(user, cancellationTokenSource.Token);
+        await userRepository.Update(user, cancellationToken);
         return new UserResult(ResultStatusTypes.Ok, UserResponse.MapFrom(user));
     }
 }

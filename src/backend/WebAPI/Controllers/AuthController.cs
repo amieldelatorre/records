@@ -23,7 +23,9 @@ public class AuthController(
     public async Task<ActionResult<JwtCreateResult>> JwtCreate(LoginRequest loginRequest)
     {
         logger.Debug("new request to create JWT token");
-        var result = await jwtCreateHandler.Handle(loginRequest);
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await jwtCreateHandler.Handle(loginRequest, cancellationTokenSource.Token);
         return HttpResponseFromResult<JwtCreateResult>.Map(result);
     }
 }
