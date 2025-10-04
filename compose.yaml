@@ -10,8 +10,6 @@ services:
     container_name: app-db
     networks:
       - app-backend
-    # ports:
-    #   - 5432:5432
     volumes:
       - ./.docker_data/app-db:/var/lib/postgresql
     environment:
@@ -57,6 +55,75 @@ services:
       POOL_MODE: transaction
       AUTH_TYPE: scram-sha-256
       MAX_CLIENT_CONN: 1000
+    security_opt:
+      - "no-new-privileges:true"
     depends_on:
       app-db:
         condition: service_healthy
+
+  grafana:
+    image: grafana/grafana:12.2.0
+    restart: unless-stopped
+    container_name: grafana
+    networks:
+      - app-backend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./container_configs/grafana_datasources.yaml:/etc/grafana/provisioning/datasources/sources.yaml:ro
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    security_opt:
+      - "no-new-privileges:true"
+
+  tempo:
+    image: grafana/tempo:2.8.2
+    restart: unless-stopped
+    container_name: tempo
+    command: ["-config.file=/etc/tempo.yaml"]
+    networks:
+      - app-backend
+    ports:
+      - 4317:4317
+    volumes:
+      - ./container_configs/tempo.yaml:/etc/tempo.yaml:ro
+    environment:
+      TEMPO_HTTP_PORT: 3200
+      TEMPO_LOG_LEVEL: info
+      TEMPO_OTLP_GRPC_ENDPOINT: 0.0.0.0:4317
+      TEMPO_STORAGE_BACKEND: local
+      TEMPO_WAL_PATH: /var/tempo/wal
+      TEMPO_BLOCKS_PATH: /var/tempo/blocks
+    security_opt:
+      - "no-new-privileges:true"
+
+  prometheus:
+    image: prom/prometheus:v3.6.0
+    restart: unless-stopped
+    container_name: prometheus
+    command: ["--web.enable-remote-write-receiver"]
+    networks:
+      - app-backend
+    ports:
+      - 9090:9090
+    volumes:
+      - ./container_configs/prometheus.yml:/prometheus/prometheus.yml:ro
+    security_opt:
+      - "no-new-privileges:true"
+
+  alloy:
+    image: grafana/alloy:v1.11.0
+    restart: unless-stopped
+    container_name: alloy
+    command:
+      - "run"
+      - "--storage.path=/var/lib/alloy/data"
+      - "/etc/alloy/config.alloy"
+    networks:
+      - app-backend
+    volumes:
+      - ./container_configs/config.alloy:/etc/alloy/config.alloy:ro
+    security_opt:
+      - "no-new-privileges:true"
