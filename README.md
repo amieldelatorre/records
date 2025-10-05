@@ -58,3 +58,10 @@ dotnet ef migrations script --project ./Persistence.csproj --startup-project ../
 # docker network mode host when running the API in a container on the same host
 docker run --rm --network host -v ./scripts/k6/test_api_weightentry_get.js:/var/lib/test.js grafana/k6 run /var/lib/test.js # --env HOST=http://localhost:8080 --env URL_PATH=/api/v1/weightentry --env RPS_TARGET=1000
 ```
+
+### Issues
+
+#### Password Hashing Bottleneck
+From profiling and testing it seems like the application becomes CPU bottlenecked when the User Create end point is called. After profiling, it seems to be caused by the [Pbkdf2PasswordHasher](./src/backend/Application/Features/PasswordFeatures/Pbkdf2PasswordHasher.cs).
+
+In particular the `Rfc2898DeriveBytes.Pbkdf2` call is really expensive on the CPU.

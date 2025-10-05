@@ -8,6 +8,9 @@ services:
     image: postgres:18.0
     restart: unless-stopped
     container_name: app-db
+    command:
+      - "postgres"
+      - "-N1000" # max_connections
     networks:
       - app-backend
     volumes:
@@ -55,6 +58,8 @@ services:
       POOL_MODE: transaction
       AUTH_TYPE: scram-sha-256
       MAX_CLIENT_CONN: 1000
+      DEFAULT_POOL_SIZE: 800 # per user per database
+      RESERVE_POOL_SIZE: 200 # spare for burst
     security_opt:
       - "no-new-privileges:true"
     depends_on:
@@ -85,8 +90,6 @@ services:
     command: ["-config.file=/etc/tempo.yaml"]
     networks:
       - app-backend
-    ports:
-      - 4317:4317
     volumes:
       - ./container_configs/tempo.yaml:/etc/tempo.yaml:ro
     environment:
@@ -123,6 +126,8 @@ services:
       - "/etc/alloy/config.alloy"
     networks:
       - app-backend
+    ports:
+      - 4317:4317
     volumes:
       - ./container_configs/config.alloy:/etc/alloy/config.alloy:ro
     security_opt:

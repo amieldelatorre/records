@@ -39,7 +39,7 @@ public class PostgreSqlConfiguration
         if (errors.Count > 0)
             AbstractEnvironmentVariable.PrintMissingEnvironmentVariablesAndExit(errors);
 
-        var connectionString = $"Host={Host.Value}; Port={Port.Value}; Database={Database.Value}; Username={Username.Value}; Password={Password.Value}";
+        var connectionString = $"Host={Host.Value}; Port={Port.Value}; Database={Database.Value}; Username={Username.Value}; Password={Password.Value}; MaxPoolSize=1000";
         return connectionString;
     }
 

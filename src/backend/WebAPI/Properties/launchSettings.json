@@ -13,7 +13,9 @@
         "APP__POSTGRES_DB": "records",
         "APP__POSTGRES_USER": "records",
         "APP__POSTGRES_PASSWORD": "password",
-        "APP__JWT_ECDSA_384_PRIVATE_KEY": "-----BEGIN EC PRIVATE KEY-----\nMIGkAgEBBDCAN3o0FYmw6Xeigxpe7aWP2QiwRhxEia6GvkZ+804v9GDy2psgcvHY\ntK52pYHRZf+gBwYFK4EEACKhZANiAAQGb5yCPf9bKcqJ9s0DMq8TBnqryKIkexAT\njYdex2B5KvskY3rnzip4rdG9IqKge7UgF2kCfoKPBjNGpYV+e6Dsjcapr+PPrQDc\nGdzqGG/FrzeaezsEvSmr4Nk2dVumwvg=\n-----END EC PRIVATE KEY-----"
+        "APP__JWT_ECDSA_384_PRIVATE_KEY": "-----BEGIN EC PRIVATE KEY-----\nMIGkAgEBBDCAN3o0FYmw6Xeigxpe7aWP2QiwRhxEia6GvkZ+804v9GDy2psgcvHY\ntK52pYHRZf+gBwYFK4EEACKhZANiAAQGb5yCPf9bKcqJ9s0DMq8TBnqryKIkexAT\njYdex2B5KvskY3rnzip4rdG9IqKge7UgF2kCfoKPBjNGpYV+e6Dsjcapr+PPrQDc\nGdzqGG/FrzeaezsEvSmr4Nk2dVumwvg=\n-----END EC PRIVATE KEY-----",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4317",
+        "OTEL_METRIC_EXPORT_INTERVAL": 1000
       }
     }
   }
