@@ -1,0 +1,220 @@
+networks:
+  app-backend:
+    driver: bridge
+
+services:
+  # TODO: ADD ACTUAL APP SERVICE
+  app-db:
+    image: postgres:18.0
+    restart: unless-stopped
+    container_name: app-db
+    networks:
+      - app-backend
+    volumes:
+      - /docker-data/data-app-db:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: ${APP__POSTGRES_DB:?}
+      POSTGRES_USER: ${APP__POSTGRES_USER:?}
+      POSTGRES_PASSWORD: ${APP__POSTGRES_PASSWORD:?}
+      TZ: ${TIMEZONE:-Pacific/Auckland}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "--username=${APP__POSTGRES_USER:?}",
+          "--host=127.0.0.1",
+          "--port=5432",
+          "-d${APP__POSTGRES_DB:?}",
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  app-db-pgbouncer:
+    image: edoburu/pgbouncer:v1.24.1-p0
+    restart: unless-stopped
+    container_name: app-db-pgbouncer
+    networks:
+      - app-backend
+    ports:
+      - 5432:5432
+    environment:
+      DB_USER: ${APP__POSTGRES_USER:?}
+      DB_PASSWORD: ${APP__POSTGRES_PASSWORD:?}
+      DB_NAME: ${APP__POSTGRES_DB:?}
+      DB_HOST: app-db
+      POOL_MODE: transaction
+      AUTH_TYPE: scram-sha-256
+      MAX_CLIENT_CONN: 1000
+    healthcheck:
+      test: ["CMD", "pg_isready", "-happ-db"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    depends_on:
+      app-db:
+        condition: service_healthy
+
+  grafana:
+    image: grafana/grafana:12.2.0
+    restart: unless-stopped
+    container_name: grafana
+    networks:
+      - app-backend
+    ports:
+      - 3000:3000
+    volumes:
+      - /docker-data/container_configs/grafana_datasources.yaml:/etc/grafana/provisioning/datasources/sources.yaml:ro
+      - /docker-data/container_configs/grafana_dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
+      - /docker-data/container_configs/grafana_dashboard-node_exporter_full.json:/etc/grafana/dashboards/node_exporter_full.json:ro
+      - /docker-data/container_configs/grafana_dashboard-cadvisor.json:/etc/grafana/dashboards/cadvisor.json.json:ro
+      - /docker-data/data-grafana:/var/lib/grafana
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    healthcheck:
+      test: "wget --no-verbose --tries=1 --spider localhost:3000/api/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Tempo runs as user 10001, and docker compose creates the volume as root.
+  # As such, we need to chown the volume in order for Tempo to start correctly.
+  # tempo-init:
+  #   image: grafana/tempo:2.8.2
+  #   user: root
+  #   entrypoint:
+  #     - "chown"
+  #     - "10001:10001"
+  #     - "/var/tempo"
+  #   volumes:
+  #     - /docker-data/data-tempo:/var/tempo
+
+  tempo:
+    image: grafana/tempo:2.8.2
+    restart: unless-stopped
+    container_name: tempo
+    command: ["-config.file=/etc/tempo.yaml"]
+    networks:
+      - app-backend
+    ports:
+      - 4317:4317
+    volumes:
+      - /docker-data/container_configs/tempo.yaml:/etc/tempo.yaml:ro
+      - /docker-data/data-tempo:/var/tempo
+    environment:
+      TEMPO_HTTP_PORT: 3200
+      TEMPO_LOG_LEVEL: info
+      TEMPO_OTLP_GRPC_ENDPOINT: 0.0.0.0:4317
+      TEMPO_STORAGE_BACKEND: local
+      TEMPO_WAL_PATH: /var/tempo/wal
+      TEMPO_BLOCKS_PATH: /var/tempo/blocks
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3200/metrics",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    # depends_on:
+    #   - tempo-init
+
+  prometheus:
+    image: prom/prometheus:v3.6.0
+    restart: unless-stopped
+    container_name: prometheus
+    user: 1000:1000
+    command: ["--web.enable-remote-write-receiver"]
+    networks:
+      - app-backend
+    ports:
+      - 9090:9090
+    volumes:
+      - /docker-data/container_configs/prometheus.yml:/prometheus/prometheus.yml:ro
+      - /docker-data/data-prometheus:/prometheus
+    healthcheck:
+      test: "wget --no-verbose --tries=1 --spider localhost:9090/ || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:v1.9.1
+    restart: unless-stopped
+    container_name: node-exporter
+    command:
+      - "--path.rootfs=/host"
+    networks:
+      - app-backend
+    volumes:
+      - /:/host:ro,rslave
+    environment:
+      HOSTNAME: ${HOSTNAME:?}
+    healthcheck:
+      test: "wget --no-verbose --tries=1 --spider localhost:9100/metrics || exit 1"
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    read_only: true
+
+  cadvisor:
+    image: ghcr.io/google/cadvisor:v0.53.0
+    restart: unless-stopped
+    container_name: cadvisor
+    networks:
+      - app-backend
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    privileged: true
+    devices:
+      - "/dev/kmsg"
+    # logging:
+    #   driver: gelf
+    #   options:
+    #     gelf-address: "udp://127.0.0.1:12201"
+    #     tag: "cadvisor"
+
+  alloy:
+    image: grafana/alloy:v1.11.0
+    restart: unless-stopped
+    container_name: alloy
+    command:
+      - "run"
+      - "--storage.path=/var/lib/alloy/data"
+      - "/etc/alloy/config.alloy"
+    networks:
+      - app-backend
+    ports:
+      - 12201:12201/udp
+    volumes:
+      - /docker-data/container_configs/config.alloy:/etc/alloy/config.alloy:ro
+      - /docker-data/data-alloy:/var/lib/alloy/data
+    environment:
+      HOSTNAME: ${HOSTNAME:?}
+    # Currently no healthcheck commands available for use
+
+  # loki:
+  #   image: grafana/loki:3.5.5
+  #   restart: unless-stopped
+  #   container_name: loki
+  #   command:
+  #     - "-config.file=/etc/loki/config/config.yaml"
+  #   networks:
+  #     - app-backend
+  #   volumes:
+  #     - /docker-data/container_configs/loki.yaml:/etc/loki/config/config.yaml:ro
+  #     - /docker-data/data-loki:/loki
