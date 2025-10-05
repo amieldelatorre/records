@@ -8,6 +8,9 @@ services:
     image: postgres:18.0
     restart: unless-stopped
     container_name: app-db
+    command:
+      - "postgres"
+      - "-N1000" # max_connections
     networks:
       - app-backend
     volumes:
@@ -48,6 +51,8 @@ services:
       POOL_MODE: transaction
       AUTH_TYPE: scram-sha-256
       MAX_CLIENT_CONN: 1000
+      DEFAULT_POOL_SIZE: 800 # per user per database
+      RESERVE_POOL_SIZE: 200 # spare for burst
     healthcheck:
       test: ["CMD", "pg_isready", "-happ-db"]
       interval: 30s

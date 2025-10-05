@@ -18,3 +18,5 @@ sleep "${sleep_time}"
 
 filepath="${PROJECT_ROOT}/src/backend/IntegrationTests/Data/app_postgres_dump.sql"
 cat "${filepath}"  | docker exec -i app-db psql -U records
+
+docker compose up -d
