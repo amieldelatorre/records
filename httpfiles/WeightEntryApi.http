@@ -18,3 +18,10 @@ Authorization: Bearer {{auth_token}}
   "Value": 80,
   "EntryDate": "2025-10-03"
 }
+
+###
+
+GET {{weightentry_v1_api_address}}?Limit=100&Offset=10&DateFrom=1999-01-01&DateTo=2100-01-01
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+

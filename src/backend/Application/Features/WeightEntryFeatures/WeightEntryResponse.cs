@@ -23,4 +23,9 @@ public class WeightEntryResponse : BaseEntityResponse
             DateUpdated = weightEntry.DateUpdated
         };
     }
+
+    public static List<WeightEntryResponse> MapFrom(List<WeightEntry> weightEntries)
+    {
+        return weightEntries.Select(MapFrom).ToList();
+    }
 }
