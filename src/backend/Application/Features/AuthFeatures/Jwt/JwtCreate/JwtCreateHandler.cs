@@ -20,11 +20,17 @@ public class JwtCreateHandler(
     {
         var loginRequestIsValid = await loginHandler.Handle(request, cancellationToken);
         if (!loginRequestIsValid.Success)
+        {
+            // TODO: Log failing IP
+            logger.LogInformation("failed login request");
             return new JwtCreateResult(ResultStatusTypes.InvalidCredentials, 
                 LoginHandler.GetInvalidCredentialsMessage());
+        }
 
         Debug.Assert(loginRequestIsValid.User != null);
+        logger.LogInformation("user '{userId}' successful login, creating token",  loginRequestIsValid.User.Id);
         var tokenResponse = CreateToken(loginRequestIsValid.User, jwtConfiguration);
+        logger.LogInformation("user '{userId}' successful login, created token",  loginRequestIsValid.User.Id);
         return new JwtCreateResult(ResultStatusTypes.Created, tokenResponse);
     }
 

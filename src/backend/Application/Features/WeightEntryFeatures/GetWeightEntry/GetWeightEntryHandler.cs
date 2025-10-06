@@ -15,6 +15,7 @@ public class GetWeightEntryHandler(
         var weightEntry = await weightEntryRepository.Get(weightEntryId, userId, cancellationToken);
         if (weightEntry == null)
             return new WeightEntryResult(ResultStatusTypes.NotFound);
+        logger.LogInformation("weightEntry '{weightEntryId}' successfully retrieved by user '{userId}'", weightEntry.Id, userId);
         return new WeightEntryResult(ResultStatusTypes.Ok, WeightEntryResponse.MapFrom(weightEntry));
     }
 }

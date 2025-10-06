@@ -14,7 +14,9 @@ public class DeleteWeightEntryHandler(
         if (weightEntry == null)
             return new WeightEntryResult(ResultStatusTypes.NotFound);
 
+        logger.LogInformation("weightEntry '{weightEntryId}' to be deleted by user '{userId}'", weightEntryId, userId);
         await weightEntryRepository.Delete(weightEntry, cancellationToken);
+        logger.LogInformation("weightEntry '{weightEntryId}' successfully deleted by user '{userId}'", weightEntryId, userId);
         return new WeightEntryResult(ResultStatusTypes.Ok);
     }
 }

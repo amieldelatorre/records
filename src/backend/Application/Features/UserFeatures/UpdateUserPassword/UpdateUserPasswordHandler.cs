@@ -33,6 +33,7 @@ public class UpdateUserPasswordHandler(
 
         UpdateUserPasswordMapper.Map(request, user);
         await userRepository.Update(user, cancellationToken);
+        logger.LogInformation("user '{userId}' password successfully updated", user.Id);
         return new UserResult(ResultStatusTypes.Ok, UserResponse.MapFrom(user));
     }
 }

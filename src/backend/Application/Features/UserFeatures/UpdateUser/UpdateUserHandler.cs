@@ -23,6 +23,7 @@ public class UpdateUserHandler (
 
         UpdateUserMapper.Map(request, user);
         await userRepository.Update(user, cancellationToken);
+        logger.LogInformation("user '{userId}' successfully updated", user.Id);
         return new UserResult(ResultStatusTypes.Ok, UserResponse.MapFrom(user));
     }
 }

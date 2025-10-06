@@ -21,6 +21,7 @@ public class ListWeightEntryHandler(
         
         var totalCount = await weightEntryRepository.ListTotalCount(userId, queryParameters, cancellationToken);
         var weightEntryList = await weightEntryRepository.List(userId, queryParameters, cancellationToken);
+        logger.LogInformation("weightEntry successfully listed by user '{userId}'", userId);
         return new PaginatedResult<WeightEntryResponse>(
             ResultStatusTypes.Ok, 
             WeightEntryResponse.MapFrom(weightEntryList), 

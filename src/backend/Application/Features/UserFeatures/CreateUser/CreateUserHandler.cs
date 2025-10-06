@@ -20,6 +20,7 @@ public class CreateUserHandler(
         var user = CreateUserMapper.Map(request);
         await userRepository.Create(user, cancellationToken);
         var result = new UserResult(ResultStatusTypes.Created, UserResponse.MapFrom(user));
+        logger.LogInformation("user '{userId}' successfully created", user.Id);
         return result;
     }
 }

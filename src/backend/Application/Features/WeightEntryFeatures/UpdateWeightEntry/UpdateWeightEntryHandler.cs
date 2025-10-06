@@ -20,8 +20,10 @@ public class UpdateWeightEntryHandler(
         if (!validationResult.IsValid)
             return new WeightEntryResult(ResultStatusTypes.ValidationError, validationResult.ToDictionary()); 
         
+        logger.LogInformation("weightEntry '{weightEntryId}' to be updated by user '{userId}'", weightEntry.Id, userId);
         UpdateWeightEntryMapper.Map(request, weightEntry);
         await weightEntryRepository.Update(weightEntry, cancellationToken);
+        logger.LogInformation("weightEntry '{weightEntryId}' successfully updated by user '{userId}'", weightEntry.Id, userId);
         return new WeightEntryResult(ResultStatusTypes.Ok, WeightEntryResponse.MapFrom(weightEntry));
     }
 }

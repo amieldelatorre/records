@@ -16,6 +16,7 @@ public class GetUserHandler(
         
         if (user == null)
             return new UserResult(ResultStatusTypes.NotFound);
+        logger.LogInformation("user '{userId}' successfully retrieved", user.Id);
         return new UserResult(ResultStatusTypes.Ok, UserResponse.MapFrom(user));
     }
 }

@@ -17,6 +17,7 @@ public class DeleteUserHandler(
             return new UserResult(ResultStatusTypes.NotFound);
 
         await userRepository.Delete(user, cancellationToken);
+        logger.LogInformation("user '{userId}' successfully deleted", user.Id);
         return new UserResult(ResultStatusTypes.Ok);
     }
 }

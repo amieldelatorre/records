@@ -20,6 +20,7 @@ public class CreateWeightEntryHandler(
         var weightEntry = CreateWeightEntryMapper.Map(userId, request);
         await weightEntryRepository.Create(weightEntry, cancellationToken);
         var result = new WeightEntryResult(ResultStatusTypes.Created, WeightEntryResponse.MapFrom(weightEntry));
+        logger.LogInformation("weightEntry '{weightEntryId}' successfully created by user '{userId}'", weightEntry.Id, userId);
         return result;
     }
 }
