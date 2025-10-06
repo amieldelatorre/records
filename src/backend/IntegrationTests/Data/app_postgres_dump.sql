@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict 7FjT9PoSC7kCNLL5q7YGcoAU19mlai0FxeHSkrr9cpCifZ4HLmQRMlMhlcHgKTg
+\restrict RQteIc6saqssLxLGAX6PMqVR0aTMiebQELDEmgbe5HDaLYBd1mKXXlQAnVeamsa
 
 -- Dumped from database version 18.0 (Debian 18.0-1.pgdg13+3)
 -- Dumped by pg_dump version 18.0 (Debian 18.0-1.pgdg13+3)
@@ -46,7 +46,7 @@ ALTER TABLE public."Users" OWNER TO records;
 
 CREATE TABLE public."WeightEntries" (
     "Id" uuid NOT NULL,
-    "Value" real NOT NULL,
+    "Value" numeric NOT NULL,
     "Comment" text,
     "EntryDate" date NOT NULL,
     "UserId" uuid NOT NULL,
@@ -477,7 +477,7 @@ COPY public."WeightEntries" ("Id", "Value", "Comment", "EntryDate", "UserId", "D
 --
 
 COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin;
-20251003085907_NewInitialMigration	9.0.9
+20251006041335_NewInitialMigration	9.0.9
 \.
 
 
@@ -545,5 +545,5 @@ ALTER TABLE ONLY public."WeightEntries"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 7FjT9PoSC7kCNLL5q7YGcoAU19mlai0FxeHSkrr9cpCifZ4HLmQRMlMhlcHgKTg
+\unrestrict RQteIc6saqssLxLGAX6PMqVR0aTMiebQELDEmgbe5HDaLYBd1mKXXlQAnVeamsa
 

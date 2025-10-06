@@ -33,7 +33,7 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Value = table.Column<float>(type: "real", nullable: false),
+                    Value = table.Column<decimal>(type: "numeric", nullable: false),
                     Comment = table.Column<string>(type: "text", nullable: true),
                     EntryDate = table.Column<DateOnly>(type: "date", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),

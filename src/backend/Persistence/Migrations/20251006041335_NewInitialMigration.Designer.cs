@@ -12,7 +12,7 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251003085907_NewInitialMigration")]
+    [Migration("20251006041335_NewInitialMigration")]
     partial class NewInitialMigration
     {
         /// <inheritdoc />
@@ -87,8 +87,8 @@ namespace Persistence.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<float>("Value")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Value")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
