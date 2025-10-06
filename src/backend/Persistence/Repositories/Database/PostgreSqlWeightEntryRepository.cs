@@ -67,9 +67,10 @@ public class PostgreSqlWeightEntryRepository(DataContext dbContext) : IWeightEnt
         throw new NotImplementedException();
     }
 
-    public Task Update(WeightEntry entity, CancellationToken cancellationToken)
+    public async Task Update(WeightEntry entity, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        dbContext.WeightEntries.Update(entity);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task Delete(WeightEntry weightEntry, CancellationToken cancellationToken)

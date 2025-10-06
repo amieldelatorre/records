@@ -5,6 +5,7 @@ using Application.Features.WeightEntryFeatures.CreateWeightEntry;
 using Application.Features.WeightEntryFeatures.DeleteWeightEntry;
 using Application.Features.WeightEntryFeatures.GetWeightEntry;
 using Application.Features.WeightEntryFeatures.ListWeightEntry;
+using Application.Features.WeightEntryFeatures.UpdateWeightEntry;
 using Application.Repositories.Database;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +30,7 @@ public class WeightEntryController : Controller
     private readonly CreateWeightEntryHandler _createWeightEntryHandler;
     private readonly GetWeightEntryHandler _getWeightEntryHandler;
     private readonly ListWeightEntryHandler _listWeightEntryHandler;
+    private readonly UpdateWeightEntryHandler _updateWeightEntryHandler;
     private readonly DeleteWeightEntryHandler _deleteWeightEntryHandler;
     
     public WeightEntryController(
@@ -37,6 +39,7 @@ public class WeightEntryController : Controller
         CreateWeightEntryHandler createWeightEntryHandler,
         GetWeightEntryHandler getWeightEntryHandler,
         ListWeightEntryHandler listWeightEntryHandler,
+        UpdateWeightEntryHandler updateWeightEntryHandler,
         DeleteWeightEntryHandler deleteWeightEntryHandler
     )
     {
@@ -45,6 +48,7 @@ public class WeightEntryController : Controller
         _createWeightEntryHandler = createWeightEntryHandler;
         _getWeightEntryHandler = getWeightEntryHandler;
         _listWeightEntryHandler = listWeightEntryHandler;
+        _updateWeightEntryHandler = updateWeightEntryHandler;
         _deleteWeightEntryHandler = deleteWeightEntryHandler;
     }
 
@@ -95,6 +99,25 @@ public class WeightEntryController : Controller
         var result = await _listWeightEntryHandler.Handle(userId, queryParameters, requestPath, cancellationTokenSource.Token);
         return HttpResponseFromResult<PaginatedResult<WeightEntryResponse>>.Map(result);
         
+    }
+
+    [HttpPut("{weightEntryId}")]
+    [Authorize]
+    public async Task<ActionResult<WeightEntryResult>> Put(string weightEntryId,
+        [FromBody] UpdateWeightEntryRequest updateWeightEntryRequest)
+    {
+        _logger.Debug("new request to update weight entry");
+        var userId = _claimsInformation.UserId();
+        
+        if (!ValidGuid.IsValidGuid(weightEntryId, out var weightEntryIdGuid)) 
+            return HttpResponseFromResult<WeightEntryResult>.Map(
+                new WeightEntryResult(
+                    ResultStatusTypes.ValidationError, ValidGuid.CreateErrorMessage(nameof(weightEntryId))));
+        
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _updateWeightEntryHandler.Handle(userId, weightEntryIdGuid, updateWeightEntryRequest, cancellationTokenSource.Token);
+        return HttpResponseFromResult<WeightEntryResult>.Map(result);
     }
     
     [HttpDelete("{weightEntryId}")]

@@ -25,3 +25,22 @@ GET {{weightentry_v1_api_address}}?Limit=100&Offset=10&DateFrom=1999-01-01&DateT
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
+###
+
+PUT {{weightentry_v1_api_address}}/0199a94e-996b-7cf1-ad15-e2b3776d6f13
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "value": 85.0,
+  "comment": "new comment",
+  "entryDate": "2020-12-31"
+}
+
+
+###
+
+DELETE {{weightentry_v1_api_address}}/0199a94e-996b-7cf1-ad15-e2b3776d6f13
+Accept: application/json
+Authorization: Bearer {{auth_token}}
