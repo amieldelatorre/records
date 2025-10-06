@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Application.Common;
 using Application.Features.WeightEntryFeatures;
 using Application.Features.WeightEntryFeatures.CreateWeightEntry;
+using Application.Features.WeightEntryFeatures.DeleteWeightEntry;
 using Application.Features.WeightEntryFeatures.GetWeightEntry;
 using Application.Features.WeightEntryFeatures.ListWeightEntry;
 using Microsoft.AspNetCore.Http;
@@ -29,9 +30,10 @@ public static class WeightEntrySetup
         var createWeightEntryHandler = new CreateWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         var getWeightEntryHandler = new GetWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         var listWeightEntryHandler = new ListWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
+        var deleteWeightEntryHandler = new DeleteWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         
         var weightEntryController = new WeightEntryController(persistenceInfra.Logger, claimsInformation, 
-            createWeightEntryHandler, getWeightEntryHandler, listWeightEntryHandler);
+            createWeightEntryHandler, getWeightEntryHandler, listWeightEntryHandler, deleteWeightEntryHandler);
         weightEntryController.ControllerContext.HttpContext = httpContext;
         
         return weightEntryController;
@@ -148,7 +150,7 @@ public class WeightEntryViewTests
         new object[]
         {
             1,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "0199a94e-9922-72b9-b9a9-b66e8e30caa4",
             StatusCodes.Status200OK,
             new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
@@ -166,7 +168,7 @@ public class WeightEntryViewTests
         new object[]
         {
             2,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "00000000-0000-0000-0000-000000000000",
             StatusCodes.Status404NotFound,
             new WeightEntryResult(ResultStatusTypes.NotFound),
@@ -175,7 +177,7 @@ public class WeightEntryViewTests
         new object[]
         {
             3,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "0199a94e-996b-7cf1-ad15-e2b3776d6f13",
             StatusCodes.Status404NotFound,
             new WeightEntryResult(ResultStatusTypes.NotFound),
@@ -184,7 +186,7 @@ public class WeightEntryViewTests
         new object[]
         {
             4,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "00000000",
             StatusCodes.Status400BadRequest,
             new WeightEntryResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
@@ -380,13 +382,47 @@ public class WeightEntryModifyTests
             Assert.That(actualResult?.Errors, Is.EqualTo(expectedResult.Errors));
         });
     }
-
-    private static object[] _postWeightEntryTestCases =
+    
+    [Test, TestCaseSource(nameof(_deleteWeightEntryTestCases))]
+    public async Task DeleteWeightEntryTests(int num, string userIdString, string weightEntryIdstring,
+        int expectedStatusCode, WeightEntryResult expectedResult)
     {
+        var claims = new[] {new Claim("userId", userIdString) };
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(claims))
+        };
+        var weightEntryController = WeightEntrySetup.GetWeightEntryController(StandardPersistenceInfra, httpContext);
+        
+        var actual = await weightEntryController.Delete(weightEntryIdstring);
+        var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
+        var actualResult = (actual.Result as ObjectResult)?.Value as WeightEntryResult;
+
+        await Assert.MultipleAsync(async () =>
+        {
+            Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
+            Assert.That(actualResult?.WeightEntry, Is.Null);
+            
+            // Check if weight entry was actually deleted
+            if (expectedStatusCode == StatusCodes.Status200OK)
+            {   
+                var userId = new Guid(userIdString);
+                var weightEntryId = new Guid(weightEntryIdstring);
+                var cancellationToken =  new CancellationTokenSource().Token;
+                Debug.Assert(StandardPersistenceInfra.WeightEntryRepository != null);
+                var expectedDeletedWeightEntry = await StandardPersistenceInfra.WeightEntryRepository.Get(
+                    weightEntryId, userId, cancellationToken);
+                Assert.That(expectedDeletedWeightEntry, Is.Null);
+            }
+        });
+    }
+    
+    private static object[] _postWeightEntryTestCases =
+    [
         new object[]
         {
             1,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = 65.3m,
@@ -405,7 +441,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             2,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = 65.3m,
@@ -420,7 +456,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             3,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = 65.3m,
@@ -436,7 +472,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             4,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = 0,
@@ -451,7 +487,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             5,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = -1,
@@ -462,6 +498,57 @@ public class WeightEntryModifyTests
             {
                 {"Value", ["'Value' must be greater than '0'."]},
             })
+        }
+    ];
+    
+    private static object[] _deleteWeightEntryTestCases =
+    [
+        new object[]
+        {
+            1,
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
+            "0199a94e-9922-72b9-b9a9-b66e8e30caa4",
+            StatusCodes.Status200OK,
+            new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
+            {
+                Value = 61.12m,
+                EntryDate = new DateOnly(2010, 12, 31),
+                UserId = new Guid("362c8551-0fff-47fb-9ed3-9fb39828308c"),
+                Comment = null,
+                Id = new Guid("0199a94e-9922-72b9-b9a9-b66e8e30caa4"),
+                DateCreated = new DateTime(2025, 10, 03, 9, 02, 04, 578, 68),
+                DateUpdated = new DateTime(2025, 10, 03, 9, 02, 04, 578, 68),
+            }),
         },
-    };
+        // Fail, doesn't exist
+        new object[]
+        {
+            2,
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
+            "00000000-0000-0000-0000-000000000000",
+            StatusCodes.Status404NotFound,
+            new WeightEntryResult(ResultStatusTypes.NotFound),
+        },
+        // Fail, owned by someone else
+        new object[]
+        {
+            3,
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
+            "0199a94e-996b-7cf1-ad15-e2b3776d6f13",
+            StatusCodes.Status404NotFound,
+            new WeightEntryResult(ResultStatusTypes.NotFound),
+        },
+        // Fail, invalid guid
+        new object[]
+        {
+            4,
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
+            "00000000",
+            StatusCodes.Status400BadRequest,
+            new WeightEntryResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"weightEntryId", ["'weightEntryId' must be a valid GUID."]},
+            }),
+        },
+    ];
 }

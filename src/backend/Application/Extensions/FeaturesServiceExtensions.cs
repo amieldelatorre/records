@@ -6,6 +6,7 @@ using Application.Features.UserFeatures.GetUser;
 using Application.Features.UserFeatures.UpdateUser;
 using Application.Features.UserFeatures.UpdateUserPassword;
 using Application.Features.WeightEntryFeatures.CreateWeightEntry;
+using Application.Features.WeightEntryFeatures.DeleteWeightEntry;
 using Application.Features.WeightEntryFeatures.GetWeightEntry;
 using Application.Features.WeightEntryFeatures.ListWeightEntry;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,5 +29,6 @@ public static class FeaturesServiceExtensions
         services.AddScoped<CreateWeightEntryHandler>();
         services.AddScoped<GetWeightEntryHandler>();
         services.AddScoped<ListWeightEntryHandler>();
+        services.AddScoped<DeleteWeightEntryHandler>();
     }
 }
