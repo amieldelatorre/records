@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.UserFeatures.UpdateUser;
 
 public class UpdateUserHandler (
     IUserRepository userRepository,
-    Serilog.ILogger logger)
+    ILogger<UpdateUserHandler> logger)
 {
     private const string FeatureName = "UserUpdate";
 

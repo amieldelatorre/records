@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Application.Common;
 using Application.Features.AuthFeatures.Login;
 using Domain.Entities;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,7 +12,7 @@ namespace Application.Features.AuthFeatures.Jwt.JwtCreate;
 public class JwtCreateHandler(
     LoginHandler loginHandler,
     JwtConfiguration jwtConfiguration,
-    Serilog.ILogger logger)
+    ILogger<JwtCreateHandler> logger)
 {
     private const string FeatureName = "JwtCreate";
 

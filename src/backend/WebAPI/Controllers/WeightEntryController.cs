@@ -25,7 +25,7 @@ namespace WebAPI.Controllers;
 [ApiController]
 public class WeightEntryController : Controller
 {
-    private readonly Serilog.ILogger _logger;
+    private readonly ILogger<WeightEntryController> _logger;
     private readonly ClaimsInformation _claimsInformation;
     private readonly CreateWeightEntryHandler _createWeightEntryHandler;
     private readonly GetWeightEntryHandler _getWeightEntryHandler;
@@ -34,7 +34,7 @@ public class WeightEntryController : Controller
     private readonly DeleteWeightEntryHandler _deleteWeightEntryHandler;
     
     public WeightEntryController(
-        Serilog.ILogger logger,
+        ILogger<WeightEntryController> logger,
         ClaimsInformation claimsInformation,
         CreateWeightEntryHandler createWeightEntryHandler,
         GetWeightEntryHandler getWeightEntryHandler,
@@ -56,7 +56,7 @@ public class WeightEntryController : Controller
     [Authorize]
     public async Task<ActionResult<WeightEntryResult>> Post(
         [FromBody] CreateWeightEntryRequest createWeightEntryRequest) {
-        _logger.Debug("new request to create weight entry");
+        _logger.LogDebug("new request to create weight entry");
         var userId = _claimsInformation.UserId();
         var cancellationTokenSource = new CancellationTokenSource();
         cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
@@ -69,7 +69,7 @@ public class WeightEntryController : Controller
     [Authorize]
     public async Task<ActionResult<WeightEntryResult>> Get(string weightEntryId)
     {
-        _logger.Debug("new request to get weight entry");
+        _logger.LogDebug("new request to get weight entry");
         var userId = _claimsInformation.UserId();
 
         if (!ValidGuid.IsValidGuid(weightEntryId, out var weightEntryIdGuid)) 
@@ -88,7 +88,7 @@ public class WeightEntryController : Controller
     public async Task<ActionResult<PaginatedResult<WeightEntryResponse>>> List([FromQuery] 
         ListWeightEntryQueryParameters queryParameters)
     {
-        _logger.Debug("new request to list weight entry");
+        _logger.LogDebug("new request to list weight entry");
         var userId = _claimsInformation.UserId();
         // Only path part of the URL, does not include query parameters or host or protocol
         var requestPath = Request.Path.Value;
@@ -106,7 +106,7 @@ public class WeightEntryController : Controller
     public async Task<ActionResult<WeightEntryResult>> Put(string weightEntryId,
         [FromBody] UpdateWeightEntryRequest updateWeightEntryRequest)
     {
-        _logger.Debug("new request to update weight entry");
+        _logger.LogDebug("new request to update weight entry");
         var userId = _claimsInformation.UserId();
         
         if (!ValidGuid.IsValidGuid(weightEntryId, out var weightEntryIdGuid)) 
@@ -124,7 +124,7 @@ public class WeightEntryController : Controller
     [Authorize]
     public async Task<ActionResult<WeightEntryResult>> Delete(string weightEntryId)
     {
-        _logger.Debug("new request to delete weight entry");
+        _logger.LogDebug("new request to delete weight entry");
         var userId = _claimsInformation.UserId();
 
         if (!ValidGuid.IsValidGuid(weightEntryId, out var weightEntryIdGuid)) 

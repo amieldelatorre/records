@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.WeightEntryFeatures.CreateWeightEntry;
 
 public class CreateWeightEntryHandler(
     IWeightEntryRepository weightEntryRepository,
-    Serilog.ILogger logger)
+    ILogger<CreateWeightEntryHandler> logger)
 {
     private const string FeatureName = "WeightEntryCreate";
 

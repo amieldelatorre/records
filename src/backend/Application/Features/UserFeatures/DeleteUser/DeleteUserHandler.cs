@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.UserFeatures.DeleteUser;
 
 public class DeleteUserHandler(
     IUserRepository userRepository,
-    Serilog.ILogger logger)
+    ILogger<DeleteUserHandler> logger)
 {
     private const string FeatureName = "UserDelete";
 

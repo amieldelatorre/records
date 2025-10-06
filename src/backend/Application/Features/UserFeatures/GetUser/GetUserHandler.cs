@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.UserFeatures.GetUser;
 
 public class GetUserHandler(
     IUserRepository userRepository,
-    Serilog.ILogger logger)
+    ILogger<GetUserHandler> logger)
 {
     private const string FeatureName = "UserGet";
 

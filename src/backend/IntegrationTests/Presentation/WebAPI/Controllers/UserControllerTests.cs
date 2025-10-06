@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Security.Claims;
 using Application.Common;
+using Application.Features.AuthFeatures.Jwt.JwtCreate;
 using Application.Features.PasswordFeatures;
 using Application.Features.UserFeatures;
 using Application.Features.UserFeatures.CreateUser;
@@ -11,6 +12,7 @@ using Application.Features.UserFeatures.UpdateUserPassword;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Logging;
 using WebAPI.Controllers;
 using WebAPI.Controllers.ControllerExtensions;
 
@@ -49,14 +51,24 @@ public class UserControllerTests
             httpContextAccessor.HttpContext = httpContext;
 
         var claimsInformation = new ClaimsInformation(httpContextAccessor);
-        var createUserHandler = new CreateUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
-        var getUserHandler = new GetUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
-        var updateUserHandler = new UpdateUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
+        var createUserHandlerLogger = new Logger<CreateUserHandler>(new LoggerFactory());
+        var createUserHandler = new CreateUserHandler(persistenceInfra.UserRepository, createUserHandlerLogger);
+        
+        var getUserHandlerLogger = new Logger<GetUserHandler>(new LoggerFactory());
+        var getUserHandler = new GetUserHandler(persistenceInfra.UserRepository, getUserHandlerLogger);
+        
+        var updateUserHandlerLogger = new Logger<UpdateUserHandler>(new LoggerFactory());
+        var updateUserHandler = new UpdateUserHandler(persistenceInfra.UserRepository,updateUserHandlerLogger);
+        
+        var updateUserPasswordHandlerLogger = new Logger<UpdateUserPasswordHandler>(new LoggerFactory());
         var updateUserPasswordHandler = new UpdateUserPasswordHandler(persistenceInfra.UserRepository, 
-            persistenceInfra.Logger);
-        var deleteUserHandler = new DeleteUserHandler(persistenceInfra.UserRepository, persistenceInfra.Logger);
+            updateUserPasswordHandlerLogger);
+        
+        var deleteUserHandlerLogger = new Logger<DeleteUserHandler>(new LoggerFactory());
+        var deleteUserHandler = new DeleteUserHandler(persistenceInfra.UserRepository, deleteUserHandlerLogger);
 
-        var userController = new UserController(persistenceInfra.Logger, claimsInformation, createUserHandler,
+        var userControllerLogger = new Logger<UserController>(new LoggerFactory());
+        var userController = new UserController(userControllerLogger, claimsInformation, createUserHandler,
             getUserHandler, updateUserHandler, updateUserPasswordHandler, deleteUserHandler);
         return userController;
     }

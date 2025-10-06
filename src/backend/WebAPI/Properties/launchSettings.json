@@ -8,6 +8,7 @@
       "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "APP__LOG_LEVEL": "Information",
         "APP__POSTGRES_HOST": "localhost",
         "APP__POSTGRES_PORT": "5432",
         "APP__POSTGRES_DB": "records",

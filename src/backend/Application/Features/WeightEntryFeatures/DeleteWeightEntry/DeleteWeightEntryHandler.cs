@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.WeightEntryFeatures.DeleteWeightEntry;
 
 public class DeleteWeightEntryHandler(
     IWeightEntryRepository weightEntryRepository,
-    Serilog.ILogger logger)
+    ILogger<DeleteWeightEntryHandler> logger)
 {
     public async Task<WeightEntryResult> Handle(Guid userId, Guid weightEntryId, CancellationToken cancellationToken)
     {

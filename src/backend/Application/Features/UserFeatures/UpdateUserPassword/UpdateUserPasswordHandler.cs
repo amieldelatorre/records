@@ -1,12 +1,13 @@
 using Application.Common;
 using Application.Features.PasswordFeatures;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.UserFeatures.UpdateUserPassword;
 
 public class UpdateUserPasswordHandler(
     IUserRepository userRepository,
-    Serilog.ILogger logger)
+    ILogger<UpdateUserPasswordHandler> logger)
 {
     private const string FeatureName = "UserPasswordUpdate";
 

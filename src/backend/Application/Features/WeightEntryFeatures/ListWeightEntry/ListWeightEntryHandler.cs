@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.WeightEntryFeatures.ListWeightEntry;
 
 public class ListWeightEntryHandler(
     IWeightEntryRepository weightEntryRepository,
-    Serilog.ILogger logger)
+    ILogger<ListWeightEntryHandler> logger)
 {
     public async Task<PaginatedResult<WeightEntryResponse>> Handle(
         Guid userId, 

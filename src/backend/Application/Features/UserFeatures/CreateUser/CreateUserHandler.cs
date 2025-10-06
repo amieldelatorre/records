@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.UserFeatures.CreateUser;
 
 public class CreateUserHandler(
     IUserRepository userRepository,
-    Serilog.ILogger logger)
+    ILogger<CreateUserHandler> logger)
 {
     private const string FeatureName = "UserCreate";
 

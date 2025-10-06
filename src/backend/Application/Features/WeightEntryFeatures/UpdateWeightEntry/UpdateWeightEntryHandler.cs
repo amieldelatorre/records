@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.WeightEntryFeatures.UpdateWeightEntry;
 
 public class UpdateWeightEntryHandler(
     IWeightEntryRepository weightEntryRepository,
-    Serilog.ILogger logger)
+    ILogger<UpdateWeightEntryHandler> logger)
 {
     public async Task<WeightEntryResult> Handle(Guid userId, Guid weightEntryId, 
         UpdateWeightEntryRequest request, CancellationToken cancellationToken)

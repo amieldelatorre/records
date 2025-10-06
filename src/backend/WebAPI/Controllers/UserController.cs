@@ -22,7 +22,7 @@ namespace WebAPI.Controllers;
 [ApiController]
 public class UserController : Controller
 {
-    private readonly Serilog.ILogger _logger;
+    private readonly ILogger<UserController> _logger;
     private readonly ClaimsInformation _claimsInformation;
     private readonly CreateUserHandler _createUserHandler;
     private readonly GetUserHandler _getUserHandler;
@@ -31,7 +31,7 @@ public class UserController : Controller
     private readonly DeleteUserHandler _deleteUserHandler;
     
     public UserController(
-        Serilog.ILogger logger,
+        ILogger<UserController> logger,
         ClaimsInformation claimsInformation,
         CreateUserHandler createUserHandler,
         GetUserHandler getUserHandler,
@@ -52,7 +52,7 @@ public class UserController : Controller
     [HttpPost]
     public async Task<ActionResult<UserResult>> Post([FromBody] CreateUserRequest createUserRequest)
     {
-        _logger.Debug("new request to create user");
+        _logger.LogDebug("new request to create user");
         var cancellationTokenSource = new CancellationTokenSource();
         cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
         var result = await _createUserHandler.Handle(createUserRequest, cancellationTokenSource.Token);
@@ -63,7 +63,7 @@ public class UserController : Controller
     [Authorize]
     public async Task<ActionResult<UserResult>> Get()
     {
-        _logger.Debug("new request to get user");
+        _logger.LogDebug("new request to get user");
         var userId = _claimsInformation.UserId();
         var cancellationTokenSource = new CancellationTokenSource();
         cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
@@ -75,7 +75,7 @@ public class UserController : Controller
     [Authorize]
     public async Task<ActionResult<UserResult>> Put([FromBody] UpdateUserRequest updateUserRequest)
     {
-        _logger.Debug("new request to update user");
+        _logger.LogDebug("new request to update user");
         var userId = _claimsInformation.UserId();
         var cancellationTokenSource = new CancellationTokenSource();
         cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
@@ -87,7 +87,7 @@ public class UserController : Controller
     [Authorize]
     public async Task<ActionResult<UserResult>> PutPassword(string userId, [FromBody] UpdateUserPasswordRequest updateUserPasswordRequest)
     {
-        _logger.Debug("new request to update user password");
+        _logger.LogDebug("new request to update user password");
         var claimsUserId = _claimsInformation.UserId();
         var paramUserId = new Guid(userId);
         if (claimsUserId != paramUserId)
@@ -104,7 +104,7 @@ public class UserController : Controller
     [Authorize]
     public async Task<ActionResult<UserResult>> Delete()
     {
-        _logger.Debug("new request to delete user");
+        _logger.LogDebug("new request to delete user");
         var userId = _claimsInformation.UserId();
         var cancellationTokenSource = new CancellationTokenSource();
         cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
