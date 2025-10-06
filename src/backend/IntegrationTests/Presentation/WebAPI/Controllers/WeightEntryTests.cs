@@ -697,6 +697,21 @@ public class WeightEntryModifyTests
                                "Only one entry per date is allowed."]},
             })
         },
+        // fail, owned by someone else
+        new object[]
+        {
+            7,
+            "b378ee12-e261-47ff-8a8d-b202787bc631", // stephenhawking
+            "0199a94e-9922-72b9-b9a9-b66e8e30caa4",
+            new UpdateWeightEntryRequest
+            {
+                Value = 0, // original 85
+                Comment = "", // original null/empty string
+                EntryDate = new DateOnly(2001, 05, 01), // original 2001-04-1
+            },
+            StatusCodes.Status404NotFound,
+            new WeightEntryResult(ResultStatusTypes.NotFound)
+        },
     ];
     
     private static object[] _deleteWeightEntryTestCases =
