@@ -81,7 +81,7 @@ public class WeightEntryViewTests
 
             if (expectedResult.WeightEntry != null)
             {
-                Assert.That(actualResult?.WeightEntry?.Value, Is.EqualTo(expectedResult.WeightEntry.Value).Within(0.0001));
+                Assert.That(actualResult?.WeightEntry?.Value, Is.EqualTo(expectedResult.WeightEntry.Value));
                 Assert.That(actualResult?.WeightEntry?.EntryDate, Is.EqualTo(expectedResult.WeightEntry.EntryDate));
                 Assert.That(actualResult?.WeightEntry?.Comment, Is.EqualTo(expectedResult.WeightEntry.Comment));
                 Assert.That(actualResult?.WeightEntry?.UserId, Is.EqualTo(expectedResult.WeightEntry.UserId));
@@ -105,7 +105,7 @@ public class WeightEntryViewTests
             StatusCodes.Status200OK,
             new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
             {
-                Value = 61.12,
+                Value = 61.12m,
                 EntryDate = new DateOnly(2010, 12, 31),
                 UserId = new Guid("362c8551-0fff-47fb-9ed3-9fb39828308c"),
                 Comment = null,
@@ -213,13 +213,13 @@ public class WeightEntryModifyTests
             "362c8551-0fff-47fb-9ed3-9fb39828308c",
             new CreateWeightEntryRequest
             {
-                Value = 65.3,
+                Value = 65.3m,
                 EntryDate = new DateOnly(2000, 1, 1),
             },
             StatusCodes.Status201Created,
             new WeightEntryResult(ResultStatusTypes.Created, new WeightEntryResponse
             {
-                Value = 65.3,
+                Value = 65.3m,
                 EntryDate = new DateOnly(2000, 1, 1),
                 UserId = new Guid("362c8551-0fff-47fb-9ed3-9fb39828308c"),
                 DateCreated = default,
@@ -232,7 +232,7 @@ public class WeightEntryModifyTests
             "362c8551-0fff-47fb-9ed3-9fb39828308c",
             new CreateWeightEntryRequest
             {
-                Value = 65.3,
+                Value = 65.3m,
                 EntryDate = DateOnly.FromDateTime(DateTime.Today).AddDays(2),
             },
             StatusCodes.Status400BadRequest,
@@ -247,7 +247,7 @@ public class WeightEntryModifyTests
             "362c8551-0fff-47fb-9ed3-9fb39828308c",
             new CreateWeightEntryRequest
             {
-                Value = 65.3,
+                Value = 65.3m,
                 EntryDate = new DateOnly(2024, 12, 31),
             },
             StatusCodes.Status400BadRequest,

@@ -5,7 +5,7 @@ namespace Application.Features.WeightEntryFeatures;
 
 public class WeightEntryResponse : BaseEntityResponse
 {
-    public required double Value { get; init; }
+    public required decimal Value { get; init; }
     public string? Comment { get; init; }
     public required DateOnly EntryDate { get; init; }
     public required Guid UserId { get; init; }
