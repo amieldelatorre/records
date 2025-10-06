@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Application.Common;
 using Application.Features.WeightEntryFeatures;
 using Application.Features.WeightEntryFeatures.CreateWeightEntry;
+using Application.Features.WeightEntryFeatures.DeleteWeightEntry;
 using Application.Features.WeightEntryFeatures.GetWeightEntry;
 using Application.Features.WeightEntryFeatures.ListWeightEntry;
 using Application.Repositories.Database;
@@ -28,13 +29,15 @@ public class WeightEntryController : Controller
     private readonly CreateWeightEntryHandler _createWeightEntryHandler;
     private readonly GetWeightEntryHandler _getWeightEntryHandler;
     private readonly ListWeightEntryHandler _listWeightEntryHandler;
+    private readonly DeleteWeightEntryHandler _deleteWeightEntryHandler;
     
     public WeightEntryController(
         Serilog.ILogger logger,
         ClaimsInformation claimsInformation,
         CreateWeightEntryHandler createWeightEntryHandler,
         GetWeightEntryHandler getWeightEntryHandler,
-        ListWeightEntryHandler listWeightEntryHandler
+        ListWeightEntryHandler listWeightEntryHandler,
+        DeleteWeightEntryHandler deleteWeightEntryHandler
     )
     {
         _logger = logger;
@@ -42,6 +45,7 @@ public class WeightEntryController : Controller
         _createWeightEntryHandler = createWeightEntryHandler;
         _getWeightEntryHandler = getWeightEntryHandler;
         _listWeightEntryHandler = listWeightEntryHandler;
+        _deleteWeightEntryHandler = deleteWeightEntryHandler;
     }
 
     [HttpPost]
@@ -91,5 +95,23 @@ public class WeightEntryController : Controller
         var result = await _listWeightEntryHandler.Handle(userId, queryParameters, requestPath, cancellationTokenSource.Token);
         return HttpResponseFromResult<PaginatedResult<WeightEntryResponse>>.Map(result);
         
+    }
+    
+    [HttpDelete("{weightEntryId}")]
+    [Authorize]
+    public async Task<ActionResult<WeightEntryResult>> Delete(string weightEntryId)
+    {
+        _logger.Debug("new request to delete weight entry");
+        var userId = _claimsInformation.UserId();
+
+        if (!ValidGuid.IsValidGuid(weightEntryId, out var weightEntryIdGuid)) 
+            return HttpResponseFromResult<WeightEntryResult>.Map(
+                new WeightEntryResult(
+                    ResultStatusTypes.ValidationError, ValidGuid.CreateErrorMessage(nameof(weightEntryId))));
+        
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _deleteWeightEntryHandler.Handle(userId, weightEntryIdGuid, cancellationTokenSource.Token);
+        return HttpResponseFromResult<WeightEntryResult>.Map(result);
     }
 }
