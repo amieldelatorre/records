@@ -6,9 +6,12 @@ using Application.Features.WeightEntryFeatures.CreateWeightEntry;
 using Application.Features.WeightEntryFeatures.DeleteWeightEntry;
 using Application.Features.WeightEntryFeatures.GetWeightEntry;
 using Application.Features.WeightEntryFeatures.ListWeightEntry;
+using Application.Features.WeightEntryFeatures.UpdateWeightEntry;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using NpgsqlTypes;
 using WebAPI.Controllers;
 using WebAPI.Controllers.ControllerExtensions;
 
@@ -30,10 +33,11 @@ public static class WeightEntrySetup
         var createWeightEntryHandler = new CreateWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         var getWeightEntryHandler = new GetWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         var listWeightEntryHandler = new ListWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
+        var updateWeightEntryHandler = new UpdateWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         var deleteWeightEntryHandler = new DeleteWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         
-        var weightEntryController = new WeightEntryController(persistenceInfra.Logger, claimsInformation, 
-            createWeightEntryHandler, getWeightEntryHandler, listWeightEntryHandler, deleteWeightEntryHandler);
+        var weightEntryController = new WeightEntryController(persistenceInfra.Logger, claimsInformation, createWeightEntryHandler, 
+            getWeightEntryHandler, listWeightEntryHandler, updateWeightEntryHandler, deleteWeightEntryHandler);
         weightEntryController.ControllerContext.HttpContext = httpContext;
         
         return weightEntryController;
@@ -382,6 +386,62 @@ public class WeightEntryModifyTests
             Assert.That(actualResult?.Errors, Is.EqualTo(expectedResult.Errors));
         });
     }
+
+    [Test, TestCaseSource(nameof(_putWeightEntryTestCases))]
+    public async Task UpdateWeightEntryTests(int num, string userIdString, string weightEntryIdString,
+        UpdateWeightEntryRequest updateWeightEntryRequest, int expectedStatusCode, WeightEntryResult expectedResult)
+    {
+        var claims = new[] {new Claim("userId", userIdString) };
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(claims))
+        };
+        var weightEntryController = WeightEntrySetup.GetWeightEntryController(StandardPersistenceInfra, httpContext);
+        
+        var userId = Guid.Parse(userIdString);
+        var weightEntryId = new Guid(weightEntryIdString);
+        var cancellationToken = new CancellationTokenSource().Token;
+        WeightEntry? originalWeightEntry = null;
+        if (expectedStatusCode == StatusCodes.Status200OK)
+        {
+            Debug.Assert(StandardPersistenceInfra.WeightEntryRepository != null);
+            var trackedOriginalWeightEntry = await StandardPersistenceInfra.WeightEntryRepository.Get(weightEntryId, userId, cancellationToken);
+            Debug.Assert(trackedOriginalWeightEntry != null);
+            originalWeightEntry = new WeightEntry
+            {
+                Value = trackedOriginalWeightEntry.Value,
+                EntryDate = trackedOriginalWeightEntry.EntryDate,
+                Comment = trackedOriginalWeightEntry.Comment,
+                UserId = trackedOriginalWeightEntry.UserId,
+                DateCreated = trackedOriginalWeightEntry.DateCreated,
+                DateUpdated = trackedOriginalWeightEntry.DateUpdated,
+            };
+        }
+        
+        var actual = await weightEntryController.Put(weightEntryIdString, updateWeightEntryRequest);
+        var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
+        var actualResult = (actual.Result as ObjectResult)?.Value as WeightEntryResult;
+
+        Assert.Multiple( () =>
+        {
+            Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
+            if ((expectedResult.WeightEntry == null && actualResult?.WeightEntry != null) ||
+                (expectedResult.WeightEntry != null && actualResult?.WeightEntry == null))
+                Assert.Fail("expectedResult.WeightEntry and actualUserResult.WeightEntry does not match");
+            
+            Assert.That(actualResult?.WeightEntry?.Value, Is.EqualTo(expectedResult?.WeightEntry?.Value));
+            Assert.That(actualResult?.WeightEntry?.EntryDate, Is.EqualTo(expectedResult?.WeightEntry?.EntryDate));
+            Assert.That(actualResult?.WeightEntry?.Comment, Is.EqualTo(expectedResult?.WeightEntry?.Comment));
+            Assert.That(actualResult?.WeightEntry?.UserId, Is.EqualTo(expectedResult?.WeightEntry?.UserId));
+            Assert.That(actualResult?.WeightEntry?.Id, Is.EqualTo(expectedResult?.WeightEntry?.Id));
+
+            if (expectedStatusCode == StatusCodes.Status200OK)
+            {
+                Assert.That(actualResult?.WeightEntry?.DateUpdated, Is.Not.EqualTo(originalWeightEntry?.DateUpdated));
+                Assert.That(actualResult?.WeightEntry?.DateCreated, Is.EqualTo(originalWeightEntry?.DateCreated));
+            }
+        });
+    }
     
     [Test, TestCaseSource(nameof(_deleteWeightEntryTestCases))]
     public async Task DeleteWeightEntryTests(int num, string userIdString, string weightEntryIdstring,
@@ -402,6 +462,8 @@ public class WeightEntryModifyTests
         {
             Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
             Assert.That(actualResult?.WeightEntry, Is.Null);
+            Assert.That(actualResult?.WeightEntry, Is.EqualTo(expectedResult.WeightEntry));
+            Assert.That(actualResult?.Errors, Is.EqualTo(expectedResult.Errors));
             
             // Check if weight entry was actually deleted
             if (expectedStatusCode == StatusCodes.Status200OK)
@@ -500,6 +562,142 @@ public class WeightEntryModifyTests
             })
         }
     ];
+
+    private static object[] _putWeightEntryTestCases =
+    [
+        new object[]
+        {
+            1,
+            "b378ee12-e261-47ff-8a8d-b202787bc631", // stephenhawking
+            "0199a94e-996b-7cf1-ad15-e2b3776d6f13",
+            new UpdateWeightEntryRequest
+            {
+                Value = 1000, // original 80
+                Comment = "new comment", // original null/empty string
+                EntryDate = new DateOnly(2020, 12, 31), // original 2000-10-1
+            },
+            StatusCodes.Status200OK,
+            new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
+            {
+                Value = 1000,
+                Comment = "new comment",
+                EntryDate = new DateOnly(2020, 12, 31),
+                UserId = new Guid("b378ee12-e261-47ff-8a8d-b202787bc631"),
+                Id = new Guid("0199a94e-996b-7cf1-ad15-e2b3776d6f13"),
+                DateCreated = default,
+                DateUpdated = default,
+            })
+        },
+        // Only updating comment
+        new object[]
+        {
+            2,
+            "b378ee12-e261-47ff-8a8d-b202787bc631", // stephenhawking
+            "0199a94e-9974-71a6-a067-2c9836927cfa",
+            new UpdateWeightEntryRequest
+            {
+                Value = 82, // original 82
+                Comment = null, // original "lets go"
+                EntryDate = new DateOnly(2000, 10, 05), // original 2000-10-05
+            },
+            StatusCodes.Status200OK,
+            new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
+            {
+                Value = 82,
+                Comment = null,
+                EntryDate = new DateOnly(2000, 10, 05),
+                UserId = new Guid("b378ee12-e261-47ff-8a8d-b202787bc631"),
+                Id = new Guid("0199a94e-9974-71a6-a067-2c9836927cfa"),
+                DateCreated = default,
+                DateUpdated = default,
+            })
+        },
+        // Only updating value 
+        new object[]
+        {
+            3,
+            "b378ee12-e261-47ff-8a8d-b202787bc631", // stephenhawking
+            "0199a94e-9979-71e0-8a54-24b794abf265",
+            new UpdateWeightEntryRequest
+            {
+                Value = 300, // original 79
+                Comment = null, // original null/empty string
+                EntryDate = new DateOnly(2000, 10, 10), // original 2000-10-10
+            },
+            StatusCodes.Status200OK,
+            new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
+            {
+                Value = 300,
+                Comment = null,
+                EntryDate = new DateOnly(2000, 10, 10),
+                UserId = new Guid("b378ee12-e261-47ff-8a8d-b202787bc631"),
+                Id = new Guid("0199a94e-9979-71e0-8a54-24b794abf265"),
+                DateCreated = default,
+                DateUpdated = default,
+            })
+        },
+        // Only updating entry date 
+        new object[]
+        {
+            4,
+            "b378ee12-e261-47ff-8a8d-b202787bc631", // stephenhawking
+            "0199a94e-9981-78dc-91df-330bf42159d6",
+            new UpdateWeightEntryRequest
+            {
+                Value = 80, // original 80
+                Comment = "another one", // original "another one"
+                EntryDate = new DateOnly(1900, 10, 12), // original 2000-10-12
+            },
+            StatusCodes.Status200OK,
+            new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
+            {
+                Value = 80,
+                Comment = "another one",
+                EntryDate = new DateOnly(1900, 10, 12),
+                UserId = new Guid("b378ee12-e261-47ff-8a8d-b202787bc631"),
+                Id = new Guid("0199a94e-9981-78dc-91df-330bf42159d6"),
+                DateCreated = default,
+                DateUpdated = default,
+            })
+        },
+        new object[]
+        {
+            5,
+            "b378ee12-e261-47ff-8a8d-b202787bc631", // stephenhawking
+            "0199a94e-998e-7a3a-95b3-5e517b74f8e5",
+            new UpdateWeightEntryRequest
+            {
+                Value = -3, // original 85
+                Comment = "", // original null/empty string
+                EntryDate = new DateOnly(3000, 05, 01), // original 2001-04-1
+            },
+            StatusCodes.Status400BadRequest,
+            new WeightEntryResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"Value", ["'Value' must be greater than '0'."]},
+                {"EntryDate", ["'EntryDate' cannot be greater than the current date in UTC+14"]},
+            })
+        },
+        new object[]
+        {
+            6,
+            "b378ee12-e261-47ff-8a8d-b202787bc631", // stephenhawking
+            "0199a94e-998e-7a3a-95b3-5e517b74f8e5",
+            new UpdateWeightEntryRequest
+            {
+                Value = 0, // original 85
+                Comment = "", // original null/empty string
+                EntryDate = new DateOnly(2001, 05, 01), // original 2001-04-1
+            },
+            StatusCodes.Status400BadRequest,
+            new WeightEntryResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"Value", ["'Value' must be greater than '0'."]},
+                {"EntryDate", ["'EntryDate' caught creating duplicate entry, an entry for the date already exists. " +
+                               "Only one entry per date is allowed."]},
+            })
+        },
+    ];
     
     private static object[] _deleteWeightEntryTestCases =
     [
@@ -509,16 +707,7 @@ public class WeightEntryModifyTests
             "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "0199a94e-9922-72b9-b9a9-b66e8e30caa4",
             StatusCodes.Status200OK,
-            new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
-            {
-                Value = 61.12m,
-                EntryDate = new DateOnly(2010, 12, 31),
-                UserId = new Guid("362c8551-0fff-47fb-9ed3-9fb39828308c"),
-                Comment = null,
-                Id = new Guid("0199a94e-9922-72b9-b9a9-b66e8e30caa4"),
-                DateCreated = new DateTime(2025, 10, 03, 9, 02, 04, 578, 68),
-                DateUpdated = new DateTime(2025, 10, 03, 9, 02, 04, 578, 68),
-            }),
+            new WeightEntryResult(ResultStatusTypes.Ok),
         },
         // Fail, doesn't exist
         new object[]

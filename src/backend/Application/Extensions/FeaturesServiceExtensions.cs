@@ -9,6 +9,7 @@ using Application.Features.WeightEntryFeatures.CreateWeightEntry;
 using Application.Features.WeightEntryFeatures.DeleteWeightEntry;
 using Application.Features.WeightEntryFeatures.GetWeightEntry;
 using Application.Features.WeightEntryFeatures.ListWeightEntry;
+using Application.Features.WeightEntryFeatures.UpdateWeightEntry;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions;
@@ -29,6 +30,7 @@ public static class FeaturesServiceExtensions
         services.AddScoped<CreateWeightEntryHandler>();
         services.AddScoped<GetWeightEntryHandler>();
         services.AddScoped<ListWeightEntryHandler>();
+        services.AddScoped<UpdateWeightEntryHandler>();
         services.AddScoped<DeleteWeightEntryHandler>();
     }
 }
