@@ -150,7 +150,7 @@ public class WeightEntryViewTests
         new object[]
         {
             1,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "0199a94e-9922-72b9-b9a9-b66e8e30caa4",
             StatusCodes.Status200OK,
             new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
@@ -168,7 +168,7 @@ public class WeightEntryViewTests
         new object[]
         {
             2,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "00000000-0000-0000-0000-000000000000",
             StatusCodes.Status404NotFound,
             new WeightEntryResult(ResultStatusTypes.NotFound),
@@ -177,7 +177,7 @@ public class WeightEntryViewTests
         new object[]
         {
             3,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "0199a94e-996b-7cf1-ad15-e2b3776d6f13",
             StatusCodes.Status404NotFound,
             new WeightEntryResult(ResultStatusTypes.NotFound),
@@ -186,7 +186,7 @@ public class WeightEntryViewTests
         new object[]
         {
             4,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "00000000",
             StatusCodes.Status400BadRequest,
             new WeightEntryResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
@@ -422,7 +422,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             1,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = 65.3m,
@@ -441,7 +441,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             2,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = 65.3m,
@@ -456,7 +456,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             3,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = 65.3m,
@@ -472,7 +472,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             4,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = 0,
@@ -487,7 +487,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             5,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             new CreateWeightEntryRequest
             {
                 Value = -1,
@@ -506,7 +506,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             1,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "0199a94e-9922-72b9-b9a9-b66e8e30caa4",
             StatusCodes.Status200OK,
             new WeightEntryResult(ResultStatusTypes.Ok, new WeightEntryResponse
@@ -524,7 +524,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             2,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "00000000-0000-0000-0000-000000000000",
             StatusCodes.Status404NotFound,
             new WeightEntryResult(ResultStatusTypes.NotFound),
@@ -533,7 +533,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             3,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "0199a94e-996b-7cf1-ad15-e2b3776d6f13",
             StatusCodes.Status404NotFound,
             new WeightEntryResult(ResultStatusTypes.NotFound),
@@ -542,7 +542,7 @@ public class WeightEntryModifyTests
         new object[]
         {
             4,
-            "362c8551-0fff-47fb-9ed3-9fb39828308c",
+            "362c8551-0fff-47fb-9ed3-9fb39828308c", // mariecurie
             "00000000",
             StatusCodes.Status400BadRequest,
             new WeightEntryResult(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
