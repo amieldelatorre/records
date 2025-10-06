@@ -58,6 +58,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureApiExtensions();
+builder.Services.AddHealthChecks()
+    .AddCheck<DatabaseHealthCheck>(nameof(DatabaseHealthCheck));
 
 var app = builder.Build();
 
@@ -73,6 +75,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 Log.Logger.Information("startup configuration successful, starting application...");
 

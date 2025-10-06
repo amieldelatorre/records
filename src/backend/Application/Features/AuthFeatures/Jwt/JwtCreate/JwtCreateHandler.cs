@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Application.Common;
 using Application.Features.AuthFeatures.Login;
 using Domain.Entities;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,7 +12,7 @@ namespace Application.Features.AuthFeatures.Jwt.JwtCreate;
 public class JwtCreateHandler(
     LoginHandler loginHandler,
     JwtConfiguration jwtConfiguration,
-    Serilog.ILogger logger)
+    ILogger<JwtCreateHandler> logger)
 {
     private const string FeatureName = "JwtCreate";
 
@@ -19,11 +20,17 @@ public class JwtCreateHandler(
     {
         var loginRequestIsValid = await loginHandler.Handle(request, cancellationToken);
         if (!loginRequestIsValid.Success)
+        {
+            // TODO: Log failing IP
+            logger.LogInformation("failed login request");
             return new JwtCreateResult(ResultStatusTypes.InvalidCredentials, 
                 LoginHandler.GetInvalidCredentialsMessage());
+        }
 
         Debug.Assert(loginRequestIsValid.User != null);
+        logger.LogInformation("user '{userId}' successful login, creating token",  loginRequestIsValid.User.Id);
         var tokenResponse = CreateToken(loginRequestIsValid.User, jwtConfiguration);
+        logger.LogInformation("user '{userId}' successful login, created token",  loginRequestIsValid.User.Id);
         return new JwtCreateResult(ResultStatusTypes.Created, tokenResponse);
     }
 

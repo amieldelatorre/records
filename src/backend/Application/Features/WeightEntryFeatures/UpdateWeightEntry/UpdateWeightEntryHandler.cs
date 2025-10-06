@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.WeightEntryFeatures.UpdateWeightEntry;
 
 public class UpdateWeightEntryHandler(
     IWeightEntryRepository weightEntryRepository,
-    Serilog.ILogger logger)
+    ILogger<UpdateWeightEntryHandler> logger)
 {
     public async Task<WeightEntryResult> Handle(Guid userId, Guid weightEntryId, 
         UpdateWeightEntryRequest request, CancellationToken cancellationToken)
@@ -19,8 +20,10 @@ public class UpdateWeightEntryHandler(
         if (!validationResult.IsValid)
             return new WeightEntryResult(ResultStatusTypes.ValidationError, validationResult.ToDictionary()); 
         
+        logger.LogInformation("weightEntry '{weightEntryId}' to be updated by user '{userId}'", weightEntry.Id, userId);
         UpdateWeightEntryMapper.Map(request, weightEntry);
         await weightEntryRepository.Update(weightEntry, cancellationToken);
+        logger.LogInformation("weightEntry '{weightEntryId}' successfully updated by user '{userId}'", weightEntry.Id, userId);
         return new WeightEntryResult(ResultStatusTypes.Ok, WeightEntryResponse.MapFrom(weightEntry));
     }
 }

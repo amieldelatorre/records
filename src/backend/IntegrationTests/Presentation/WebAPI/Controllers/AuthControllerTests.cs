@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Application.Features.AuthFeatures.Jwt.JwtCreate;
 using Application.Features.AuthFeatures.Login;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Logging;
 using TestsCommon.Configurations;
 using WebAPI.Controllers;
 
@@ -30,9 +31,11 @@ public class AuthControllerTests
         Debug.Assert(StandardPersistenceInfra.UserRepository != null);
         var loginHandler = new LoginHandler(StandardPersistenceInfra.UserRepository);
         var jwtConfiguration = new TestJwtConfiguration();
-        var jwtCreateHandler = new JwtCreateHandler(loginHandler, jwtConfiguration.Config, StandardPersistenceInfra.Logger);
+        var jwtCreateHandlerLogger = new Logger<JwtCreateHandler>(new LoggerFactory());
+        var jwtCreateHandler = new JwtCreateHandler(loginHandler, jwtConfiguration.Config, jwtCreateHandlerLogger);
 
-        var authController = new AuthController(StandardPersistenceInfra.Logger, jwtCreateHandler);
+        var authControllerLogger = new Logger<AuthController>(new LoggerFactory());
+        var authController = new AuthController(authControllerLogger, jwtCreateHandler);
 
         return authController;
     }

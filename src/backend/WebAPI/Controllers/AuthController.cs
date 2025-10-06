@@ -15,14 +15,14 @@ namespace WebAPI.Controllers;
 [ProducesResponseType(StatusCodes.Status403Forbidden)]
 [ApiController]
 public class AuthController(
-    Serilog.ILogger logger,
+    ILogger<AuthController> logger,
     JwtCreateHandler jwtCreateHandler
 ) : ControllerBase
 {
     [HttpPost("jwt")]
     public async Task<ActionResult<JwtCreateResult>> JwtCreate(LoginRequest loginRequest)
     {
-        logger.Debug("new request to create JWT token");
+        logger.LogDebug("new request to create JWT token");
         var cancellationTokenSource = new CancellationTokenSource();
         cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
         var result = await jwtCreateHandler.Handle(loginRequest, cancellationTokenSource.Token);

@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.UserFeatures.CreateUser;
 
 public class CreateUserHandler(
     IUserRepository userRepository,
-    Serilog.ILogger logger)
+    ILogger<CreateUserHandler> logger)
 {
     private const string FeatureName = "UserCreate";
 
@@ -19,6 +20,7 @@ public class CreateUserHandler(
         var user = CreateUserMapper.Map(request);
         await userRepository.Create(user, cancellationToken);
         var result = new UserResult(ResultStatusTypes.Created, UserResponse.MapFrom(user));
+        logger.LogInformation("user '{userId}' successfully created", user.Id);
         return result;
     }
 }

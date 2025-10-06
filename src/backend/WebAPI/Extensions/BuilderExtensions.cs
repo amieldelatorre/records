@@ -13,25 +13,25 @@ namespace WebAPI.Extensions;
  
 public static class BuilderExtensions
 {
-    private static readonly StringEnvironmentVariable LogLevelEnv = new("LOG_LEVEL", false, "INFO");
+    private static readonly StringEnvironmentVariable LogLevelEnv = new("APP__LOG_LEVEL", false, "INFO");
     private const string OtelExporterOtlpEndpointEnvVarName = "OTEL_EXPORTER_OTLP_ENDPOINT";
     private const string OtelExporterOtlpTracesEndpointEnvVarName = "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT";
     private const string OtelExporterOtlpMetricsEndpointEnvVarName = "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT";
     
     public static void ConfigureLogging(this WebApplicationBuilder builder)
     {
-        var logLevel = GetLogLevel();
-
+        var logLevelSwitch = new Serilog.Core.LoggingLevelSwitch();
         var logConfiguration = new LoggerConfiguration()
             .WriteTo.Console(new JsonFormatter(null, true, null))
-            .MinimumLevel.ControlledBy(new Serilog.Core.LoggingLevelSwitch(logLevel))
-            .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
-            .MinimumLevel.Override("Unleash", Serilog.Events.LogEventLevel.Warning)
+            .MinimumLevel.ControlledBy(logLevelSwitch)
+            .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
             .Enrich.WithThreadId()
             .Enrich.FromLogContext()
             .Enrich.WithMachineName();
-
         Serilog.Log.Logger = logConfiguration.CreateLogger();
+        logLevelSwitch.MinimumLevel = GetLogLevel();
+        
         builder.Services.AddSingleton(Serilog.Log.Logger);
         builder.Host.UseSerilog();
     } 
@@ -48,9 +48,11 @@ public static class BuilderExtensions
     private static LogEventLevel GetLogLevel()
     {
         LogLevelEnv.GetEnvironmentVariable();
-        LogEventLevel level;
-        if (!Enum.TryParse<LogEventLevel>(LogLevelEnv.Value, out level))
-            level = LogEventLevel.Information;
+        if (Enum.TryParse<LogEventLevel>(LogLevelEnv.Value, out var level)) return level;
+        
+        Serilog.Log.Error("Invalid log level '{invalidLogLevel}'. Defaulting to '{defaultLogLevel}'", 
+            LogLevelEnv.Value, nameof(LogEventLevel.Information));
+        level = LogEventLevel.Information;
         return level;
     }
 

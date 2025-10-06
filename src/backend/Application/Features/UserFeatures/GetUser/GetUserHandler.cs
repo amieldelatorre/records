@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.UserFeatures.GetUser;
 
 public class GetUserHandler(
     IUserRepository userRepository,
-    Serilog.ILogger logger)
+    ILogger<GetUserHandler> logger)
 {
     private const string FeatureName = "UserGet";
 
@@ -15,6 +16,7 @@ public class GetUserHandler(
         
         if (user == null)
             return new UserResult(ResultStatusTypes.NotFound);
+        logger.LogInformation("user '{userId}' successfully retrieved", user.Id);
         return new UserResult(ResultStatusTypes.Ok, UserResponse.MapFrom(user));
     }
 }

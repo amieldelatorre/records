@@ -11,6 +11,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Logging;
 using NpgsqlTypes;
 using WebAPI.Controllers;
 using WebAPI.Controllers.ControllerExtensions;
@@ -30,13 +31,24 @@ public static class WeightEntrySetup
         };
 
         var claimsInformation = new ClaimsInformation(httpContextAccessor);
-        var createWeightEntryHandler = new CreateWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
-        var getWeightEntryHandler = new GetWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
-        var listWeightEntryHandler = new ListWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
-        var updateWeightEntryHandler = new UpdateWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
-        var deleteWeightEntryHandler = new DeleteWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         
-        var weightEntryController = new WeightEntryController(persistenceInfra.Logger, claimsInformation, createWeightEntryHandler, 
+        var createWeightEntryHandlerLogger = new Logger<CreateWeightEntryHandler>(new LoggerFactory());
+        var createWeightEntryHandler = new CreateWeightEntryHandler(persistenceInfra.WeightEntryRepository, createWeightEntryHandlerLogger);
+        
+        var getWeightEntryHandlerLogger = new Logger<GetWeightEntryHandler>(new LoggerFactory());
+        var getWeightEntryHandler = new GetWeightEntryHandler(persistenceInfra.WeightEntryRepository, getWeightEntryHandlerLogger);
+        
+        var listWeightEntryHandlerLogger = new Logger<ListWeightEntryHandler>(new LoggerFactory());
+        var listWeightEntryHandler = new ListWeightEntryHandler(persistenceInfra.WeightEntryRepository, listWeightEntryHandlerLogger);
+        
+        var updateWeightEntryHandlerLogger = new Logger<UpdateWeightEntryHandler>(new LoggerFactory());
+        var updateWeightEntryHandler = new UpdateWeightEntryHandler(persistenceInfra.WeightEntryRepository, updateWeightEntryHandlerLogger);
+        
+        var deleteWeightEntryHandlerLogger = new Logger<DeleteWeightEntryHandler>(new LoggerFactory());
+        var deleteWeightEntryHandler = new DeleteWeightEntryHandler(persistenceInfra.WeightEntryRepository, deleteWeightEntryHandlerLogger);
+        
+        var weightEntryControllerLogger = new Logger<WeightEntryController>(new LoggerFactory());
+        var weightEntryController = new WeightEntryController(weightEntryControllerLogger, claimsInformation, createWeightEntryHandler, 
             getWeightEntryHandler, listWeightEntryHandler, updateWeightEntryHandler, deleteWeightEntryHandler);
         weightEntryController.ControllerContext.HttpContext = httpContext;
         

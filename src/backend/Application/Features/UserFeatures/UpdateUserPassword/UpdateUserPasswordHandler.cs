@@ -1,12 +1,13 @@
 using Application.Common;
 using Application.Features.PasswordFeatures;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.UserFeatures.UpdateUserPassword;
 
 public class UpdateUserPasswordHandler(
     IUserRepository userRepository,
-    Serilog.ILogger logger)
+    ILogger<UpdateUserPasswordHandler> logger)
 {
     private const string FeatureName = "UserPasswordUpdate";
 
@@ -32,6 +33,7 @@ public class UpdateUserPasswordHandler(
 
         UpdateUserPasswordMapper.Map(request, user);
         await userRepository.Update(user, cancellationToken);
+        logger.LogInformation("user '{userId}' password successfully updated", user.Id);
         return new UserResult(ResultStatusTypes.Ok, UserResponse.MapFrom(user));
     }
 }

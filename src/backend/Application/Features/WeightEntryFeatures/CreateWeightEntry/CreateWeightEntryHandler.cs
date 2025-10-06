@@ -1,11 +1,12 @@
 using Application.Common;
 using Application.Repositories.Database;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.WeightEntryFeatures.CreateWeightEntry;
 
 public class CreateWeightEntryHandler(
     IWeightEntryRepository weightEntryRepository,
-    Serilog.ILogger logger)
+    ILogger<CreateWeightEntryHandler> logger)
 {
     private const string FeatureName = "WeightEntryCreate";
 
@@ -19,6 +20,7 @@ public class CreateWeightEntryHandler(
         var weightEntry = CreateWeightEntryMapper.Map(userId, request);
         await weightEntryRepository.Create(weightEntry, cancellationToken);
         var result = new WeightEntryResult(ResultStatusTypes.Created, WeightEntryResponse.MapFrom(weightEntry));
+        logger.LogInformation("weightEntry '{weightEntryId}' successfully created by user '{userId}'", weightEntry.Id, userId);
         return result;
     }
 }

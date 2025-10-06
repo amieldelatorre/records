@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 using Persistence.Repositories.Database;
 using Testcontainers.PostgreSql;
-using TestsCommon;
 
 namespace IntegrationTests;
 
@@ -16,7 +15,6 @@ public class PersistenceInfra
 {
     // Required
     public required INetwork Network;
-    public required Serilog.ILogger Logger { get; init; }
     // Database
     public PostgreSqlContainer? AppPostgresContainer { get; set; }
     public string? AppPostgresContainerUsername { get; set; } 
@@ -50,7 +48,6 @@ public class PersistenceInfraBuilder
 
     public PersistenceInfraBuilder()
     {
-        var logger = TestLogger.GetLogger();
         var network = new NetworkBuilder()
             .WithName(Guid.NewGuid().ToString("D"))
             .Build();
@@ -58,7 +55,6 @@ public class PersistenceInfraBuilder
         _persistenceInfra = new PersistenceInfra
         {
             Network = network,
-            Logger = logger,
         };
     }
 
