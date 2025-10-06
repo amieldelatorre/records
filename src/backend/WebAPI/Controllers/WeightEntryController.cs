@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using Application.Common;
 using Application.Features.WeightEntryFeatures;
 using Application.Features.WeightEntryFeatures.CreateWeightEntry;
 using Application.Features.WeightEntryFeatures.GetWeightEntry;
+using Application.Features.WeightEntryFeatures.ListWeightEntry;
 using Application.Repositories.Database;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -25,18 +27,21 @@ public class WeightEntryController : Controller
     private readonly ClaimsInformation _claimsInformation;
     private readonly CreateWeightEntryHandler _createWeightEntryHandler;
     private readonly GetWeightEntryHandler _getWeightEntryHandler;
-
+    private readonly ListWeightEntryHandler _listWeightEntryHandler;
+    
     public WeightEntryController(
         Serilog.ILogger logger,
         ClaimsInformation claimsInformation,
         CreateWeightEntryHandler createWeightEntryHandler,
-        GetWeightEntryHandler getWeightEntryHandler
+        GetWeightEntryHandler getWeightEntryHandler,
+        ListWeightEntryHandler listWeightEntryHandler
     )
     {
         _logger = logger;
         _claimsInformation = claimsInformation;
         _createWeightEntryHandler = createWeightEntryHandler;
         _getWeightEntryHandler = getWeightEntryHandler;
+        _listWeightEntryHandler = listWeightEntryHandler;
     }
 
     [HttpPost]
@@ -68,5 +73,23 @@ public class WeightEntryController : Controller
         cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
         var result = await _getWeightEntryHandler.Handle(userId, weightEntryIdGuid, cancellationTokenSource.Token);
         return HttpResponseFromResult<WeightEntryResult>.Map(result);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<ActionResult<PaginatedResult<WeightEntryResponse>>> List([FromQuery] 
+        ListWeightEntryQueryParameters queryParameters)
+    {
+        _logger.Debug("new request to list weight entry");
+        var userId = _claimsInformation.UserId();
+        // Only path part of the URL, does not include query parameters or host or protocol
+        var requestPath = Request.Path.Value;
+        Debug.Assert(requestPath != null);
+        
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(Defaults.RequestTimeout);
+        var result = await _listWeightEntryHandler.Handle(userId, queryParameters, requestPath, cancellationTokenSource.Token);
+        return HttpResponseFromResult<PaginatedResult<WeightEntryResponse>>.Map(result);
+        
     }
 }

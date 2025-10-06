@@ -4,6 +4,7 @@ using Application.Common;
 using Application.Features.WeightEntryFeatures;
 using Application.Features.WeightEntryFeatures.CreateWeightEntry;
 using Application.Features.WeightEntryFeatures.GetWeightEntry;
+using Application.Features.WeightEntryFeatures.ListWeightEntry;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -15,27 +16,32 @@ namespace IntegrationTests.Presentation.WebAPI.Controllers;
 public static class WeightEntrySetup
 {
     public static WeightEntryController GetWeightEntryController(PersistenceInfra persistenceInfra,
-        HttpContext? httpContext = null)
+        HttpContext httpContext)
     {
         Debug.Assert(persistenceInfra.WeightEntryRepository != null);
         
-        var httpContextAccessor = new HttpContextAccessor();
-        if (httpContext != null)
-            httpContextAccessor.HttpContext = httpContext;
-        
+        var httpContextAccessor = new HttpContextAccessor
+        {
+            HttpContext = httpContext
+        };
+
         var claimsInformation = new ClaimsInformation(httpContextAccessor);
         var createWeightEntryHandler = new CreateWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         var getWeightEntryHandler = new GetWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
+        var listWeightEntryHandler = new ListWeightEntryHandler(persistenceInfra.WeightEntryRepository, persistenceInfra.Logger);
         
         var weightEntryController = new WeightEntryController(persistenceInfra.Logger, claimsInformation, 
-            createWeightEntryHandler, getWeightEntryHandler);
+            createWeightEntryHandler, getWeightEntryHandler, listWeightEntryHandler);
+        weightEntryController.ControllerContext.HttpContext = httpContext;
         
         return weightEntryController;
     }
 }
 
 public class WeightEntryViewTests
-{    private static PersistenceInfra StandardPersistenceInfra;
+{    
+    private static PersistenceInfra StandardPersistenceInfra;
+    private const string WeightEntryApiUrlPath = "/api/v1/weightentry";
 
     [OneTimeSetUp]
     public async Task Before()
@@ -93,10 +99,52 @@ public class WeightEntryViewTests
         });
         
     }
+
+    [Test, TestCaseSource(nameof(_listWeightEntriesTestCases))]
+    public async Task ListWeightEntriesTests(
+        int num, string userIdString, ListWeightEntryQueryParameters queryParameters, 
+        int expectedStatusCode, string? expectedNext, PaginatedResult<WeightEntryResponse> expectedResult)
+    {
+        var expectedUserId = new Guid(userIdString);
+        var claims = new[] {new Claim("userId", userIdString) };
+        var httpContext = new DefaultHttpContext
+        {
+            User = new ClaimsPrincipal(new ClaimsIdentity(claims))
+        };
+        httpContext.Request.Path = WeightEntryApiUrlPath;
+        
+        var weightEntryController = WeightEntrySetup.GetWeightEntryController(StandardPersistenceInfra, httpContext);
+        
+        var actual = await weightEntryController.List(queryParameters);
+        var actualWithStatusCode = (actual as IConvertToActionResult).Convert() as IStatusCodeActionResult;
+        var actualResult = (actual.Result as ObjectResult)?.Value as PaginatedResult<WeightEntryResponse>;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(actualWithStatusCode?.StatusCode, Is.EqualTo(expectedStatusCode));
+
+            if (actualResult is null)
+            {
+                Assert.Fail("expectedResult.Result == null");
+            }
+            
+            Assert.That(actualResult?.Errors, Is.EqualTo(expectedResult.Errors));
+            Assert.That(actualResult?.Total, Is.EqualTo(expectedResult.Total));
+            Assert.That(actualResult?.Limit, Is.EqualTo(expectedResult.Limit));
+            Assert.That(actualResult?.Offset, Is.EqualTo(expectedResult.Offset));
+            Assert.That(actualResult?.Next, Is.EqualTo(expectedResult.Next));
+            Assert.That(actualResult?.Next, Is.EqualTo(expectedNext));
+
+            foreach (var weightEntryResponse in actualResult?.Items!) // Suppress warning here, there is already a check above
+            {
+                Assert.That(weightEntryResponse.UserId, Is.EqualTo(expectedUserId));
+            }
+        });
+    }
+    
         
     private static object[] _getWeightEntryTestCases =
     [
-        // Success
         new object[]
         {
             1,
@@ -144,7 +192,135 @@ public class WeightEntryViewTests
                 {"weightEntryId", ["'weightEntryId' must be a valid GUID."]},
             }),
         },
-        
+    ];
+
+    private static object[] _listWeightEntriesTestCases = 
+    [
+        new object?[]
+        {
+            1,
+            "f7fdef01-1e73-4a83-a770-4a5148a919f3", // alberteinstein, has 366 entries
+            new ListWeightEntryQueryParameters
+            {
+                Limit = 0,
+                Offset = -1,
+                DateFrom = new DateOnly(2001, 6, 1),
+                DateTo = new DateOnly(2000, 5, 1),
+            },
+            StatusCodes.Status400BadRequest,
+            null,
+            new PaginatedResult<WeightEntryResponse>(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"Limit", ["'Limit' must be greater than '0'."]},
+                {"Offset", ["'Offset' must be greater than or equal to '0'."]},
+                {"DateFilters", ["'DateTo' must be greater than or equal to 'DateFrom'."]},
+            })
+        },
+        new object?[]
+        {
+            2,
+            "f7fdef01-1e73-4a83-a770-4a5148a919f3", // alberteinstein, has 366 entries
+            new ListWeightEntryQueryParameters
+            {
+                Limit = -10,
+                Offset = -10,
+                DateFrom = new DateOnly(2001, 6, 2),
+                DateTo = new DateOnly(2001, 6, 1),
+            },
+            StatusCodes.Status400BadRequest,
+            null,
+            new PaginatedResult<WeightEntryResponse>(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"Limit", ["'Limit' must be greater than '0'."]},
+                {"Offset", ["'Offset' must be greater than or equal to '0'."]},
+                {"DateFilters", ["'DateTo' must be greater than or equal to 'DateFrom'."]},
+            })
+        },
+        new object?[]
+        {
+            3,
+            "f7fdef01-1e73-4a83-a770-4a5148a919f3", // alberteinstein, has 366 entries
+            new ListWeightEntryQueryParameters
+            {
+                Limit = 101,
+            },
+            StatusCodes.Status400BadRequest,
+            null,
+            new PaginatedResult<WeightEntryResponse>(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"Limit", ["'Limit' must be less than or equal to '100'."]},
+            })
+        },
+        new object?[]
+        {
+            4,
+            "f7fdef01-1e73-4a83-a770-4a5148a919f3", // alberteinstein, has 366 entries
+            new ListWeightEntryQueryParameters
+            {
+                Limit = 200,
+            },
+            StatusCodes.Status400BadRequest,
+            null,
+            new PaginatedResult<WeightEntryResponse>(ResultStatusTypes.ValidationError, new Dictionary<string, List<string>>
+            {
+                {"Limit", ["'Limit' must be less than or equal to '100'."]},
+            })
+        },
+        new object[]
+        {
+            5,
+            "f7fdef01-1e73-4a83-a770-4a5148a919f3", // alberteinstein, has 366 entries
+            new ListWeightEntryQueryParameters
+            {
+                Limit = 100,
+            },
+            StatusCodes.Status200OK,
+            $"{WeightEntryApiUrlPath}?limit=100&offset=100",
+            new PaginatedResult<WeightEntryResponse>(
+                ResultStatusTypes.Ok,
+                [],
+                366,
+                100,
+                0,
+                WeightEntryApiUrlPath)
+        },
+        new object[]
+        {
+            6,
+            "f7fdef01-1e73-4a83-a770-4a5148a919f3", // alberteinstein, has 366 entries
+            new ListWeightEntryQueryParameters
+            {
+                Offset = 50,
+            },
+            StatusCodes.Status200OK,
+            $"{WeightEntryApiUrlPath}?limit=30&offset=80",
+            new PaginatedResult<WeightEntryResponse>(
+                ResultStatusTypes.Ok,
+                [],
+                366,
+                30,
+                50,
+                WeightEntryApiUrlPath)
+        },
+        new object?[]
+        {
+            6,
+            "f7fdef01-1e73-4a83-a770-4a5148a919f3", // alberteinstein, has 366 entries
+            new ListWeightEntryQueryParameters
+            {
+                DateFrom = new DateOnly(2024, 01, 01),
+                DateTo = new DateOnly(2024, 01, 01),
+            },
+            StatusCodes.Status200OK,
+            null,
+            new PaginatedResult<WeightEntryResponse>(
+                ResultStatusTypes.Ok,
+                [],
+                1,
+                30,
+                0,
+                WeightEntryApiUrlPath)
+        },
     ];
 }
 
