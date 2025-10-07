@@ -8,16 +8,33 @@ updates:
       nuget-all:
         patterns:
           - "*" # Match all NuGet packages
-      
+
   - package-ecosystem: "docker"
     directories:
       - "src/backend/*/"
     schedule:
       interval: "weekly"
-      
+    groups:
+      docker-all:
+        patterns:
+          - "*" # Match all
+
   - package-ecosystem: "docker-compose"
     directories:
       - "/"
       - "/infra/*/"
     schedule:
       interval: "weekly"
+    groups:
+      docker-compose-all:
+        patterns:
+          - "*" # Match all
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      github-actions-all:
+        patterns:
+          - "*" # Match all
