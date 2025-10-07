@@ -4,6 +4,38 @@ networks:
     driver: bridge
 
 services:
+  app:
+    # image: ghcr.io/amieldelatorre/records-webapi:latest
+    build:
+      context: ./src/backend
+      dockerfile: WebAPI/Dockerfile
+    restart: unless-stopped
+    container_name: app
+    networks:
+      - app-backend
+    ports:
+      - 8080:8080
+    environment:
+      APP__POSTGRES_DB: ${APP__POSTGRES_DB:?}
+      APP__POSTGRES_USER: ${APP__POSTGRES_DB:?}
+      APP__POSTGRES_PASSWORD: ${APP__POSTGRES_PASSWORD:?}
+      APP__MIGRATE_DATABASE: ${APP__MIGRATE_DATABASE:?}
+      APP__POSTGRES_HOST: ${APP__POSTGRES_HOST:?}
+      APP__POSTGRES_PORT: ${APP__POSTGRES_PORT:?}
+      APP__JWT_ECDSA_384_PRIVATE_KEY: ${APP__JWT_ECDSA_384_PRIVATE_KEY:?}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:?}
+      OTEL_METRIC_EXPORT_INTERVAL: ${OTEL_METRIC_EXPORT_INTERVAL:?}
+    healthcheck:
+      test: "curl -fsSL localhost:8080/health"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      app-db:
+        condition: service_healthy
+      app-db-pgbouncer:
+        condition: service_healthy
+
   app-db:
     image: postgres:18.0
     restart: unless-stopped
@@ -62,6 +94,12 @@ services:
       RESERVE_POOL_SIZE: 200 # spare for burst
     security_opt:
       - "no-new-privileges:true"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-happ-db"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
     depends_on:
       app-db:
         condition: service_healthy

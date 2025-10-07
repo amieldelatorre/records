@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - '**' # Run on all branches
+      - '!releases/**'
     tags-ignore:
       - '**' # Ignore all tags, they get their own workflow
     paths:
