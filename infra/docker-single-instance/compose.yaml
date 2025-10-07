@@ -4,7 +4,7 @@ networks:
 
 services:
   app:
-    image: ghcr.io/amieldelatorre/records-webapi:latest
+    image: ghcr.io/amieldelatorre/records-webapi:0.0.1
     restart: unless-stopped
     container_name: app
     networks:
