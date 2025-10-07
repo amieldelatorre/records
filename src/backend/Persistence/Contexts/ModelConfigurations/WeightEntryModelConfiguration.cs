@@ -15,7 +15,7 @@ public class WeightEntryModelConfiguration : IEntityTypeConfiguration<WeightEntr
             .HasColumnType("date")
             .IsRequired();
         builder.Property(w => w.Value)
-            .HasColumnType("real")
+            .HasColumnType("numeric")
             .IsRequired();
         
         // Create an index making the combination of weight entry date and user id unique
