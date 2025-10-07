@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict RQteIc6saqssLxLGAX6PMqVR0aTMiebQELDEmgbe5HDaLYBd1mKXXlQAnVeamsa
+\restrict ClAOtabmxK30C2tVKD6r4KWHkw6YMH556tNM7kfKJrf8L0rkgLbznFefCfxgaec
 
 -- Dumped from database version 18.0 (Debian 18.0-1.pgdg13+3)
 -- Dumped by pg_dump version 18.0 (Debian 18.0-1.pgdg13+3)
@@ -477,7 +477,7 @@ COPY public."WeightEntries" ("Id", "Value", "Comment", "EntryDate", "UserId", "D
 --
 
 COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin;
-20251006041335_NewInitialMigration	9.0.9
+20251007083938_NewInitialMigration	9.0.9
 \.
 
 
@@ -545,5 +545,5 @@ ALTER TABLE ONLY public."WeightEntries"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict RQteIc6saqssLxLGAX6PMqVR0aTMiebQELDEmgbe5HDaLYBd1mKXXlQAnVeamsa
+\unrestrict ClAOtabmxK30C2tVKD6r4KWHkw6YMH556tNM7kfKJrf8L0rkgLbznFefCfxgaec
 
