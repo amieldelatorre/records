@@ -1,0 +1,106 @@
+{{- $globalLabels := .Values.labels }}
+{{- $globalAnnotations := .Values.annotations }}
+{{- $deploymentValues := .Values.webapi.deployment }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $deploymentValues.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ $deploymentValues.name }}
+    app: {{ $deploymentValues.name }}
+    {{- if $globalLabels}}
+{{ $globalLabels | toYaml | indent 4}}
+    {{- end }}
+    {{- if $deploymentValues.labels }}
+{{ $deploymentValues.labels | toYaml | indent 4}}
+    {{- end }}
+  {{- if or $globalAnnotations $deploymentValues.annotations }}
+  annotations:
+    {{- if or $globalAnnotations }}
+{{ $globalAnnotations | toYaml | indent 4}}
+    {{- end }}
+    {{- if or $deploymentValues.annotations }}
+{{ $deploymentValues.annotations | toYaml | indent 4}}
+    {{- end }}
+  {{- end }}
+  
+spec:
+  revisionHistoryLimit: {{ $deploymentValues.revisionHistoryLimit }}
+  {{- if $deploymentValues.replicas }}
+  replicas: {{ $deploymentValues.replicas }}
+  {{- end }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels: 
+      app.kubernetes.io/name: {{ $deploymentValues.name }}
+      app: {{ $deploymentValues.name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ $deploymentValues.name }}
+        app: {{ $deploymentValues.name }}
+        {{- if $deploymentValues.template.labels }}
+{{ $deploymentValues.template.labels | toYaml | indent 8}}
+        {{- end }}
+      {{- if or $deploymentValues.template.annotations }}
+      annotations:
+{{ $deploymentValues.template.annotations | toYaml | indent 8}}
+      {{- end }}
+    spec:
+      containers:
+        - name: {{ $deploymentValues.name }}
+          image: {{ $deploymentValues.image }}
+          imagePullPolicy: {{ $deploymentValues.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: {{ $deploymentValues.resources.requests.cpu }}
+              memory: {{ $deploymentValues.resources.requests.memory }}
+            limits:
+              {{- if $deploymentValues.resources.limits.cpu }}
+              cpu: {{ $deploymentValues.resources.limits.cpu }}
+              {{- end }}
+              memory: {{ $deploymentValues.resources.limits.memory }}
+          envFrom:
+            - secretRef:
+                name: {{ $deploymentValues.secretName }}
+            - configMapRef:
+                name: {{ $deploymentValues.configMapName }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 25
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 25
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 25
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+
+---

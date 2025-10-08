@@ -1,0 +1,37 @@
+{{- $globalLabels := .Values.labels }}
+{{- $globalAnnotations := .Values.annotations }}
+{{- $deploymentValues := .Values.webapi.deployment }}
+{{- $serviceValues := .Values.webapi.service }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $serviceValues.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ $serviceValues.name }}
+    app: {{ $serviceValues.name }}
+    {{- if $globalLabels}}
+{{ $globalLabels | toYaml | indent 4}}
+    {{- end }}
+    {{- if $serviceValues.labels }}
+{{ $serviceValues.labels | toYaml | indent 4}}
+    {{- end }}
+  {{- if or $globalAnnotations $serviceValues.annotations }}
+  annotations:
+    {{- if or $globalAnnotations }}
+{{ $globalAnnotations | toYaml | indent 4}}
+    {{- end }}
+    {{- if or $serviceValues.annotations }}
+{{ $serviceValues.annotations | toYaml | indent 4}}
+    {{- end }}
+  {{- end }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ $deploymentValues.name }}
+    app: {{ $deploymentValues.name }}
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: {{ $deploymentValues.name }}
+---

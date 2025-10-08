@@ -35,13 +35,19 @@ jobs:
           git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
 
           version=$(echo "${{ github.ref_name }}" | cut -d '/' -f 2)
-          file_paths=("./infra/docker-single-instance/compose.yaml")
+
+          # Update files using standard image/name:tag format
+          file_paths=("./infra/docker-single-instance/compose.yaml" "infra/helm/charts/webapi/values.yaml")
           escaped_image_name=$(echo "${{ env.FULL_IMAGE_NAME }}" | sed -e 's/[\.]/\\&/g')
 
           for file_path in "${file_paths[@]}"; do
             sed -i -E "s#(${escaped_image_name}:)([a-zA-Z0-9\_\.-]*)#\1${version}#g" "${file_path}"
             git add "${file_path}"
           done
+
+          # Update helm Chart.yaml file
+          sed -i "s/__CHANGEME__/${version}/g" infra/helm/charts/webapi/Chart.yaml
+          git add infra/helm/charts/webapi/Chart.yaml
 
           git commit -m "Bump to ${version} [skip ci]"
           git push

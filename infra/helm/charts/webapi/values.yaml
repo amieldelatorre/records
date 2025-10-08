@@ -1,0 +1,32 @@
+# Default values
+
+webapi:
+  deployment:
+    name: webapi-deployment
+    image: ghcr.io/amieldelatorre/records-webapi:0.0.1
+    imagePullPolicy: IfNotPresent
+    # replicas: 1
+    revisionHistoryLimit: 5
+    # Where the sensitive environment variables for the app will be
+    secretName: webapi-secrets
+    # Where the non-sensitive environment variables for the app will be
+    configMapName: webapi-configmap
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        # cpu: 500m
+        memory: 256Mi
+    template:
+      labels:
+      annotations:
+    labels:
+    annotations:
+  service:
+    name: webapi-service
+    labels:
+    annotations:
+
+annotations:
+labels:

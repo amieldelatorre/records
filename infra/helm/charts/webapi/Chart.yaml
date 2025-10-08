@@ -1,0 +1,5 @@
+apiVersion: v2
+name: webapi
+description: The webapi deployment
+appVersion: __CHANGEME__
+version: __CHANGEME__
