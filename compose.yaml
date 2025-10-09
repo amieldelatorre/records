@@ -4,6 +4,19 @@ networks:
     driver: bridge
 
 services:
+  app-frontend:
+    build:
+      context: ./src/frontend
+    pull_policy: build
+    develop:
+      watch:
+        - action: rebuild
+          path: ./src/frontend
+    ports:
+      - 8000:80
+    environment:
+      APP__API_HOST: http://localhost:8080
+
   app:
     # image: ghcr.io/amieldelatorre/records-webapi:latest
     build:

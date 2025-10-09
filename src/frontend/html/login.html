@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/shared.css">
+    <link rel="stylesheet" href="/styles/login.css">
+</head>
+
+<body>
+    <form id="login-form" class="login-form">
+        <h1 id="login-form-title">Login</h1>
+        <input id="input-username" class="login-form-input" type="text" placeholder="Username" pattern="[a-z0-9]{3,}"
+            title="Minimum length of 3. Only lower case characters and numbers are allowed." value="alberteinstein" />
+        <input id="input-password" class="login-form-input" type="password" minlength="8" placeholder="Password"
+            value="password1" />
+        <button id="login-form-submit-button" class="normal-button" type="submit">
+            <span id="login-form-submit-button-loader" hidden></span>
+            <img id="login-form-submit-button-success" class="success-svg" src="/assets/check-circle-svgrepo-com.svg"
+                hidden />
+            <span id="login-form-submit-button-enabled-text">LOGIN</span>
+        </button>
+        <p id="signup-message">Don't have an account? <a id="login-form-signup-link" href="/signup">Sign up</a></p>
+    </form>
+    <script type="module" src="/scripts/login.js"></script>
+</body>
+
+</html>
