@@ -15,7 +15,7 @@ services:
     ports:
       - 8000:80
     environment:
-      APP__API_HOST: http://localhost:8080
+      APP__API_HOST: ${APP__API_HOST:?}
 
   app:
     # image: ghcr.io/amieldelatorre/records-webapi:latest
