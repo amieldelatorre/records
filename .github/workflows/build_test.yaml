@@ -10,6 +10,7 @@ on:
     paths:
       - 'src/backend/**'
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   build_and_test_backend:

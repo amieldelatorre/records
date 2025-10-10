@@ -10,6 +10,7 @@ on:
     paths:
       - "src/frontend/**"
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   # check if can build image
@@ -30,7 +31,7 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push
+      - name: Build docker image
         id: push
         uses: docker/build-push-action@v6
         with:
