@@ -1,27 +1,22 @@
-import { DEFAULT_HEADERS, saveCredentials, getCredentials, deleteCredentials, sleep } from "./shared.js";
+import { DEFAULT_HEADERS, saveCredentials, API_SERVER_ERROR, changeButtonToLoading, changeButtonToSuccess, changeButtonToNormal, sleep } from "./shared.js";
 import { JWT_URL } from "./api_consts.js";
+import { isLoggedIn } from "./login_required.js";
 
-// TODO: A LOT
+// If the user is already logged in, redirect to main page
+if (isLoggedIn()) {
+    window.location.href = "/";
+}
+
+const SUBMIT_BUTTON_ID = "login-form-submit-button";
+const SUBMIT_BUTTON_ENABLED_TEXT_ID = "login-form-submit-button-enabled-text";
+const SUBMIT_BUTTON_LOADER_ID = "login-form-submit-button-loader";
+const SUBMIT_BUTTON_SUCCESS_ID = "login-form-submit-button-success";
 
 async function onSubmit(event) {
     event.preventDefault();
 
-    const submitButton = document.getElementById("login-form-submit-button");
-    const loginFormSubmitButtonEnabledText = document.getElementById("login-form-submit-button-enabled-text");
-    const loginFormSubmitButtonLoader = document.getElementById("login-form-submit-button-loader");
-    const loginFormSubmitButtonSuccess = document.getElementById("login-form-submit-button-success");
-
-
-    // while waiting for response
-    submitButton.classList.toggle("normal-button")
-    submitButton.disabled = true;
-    submitButton.classList.toggle("waiting-button");
-    loginFormSubmitButtonEnabledText.hidden = true;
-    loginFormSubmitButtonSuccess.hidden = true;
-    loginFormSubmitButtonLoader.hidden = false;
+    changeButtonToLoading(SUBMIT_BUTTON_ID, SUBMIT_BUTTON_ENABLED_TEXT_ID, SUBMIT_BUTTON_LOADER_ID, SUBMIT_BUTTON_SUCCESS_ID);
     // await sleep(3000); // TODO: REMOVE WHEN DONE
-
-
 
     const username = document.getElementById("input-username").value;
     const password = document.getElementById("input-password").value;
@@ -31,7 +26,6 @@ async function onSubmit(event) {
     });
 
 
-    loginFormSubmitButtonEnabledText.hidden = false;
     await fetch(JWT_URL, {
         method: "POST",
         cors: "no-cors",
@@ -39,20 +33,22 @@ async function onSubmit(event) {
         body: data
     }).then(async response => {
         if (response.ok) {
-            console.log("OK")
             saveCredentials(await response.json());
-
-            loginFormSubmitButtonLoader.hidden = true;
-            submitButton.classList.toggle("waiting-button");
-            submitButton.classList.toggle("success-button");
-            loginFormSubmitButtonSuccess.hidden = false;
-            window.location.href = "/"
+            changeButtonToSuccess(SUBMIT_BUTTON_ID, SUBMIT_BUTTON_ENABLED_TEXT_ID, SUBMIT_BUTTON_LOADER_ID, SUBMIT_BUTTON_SUCCESS_ID);
+            await sleep(300);
+            window.location.href = "/";
+        } else if (response.status == 401) {
+            alert("Username and Password combination was not recognized!\nPlease try again.")
+            changeButtonToNormal(SUBMIT_BUTTON_ID, SUBMIT_BUTTON_ENABLED_TEXT_ID, SUBMIT_BUTTON_LOADER_ID, SUBMIT_BUTTON_SUCCESS_ID);
+        } else {
+            changeButtonToNormal(SUBMIT_BUTTON_ID, SUBMIT_BUTTON_ENABLED_TEXT_ID, SUBMIT_BUTTON_LOADER_ID, SUBMIT_BUTTON_SUCCESS_ID);
+            alert(API_SERVER_ERROR);
         }
     }).catch(error => {
-        alert("nok")
+        console.log(error);
+        changeButtonToNormal(SUBMIT_BUTTON_ID, SUBMIT_BUTTON_ENABLED_TEXT_ID, SUBMIT_BUTTON_LOADER_ID, SUBMIT_BUTTON_SUCCESS_ID);
+        alert(API_SERVER_ERROR);
     });
-
-    // submitButton.disabled = false;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
