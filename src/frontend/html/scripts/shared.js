@@ -35,7 +35,7 @@ export function changeButtonToNormal(buttonId, buttonNormalTextId, loaderId, suc
     buttonLoader.hidden = true;
     buttonSuccess.hidden = true;
     button.classList.remove("loading-button");
-    button.classList.add("normal-button")
+    button.classList.add("normal-button");
     buttonEnabledText.hidden = false;
     button.disabled = false;
 }
@@ -63,7 +63,18 @@ export function changeButtonToLoading(buttonId, buttonNormalTextId, loaderId, su
     button.disabled = true;
     buttonEnabledText.hidden = true;
     buttonSuccess.hidden = true;
-    button.classList.remove(BUTTON_STYLING_NORMAL_NAME)
+    button.classList.remove(BUTTON_STYLING_NORMAL_NAME);
     button.classList.add(BUTTON_STYLING_LOADING_NAME);
     buttonLoader.hidden = false;
+}
+
+export function handleNavHamburgerButton() {
+    const navItemsId = "nav-items";
+    const navItems = document.getElementById(navItemsId);
+
+    if (navItems.style.display === "none" || window.getComputedStyle(navItems).display === "none") {
+        navItems.style.display = "block";
+    } else {
+        navItems.style.display = "none";
+    }
 }

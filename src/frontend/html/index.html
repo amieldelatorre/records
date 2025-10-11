@@ -2,39 +2,56 @@
 <html>
 
 <head>
-    <title>HELLO to nginx!</title>
-    <style>
-        html {
-            color-scheme: light dark;
-        }
-
-        body {
-            width: 35em;
-            margin: 0 auto;
-            font-family: Tahoma, Verdana, Arial, sans-serif;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/shared.css">
+    <link rel="stylesheet" href="/styles/home.css">
 </head>
 
 <body>
-    <h1>HELLO to nginx!</h1>
-    <a href="/login">
-        <p>Go to login page</p>
-    </a>
-    <a id="logout-button" style="text-decoration: underline; cursor: pointer;" onclick="">
-        <p>Logout</p>
-    </a>
-    <p>If you see this page, the nginx web server is successfully installed and
-        working. Further configuration is required.</p>
+    <div class="main">
+        <nav>
+            <div class="nav-header">
+                <a href="/"><h2 id="nav-title" class="nav-title">Records</h2></a>
+                <div id="nav-hamburger" class="nav-hamburger" tabindex="0" role="button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div><!--End of div class nav-header-->
+            <ul id="nav-items" class="nav-items">
+                <a href="/"><li class="nav-active">Home</li></a>
+                <a href="/"><li>Profile</li></a>
+                <a href="/"><li>Logout</li></a>
+            </ul>
+        </nav>
+        <div class="content">
+            <h1>HELLO to nginx!</h1>
+            <a href="/login">
+                <p>Go to login page</p>
+            </a>
+            <a id="logout-button" style="text-decoration: underline; cursor: pointer;" onclick="">
+                <p>Logout</p>
+            </a>
+            <p>If you see this page, the nginx web server is successfully installed and
+                working. Further configuration is required.</p>
 
-    <p>For online documentation and support please refer to
-        <a href="http://nginx.org/">nginx.org</a>.<br />
-        Commercial support is available at
-        <a href="http://nginx.com/">nginx.com</a>.
-    </p>
+            <p>For online documentation and support please refer to
+                <a href="http://nginx.org/">nginx.org</a>.<br />
+                Commercial support is available at
+                <a href="http://nginx.com/">nginx.com</a>.
+            </p>
 
-    <p><em>Thank you for using nginx.</em></p>
-    <script type="module" src="/scripts/login_required.js"></script>
+            <p><em>Thank you for using nginx.</em></p>
+        </div><!--End of div class content-->
+    </div><!--End of div class main-->
+    <script type="module" src="/scripts/home.js"></script>
 </body>
 
 </html>
