@@ -222,7 +222,7 @@ services:
     #     tag: "cadvisor"
 
   alloy:
-    image: grafana/alloy:v1.11.0
+    image: grafana/alloy:v1.11.2
     restart: unless-stopped
     container_name: alloy
     command:
