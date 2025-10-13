@@ -67,6 +67,10 @@ nav a {
     color: inherit;
 }
 
+nav ul li a {
+    width: 100%;
+}
+
 .nav-active {
     background-color: #F1FAEE;
     color: black;

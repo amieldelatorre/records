@@ -9,8 +9,3 @@ export function logout() {
     deleteCredentials();
     window.location.href = "/login";
 }
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("logout-button")?.addEventListener("click", logout);
-})

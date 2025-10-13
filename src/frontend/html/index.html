@@ -26,18 +26,15 @@
                 </div>
             </div><!--End of div class nav-header-->
             <ul id="nav-items" class="nav-items">
-                <a href="/"><li class="nav-active">Home</li></a>
-                <a href="/"><li>Profile</li></a>
-                <a href="/"><li>Logout</li></a>
+                <li class="nav-active"><a href="/">Home</a></li>
+                <li><a href="/">Profile</a></li>
+                <li><a id="logout-button" href="#">Logout</a></li>
             </ul>
         </nav>
-        <div class="content">
+        <div id="page-content" class="content">
             <h1>HELLO to nginx!</h1>
             <a href="/login">
                 <p>Go to login page</p>
-            </a>
-            <a id="logout-button" style="text-decoration: underline; cursor: pointer;" onclick="">
-                <p>Logout</p>
             </a>
             <p>If you see this page, the nginx web server is successfully installed and
                 working. Further configuration is required.</p>
