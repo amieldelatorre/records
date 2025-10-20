@@ -135,7 +135,7 @@ services:
       - "no-new-privileges:true"
 
   tempo:
-    image: grafana/tempo:2.8.2
+    image: grafana/tempo:2.9.0
     restart: unless-stopped
     container_name: tempo
     command: ["-config.file=/etc/tempo.yaml"]
@@ -154,7 +154,7 @@ services:
       - "no-new-privileges:true"
 
   prometheus:
-    image: prom/prometheus:v3.6.0
+    image: prom/prometheus:v3.7.1
     restart: unless-stopped
     container_name: prometheus
     command: ["--web.enable-remote-write-receiver"]

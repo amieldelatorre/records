@@ -118,7 +118,7 @@ services:
   # Tempo runs as user 10001, and docker compose creates the volume as root.
   # As such, we need to chown the volume in order for Tempo to start correctly.
   # tempo-init:
-  #   image: grafana/tempo:2.8.2
+  #   image: grafana/tempo:2.9.0
   #   user: root
   #   entrypoint:
   #     - "chown"
@@ -128,7 +128,7 @@ services:
   #     - /docker-data/data-tempo:/var/tempo
 
   tempo:
-    image: grafana/tempo:2.8.2
+    image: grafana/tempo:2.9.0
     restart: unless-stopped
     container_name: tempo
     command: ["-config.file=/etc/tempo.yaml"]
@@ -163,7 +163,7 @@ services:
     #   - tempo-init
 
   prometheus:
-    image: prom/prometheus:v3.6.0
+    image: prom/prometheus:v3.7.1
     restart: unless-stopped
     container_name: prometheus
     user: 1000:1000
