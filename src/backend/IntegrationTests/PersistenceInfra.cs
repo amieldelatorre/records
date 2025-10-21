@@ -89,6 +89,8 @@ public class PersistenceInfraBuilder
         await _persistenceInfra.AppPostgresContainer.CopyAsync(
             dumpScriptBytes, 
             destPath,
+            65534, // nobody
+            65534, // nobody
             UnixFileModes.UserRead |  UnixFileModes.GroupRead | UnixFileModes.OtherRead,
             cancellationTokenSource.Token);
         
