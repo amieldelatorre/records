@@ -163,7 +163,7 @@ services:
     #   - tempo-init
 
   prometheus:
-    image: prom/prometheus:v3.7.2
+    image: prom/prometheus:v3.7.3
     restart: unless-stopped
     container_name: prometheus
     user: 1000:1000
@@ -222,7 +222,7 @@ services:
     #     tag: "cadvisor"
 
   alloy:
-    image: grafana/alloy:v1.11.2
+    image: grafana/alloy:v1.11.3
     restart: unless-stopped
     container_name: alloy
     command:
