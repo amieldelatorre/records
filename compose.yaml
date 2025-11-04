@@ -154,7 +154,7 @@ services:
       - "no-new-privileges:true"
 
   prometheus:
-    image: prom/prometheus:v3.7.2
+    image: prom/prometheus:v3.7.3
     restart: unless-stopped
     container_name: prometheus
     command: ["--web.enable-remote-write-receiver"]
@@ -168,7 +168,7 @@ services:
       - "no-new-privileges:true"
 
   alloy:
-    image: grafana/alloy:v1.11.2
+    image: grafana/alloy:v1.11.3
     restart: unless-stopped
     container_name: alloy
     command:
