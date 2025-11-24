@@ -33,7 +33,7 @@ services:
         condition: service_healthy
 
   app-db:
-    image: postgres:18.0
+    image: postgres:18.1
     restart: unless-stopped
     container_name: app-db
     command:
@@ -92,7 +92,7 @@ services:
         condition: service_healthy
 
   grafana:
-    image: grafana/grafana:12.2.1
+    image: grafana/grafana:12.3.0
     restart: unless-stopped
     container_name: grafana
     networks:
