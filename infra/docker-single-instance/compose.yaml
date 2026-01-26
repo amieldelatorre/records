@@ -64,7 +64,7 @@ services:
       start_period: 10s
 
   app-db-pgbouncer:
-    image: edoburu/pgbouncer:v1.24.1-p0
+    image: edoburu/pgbouncer:v1.25.1-p0
     restart: unless-stopped
     container_name: app-db-pgbouncer
     networks:
@@ -92,7 +92,7 @@ services:
         condition: service_healthy
 
   grafana:
-    image: grafana/grafana:12.3.0
+    image: grafana/grafana:12.3.1
     restart: unless-stopped
     container_name: grafana
     networks:
@@ -118,7 +118,7 @@ services:
   # Tempo runs as user 10001, and docker compose creates the volume as root.
   # As such, we need to chown the volume in order for Tempo to start correctly.
   # tempo-init:
-  #   image: grafana/tempo:2.9.0
+  #   image: grafana/tempo:2.9.1
   #   user: root
   #   entrypoint:
   #     - "chown"
@@ -128,7 +128,7 @@ services:
   #     - /docker-data/data-tempo:/var/tempo
 
   tempo:
-    image: grafana/tempo:2.9.0
+    image: grafana/tempo:2.9.1
     restart: unless-stopped
     container_name: tempo
     command: ["-config.file=/etc/tempo.yaml"]
@@ -163,7 +163,7 @@ services:
     #   - tempo-init
 
   prometheus:
-    image: prom/prometheus:v3.7.3
+    image: prom/prometheus:v3.9.1
     restart: unless-stopped
     container_name: prometheus
     user: 1000:1000
@@ -201,7 +201,7 @@ services:
     read_only: true
 
   cadvisor:
-    image: ghcr.io/google/cadvisor:v0.53.0
+    image: ghcr.io/google/cadvisor:0.56.2
     restart: unless-stopped
     container_name: cadvisor
     networks:
@@ -222,7 +222,7 @@ services:
     #     tag: "cadvisor"
 
   alloy:
-    image: grafana/alloy:v1.11.3
+    image: grafana/alloy:v1.12.2
     restart: unless-stopped
     container_name: alloy
     command:
