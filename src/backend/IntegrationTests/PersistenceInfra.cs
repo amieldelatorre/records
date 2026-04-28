@@ -122,8 +122,7 @@ public class PersistenceInfraBuilder
     private static PostgreSqlContainer GetPostgreSqlContainer(INetwork containerNetwork, string databaseName,
         string username, string password)
     {
-        var container = new PostgreSqlBuilder()
-            .WithImage("postgres:18.0")
+        var container = new PostgreSqlBuilder("postgres:18.3")
             .WithDatabase(databaseName)
             .WithUsername(username)
             .WithPassword(password)
