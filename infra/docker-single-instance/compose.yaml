@@ -33,7 +33,7 @@ services:
         condition: service_healthy
 
   app-db:
-    image: postgres:18.3
+    image: postgres:18.4
     restart: unless-stopped
     container_name: app-db
     command:
@@ -201,7 +201,7 @@ services:
     read_only: true
 
   cadvisor:
-    image: ghcr.io/google/cadvisor:0.56.2
+    image: ghcr.io/google/cadvisor:v0.57.0
     restart: unless-stopped
     container_name: cadvisor
     networks:
@@ -222,7 +222,7 @@ services:
     #     tag: "cadvisor"
 
   alloy:
-    image: grafana/alloy:v1.16.0
+    image: grafana/alloy:v1.16.1
     restart: unless-stopped
     container_name: alloy
     command:
