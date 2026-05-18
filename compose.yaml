@@ -50,7 +50,7 @@ services:
         condition: service_healthy
 
   app-db:
-    image: postgres:18.3
+    image: postgres:18.4
     restart: unless-stopped
     container_name: app-db
     command:
@@ -168,7 +168,7 @@ services:
       - "no-new-privileges:true"
 
   alloy:
-    image: grafana/alloy:v1.16.0
+    image: grafana/alloy:v1.16.1
     restart: unless-stopped
     container_name: alloy
     command:
