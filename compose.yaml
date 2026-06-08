@@ -118,7 +118,7 @@ services:
         condition: service_healthy
 
   grafana:
-    image: grafana/grafana:13.0.1
+    image: grafana/grafana:13.0.2
     restart: unless-stopped
     container_name: grafana
     networks:
@@ -168,7 +168,7 @@ services:
       - "no-new-privileges:true"
 
   alloy:
-    image: grafana/alloy:v1.16.1
+    image: grafana/alloy:v1.16.2
     restart: unless-stopped
     container_name: alloy
     command:
