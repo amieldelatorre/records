@@ -201,7 +201,7 @@ services:
     read_only: true
 
   cadvisor:
-    image: ghcr.io/google/cadvisor:v0.57.0
+    image: ghcr.io/google/cadvisor:v0.60.1
     restart: unless-stopped
     container_name: cadvisor
     networks:
