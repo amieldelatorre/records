@@ -154,7 +154,7 @@ services:
       - "no-new-privileges:true"
 
   prometheus:
-    image: prom/prometheus:v3.13.0
+    image: prom/prometheus:v3.13.1
     restart: unless-stopped
     container_name: prometheus
     command: ["--web.enable-remote-write-receiver"]
