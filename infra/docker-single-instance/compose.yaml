@@ -92,7 +92,7 @@ services:
         condition: service_healthy
 
   grafana:
-    image: grafana/grafana:13.1.0
+    image: grafana/grafana:13.1.1
     restart: unless-stopped
     container_name: grafana
     networks:
@@ -163,7 +163,7 @@ services:
     #   - tempo-init
 
   prometheus:
-    image: prom/prometheus:v3.13.1
+    image: prom/prometheus:v3.13.2
     restart: unless-stopped
     container_name: prometheus
     user: 1000:1000
@@ -222,7 +222,7 @@ services:
     #     tag: "cadvisor"
 
   alloy:
-    image: grafana/alloy:v1.17.1
+    image: grafana/alloy:v1.18.0
     restart: unless-stopped
     container_name: alloy
     command:
